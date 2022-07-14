@@ -13,4 +13,5 @@ public class ChatController {
 	        log.info("@ChatController, chat GET()");
 	        return "chat";
 	    }
+	 public sdfsdkfl()
 }
