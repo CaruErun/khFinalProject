@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="productMapper">
+	
+	<resultMap type="category" id="categoryResultSet">
+		<result column="CATE_NO" property="categoryNo"/>
+		<result column="CATE_NAME" property="categoryName"/>
+		
+	
+	</resultMap>
+	<select id="selectCategoryList" resultMap="categoryResultSet" parameterType="int">
+		SELECT CATE_NO, CATE_NAME 
+		FROM CATEGORY
+		WHERE TRUNC(CATE_NO,-2) =#{categoryNo}
+		AND NOT CATE_NO= #{categoryNo}
+	</select>
+	<insert id="insertProduct" parameterType="product">
+		
+		INSERT INTO PRODUCT(
+                    PRO_NO
+                    ,PRO_TITLE
+                    ,PRO_CONTENT
+                    ,SELL_ID
+                    ,PRO_PRICE
+                    ,WISH_PRICE
+                    ,POST_PRICE
+                    ,START_DATE
+                    ,END_DATE
+                    ,PRO_CATE_NO
+                    ,TRADE_CATE_NO
+                    ,TRADE_LOCATION
+                    )
+            VALUES(
+                    SEQ_PRNO.NEXTVAL
+                    ,#{proTitle}
+                    ,#{proContent}
+                    ,#{sellId}
+                    ,#{proPrice}
+                    ,#{wishPrice}
+                    ,#{postPrice}
+                    ,SYSDATE
+                    ,SYSDATE+#{endDate}
+                    ,#{proCateNo}
+                    ,#{tradeCateNo}
+                    ,#{tradeLocation}
+                  )
+	
+	</insert>
+</mapper>
