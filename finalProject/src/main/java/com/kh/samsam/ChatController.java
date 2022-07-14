@@ -13,7 +13,7 @@ public class ChatController {
     public String chatGET(){
 
         log.info("@ChatController, chat GET()");
-        
+        System.out.println("123");
         return "chat";
     }
 }
