@@ -8,10 +8,15 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @Log4j
 public class ChatController {
-	 @GetMapping("/chat")
-	   public String chatGET(){
-	        log.info("@ChatController, chat GET()");
-	        return "chat";
-	    }
-	 public sdfsdkfl()
+	public class ChatController {
+		 @GetMapping("/chat")
+		   public String chatGET(){
+		        log.info("@ChatController, chat GET()");
+		        return "chat";
+		    }
+		 public sdfsdkfl()
+	 sdfsdfs
+	 djfksjdfklsl
 }
+
+Discard Changes
