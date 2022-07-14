@@ -24,4 +24,6 @@ public class ChatController {
 		        return "chat";
 		    }
 		 dfsfdsdf
+		 }
+
 }
