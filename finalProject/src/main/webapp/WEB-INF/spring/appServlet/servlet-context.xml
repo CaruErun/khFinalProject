@@ -27,12 +27,4 @@
 
 
 	<context:component-scan base-package="com.kh.samsam" />
-<<<<<<< HEAD
-	
-
-	
-=======
-
-
->>>>>>> refs/remotes/origin/main
 </beans:beans>

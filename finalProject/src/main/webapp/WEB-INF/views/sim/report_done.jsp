@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,7 +60,21 @@
         </tr>
         <tr>
             <td id="tt">신고 사유</td>
-            <td>${r.reportCategoryNo }</td>
+		        <c:if test="${r.reportCategoryNo==1201 }">
+		              <td>허위매물</td>
+		        </c:if>
+		        <c:if test="${r.reportCategoryNo==1202 }">
+		              <td>전자상거래 금지물품 거래</td>
+		        </c:if>
+		        <c:if test="${r.reportCategoryNo==1203 }">
+		              <td>욕설 및 비방</td>
+		        </c:if>
+		        <c:if test="${r.reportCategoryNo==1204 }">
+		              <td>담합</td>
+		        </c:if>
+		        <c:if test="${r.reportCategoryNo==1205 }">
+		              <td>기타</td>
+		        </c:if>
         </tr>
         <tr>
         	<td id="tt">상세 사유</td>
