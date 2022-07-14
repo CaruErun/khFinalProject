@@ -144,6 +144,9 @@
     }
 </style>
 <body>
+
+	<jsp:include page="common/header.jsp"/>
+
 	<!-- swiper -->
 	<div class="swiper-area" >
 	    
@@ -1025,7 +1028,10 @@
 	                </div>
 	            </div>
 	    </div>
-	<jsp:include page="/WEB-INF/views/chatbot.jsp"/>    
+
+	    
 	</div>
+	<jsp:include page="common/footer.jsp"/>
+
 </body>
 </html>

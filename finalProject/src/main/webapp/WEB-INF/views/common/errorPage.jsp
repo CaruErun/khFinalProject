@@ -7,13 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<<<<<<< HEAD
-	<jsp:forward page="WEB-INF/views/main.jsp"/>
-=======
-	<div>
-	<jsp:forward page="./WEB-INF/views/main.jsp"></jsp:forward>
-	</div>
-	
->>>>>>> refs/remotes/origin/main
+
 </body>
 </html>
