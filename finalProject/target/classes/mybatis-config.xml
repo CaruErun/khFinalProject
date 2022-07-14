@@ -5,10 +5,26 @@
 	<settings>
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
-
-
-
-
-
+	
+	<typeAliases>
+		<typeAlias type="com.kh.samsam.common.model.vo.PageInfo" alias="pageInfo"/>
+		<typeAlias type="com.kh.samsam.sim.model.vo.Category" alias="category"/>
+		<typeAlias type="com.kh.samsam.sim.model.vo.Member" alias="member"/>
+		<typeAlias type="com.kh.samsam.sim.model.vo.QnA" alias="qna"/>
+		<typeAlias type="com.kh.samsam.sim.model.vo.Report" alias="report"/>
+		<typeAlias type="com.kh.samsam.sim.model.vo.ProLike" alias="proLike"/>
+	</typeAliases>
+	
+	<!-- 
+		environment,dataSource에 기술했던 DB연결정보는 root-context.xml에 작성한다.
+		->DB등록은 서버연동과 동시에 이루어져야하기 때문에
+		      서버 연결과 동시에 읽혀지는 root-context.xml에 기술하는것.
+	 -->
+	
+	<mappers>
+<!-- 		<mapper resource="/finalProject/sim_mapper/simMapper.xml"/> -->
+		<mapper resource="/finalProject/sim_mapper/QnaMapper.xml"/>
+		<mapper resource="/finalProject/sim_mapper/SimMapper.xml"/>
+	</mappers>
 
 </configuration>

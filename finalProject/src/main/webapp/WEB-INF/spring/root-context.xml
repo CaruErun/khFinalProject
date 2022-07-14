@@ -23,4 +23,6 @@
 	   		<property name="maxInMemorySize" value="10485760"/>
 	   
 	   </bean>
+	   
+	   
 </beans>
