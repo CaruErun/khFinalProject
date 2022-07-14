@@ -13,4 +13,14 @@ public class ChatController {
 		        log.info("@ChatController, chat GET()");
 		        return "chat";
 		    }
+		 @GetMapping("/chatttt")
+		   public String chatGET(){
+		        log.info("@ChatController, chat GET()");
+		        return "chat";
+		    }
+		 @GetMapping("/chatttttt")
+		   public String chatGET(){
+		        log.info("@ChatController, chat GET()");
+		        return "chat";
+		    }
 }
