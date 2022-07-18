@@ -6,7 +6,16 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 
-
+<typeAliases>
+		
+		<typeAlias type="com.kh.samsam.member.model.vo.Member" alias="member"/>
+	</typeAliases>
+	
+	
+	<mappers>
+	
+		<mapper resource="/mappers/member-mapper.xml"/>
+	</mappers>
 
 
 
