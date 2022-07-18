@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -302,6 +303,38 @@
         $(".info-error").hide();
       });-->
     </script>
+
+
+</body>
+
+    <!-- Header-->
+    <div class="header">
+        <div class="head-inner">
+
+            <div class="h1">
+                <img src="#" alt="">
+                <a href="${pageContext.request.contextPath }">samsam<br>Auction</a>
+            </div>
+            <div class="h2">
+                <ul class="header-nav">
+                    
+                    <li><a href="#">신규경매</a></li>
+                    <li><a href="#">마감임박경매</a></li>
+                    <li><a href="#">카테고리</a></li>
+                    <li><a href="insertProductForm.pr">물품등록</a></li>
+                </ul>
+            </div>
+            <div class="h3">
+                <select name="" class="search-bar">
+                    <option value="">물품명</option>
+                </select>
+                <input type="text" class="search-bar"placeholder="검색어를 입력하세요.">
+                <button class="search-bar">검색</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 
 </body>
