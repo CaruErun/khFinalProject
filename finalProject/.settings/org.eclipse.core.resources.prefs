@@ -1,2 +1,13 @@
 eclipse.preferences.version=1
+<<<<<<< HEAD
 encoding//src/main/webapp/WEB-INF/views/chat/chatbot.jsp=UTF-8
+=======
+<<<<<<< HEAD
+encoding//src/main/webapp/WEB-INF/views/sim/pickList.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/sim/report_done.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/sim/successfulBid.jsp=UTF-8
+encoding/<project>=UTF-8
+=======
+encoding//src/main/webapp/WEB-INF/views/chatbot.jsp=UTF-8
+>>>>>>> refs/remotes/origin/main
+>>>>>>> refs/remotes/origin/main

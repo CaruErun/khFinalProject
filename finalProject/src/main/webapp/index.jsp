@@ -8,6 +8,7 @@
 </head>
 <body>
 	<div>
+	1
 	<jsp:forward page="./WEB-INF/views/chat/chatroom.jsp"></jsp:forward>
 	</div>
 	

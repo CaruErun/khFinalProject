@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="memberMapper">
+    <resultMap type="member" id="memberResultSet">
+        <result column="USER_ID" property="userId"/>
+        <result column="USER_PW" property="userPw"/>
+        <result column="USER_NAME" property="userName"/>
+        <result column="USER_BIRTH" property="userBirth"/>
+        <result column="GENDER" property="gender"/>
+        <result column="EMAIL" property="email"/>
+        <result column="PHONE" property="phone"/>
+        <result column="ADDRESS" property="address"/>
+        <result column="ADDRESS_NUM" property="addressNum"/>
+        <result column="ADDRESS_DETAIL" property="addressDetail"/>
+        <result column="ENTER_DATE" property="enterDate"/>
+        <result column="BAN_DATE" property="banDate"/>
+        <result column="BAN_COUNT" property="banCount"/>
+        <result column="USER_STATUS" property="userStatus"/>
+        <result column="EMAIL_FIRST" property="emailFirst"/>
+        <result column="EMAIL_BACK" property="emailBack"/>
+        <result column="ADDRESS_FIRST" property="addressFirst"/>
+        <result column="ADDRESS_BACK" property="addressFirst"/>
+        <result column="PHONE_FIRST" property="phoneFirst"/>
+        <result column="PHONE_MIDDLE" property="phoneMiddle"/>
+        <result column="PHONE_BACK" property="phoneBack"/>
+    
+    </resultMap>
+  
+  <!-- 로그인 -->
+  <select id="loginMember" resultMap="memberResultSet">
+	    SELECT USER_ID
+	           ,USER_PW
+	           ,USER_NAME
+	           ,USER_BIRTH
+	           ,GENDER
+	           ,EMAIL
+	           ,PHONE
+	           ,ADDRESS
+	           ,ADDRESS_NUM
+	           ,ADDRESS_DETAIL
+	           ,ENTER_DATE
+	           ,BAN_DATE
+	           ,BAN_COUNT
+	           ,USER_STATUS
+	        FROM MEMBER
+	        WHERE USER_ID = #{userId}	
+		AND USER_STATUS = 'Y'
+  </select>
+  
+  <insert id="insertMember" parameterType="member">
+  		
+  	INSERT INTO MEMBER(
+  			USER_ID
+	       ,USER_PW
+	       ,USER_NAME
+	       ,USER_BIRTH
+	       ,EMAIL
+	       ,PHONE
+	       ,GENDER
+	       ,ADDRESS_NUM
+	       ,ADDRESS
+	       ,ADDRESS_DETAIL
+	       )
+	         VALUES(
+		            #{userId},
+		            #{userPw},
+		            #{userName},
+		            #{userBirth},
+		            #{email},
+		            #{phone},
+		            #{gender},
+		            #{addressNum},
+		            #{address},
+		            #{addressDetail}
+             )
+  </insert>
+  
+  <select id="emailFirst" resultType="String">
+  	SELECT SUBSTR(EMAIL,1,INSTR(EMAIL,'@')-1) AS EMAIL_FIRST
+	FROM MEMBER
+	WHERE USER_ID = 'admin'
+  </select>
+  
+  <select id="emailBack" resultType="String">
+ 	SELECT SUBSTR(EMAIL,INSTR(EMAIL,'@')+1) AS EMAIL_BACK
+	FROM MEMBER
+	WHERE USER_ID = 'admin'
+  </select>
+  
+  <select id="phoneFirst" resultType="String">
+  	SELECT SUBSTR(PHONE,1,INSTR(PHONE,'-')-1) AS PHONE_FIRST
+	FROM MEMBER
+	WHERE USER_ID = 'admin'
+  </select>
+  
+  <select id="phoneMiddle" resultType="String">
+  	SELECT SUBSTR(PHONE,5,INSTR(PHONE,'-')) AS PHONE_MIDDLE
+	FROM MEMBER
+	WHERE USER_ID = 'admin'
+  </select>
+  
+  <select id="phoneBack" resultType="String">
+  	SELECT SUBSTR(PHONE,10,INSTR(PHONE,'-')+1) AS PHONE_BACK
+	FROM MEMBER
+	WHERE USER_ID = 'admin'
+  </select>
+  
+  <select id="pwdChange" parameterType="Member">
+  	UPDATE  MEMBER
+	SET USER_PW = #{newPwd}
+	WHERE USER_ID = 'admin'
+  </select>
+  
+  <update id="updateMember" parameterType="Member">
+	  	UPDATE MEMBER
+	  	SET EMAIL = #{email},
+	  		PHONE = #{phone},
+	  		ADDRESS= #{address},
+	  		ADDRESS_NUM = #{addressNum},
+	  		ADDRESS_DETAIL = #{addressDetail}
+	  	WHERE USER_ID = 'admin'
+  </update>
+  
+   <update id="deleteMember" parameterType="String">
+		UPDATE MEMBER 
+		SET USER_STATUS = 'N'
+		WHERE USER_ID = 'admin'
+	</update>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM PRODUCT
+		WHERE PRO_STATUS='Y'
+		AND SELL_ID='admin'
+	
+	</select>
+	
+    <resultMap type="product" id="productResultSet">
+    	<result column="PRO_NO" property="proNo"/>
+    	<result column="PRO_TITLE" property="proTitle"/>
+    	<result column="PRO_CONTENT" property="proContent"/>
+    	<result column="SELL_ID" property="sellId"/>
+    	<result column="PRO_PRICE" property="proPrice"/>
+    	<result column="BID_INCREMENT" property="bidIncrement"/>
+    	<result column="WISH_PRICE" property="wishPrice"/>
+    	<result column="POST_PRICE" property="postPrice"/>
+    	<result column="START_DATE" property="startDate"/>
+    	<result column="END_DATE" property="endDate"/>
+    	<result column="PRO_CATE_NO" property="proCateNo"/>
+    	<result column="TRADE_CATE_NO" property="tradeCateNo"/>
+    	<result column="TRADE_LOCATION" property="tradeLocation"/>
+    	<result column="COUNT" property="count"/>
+    	<result column="PRO_STATUS" property="proStatus"/>
+    </resultMap>
+    
+	<select id="selectList" resultMap="productResultSet">
+		SELECT PRO_CATE_NO,PRO_TITLE,PRO_PRICE,COUNT,PRO_STATUS
+		FROM PRODUCT
+		WHERE SELL_ID= 'admin' <!-- ${buyId} -->
+		AND PRO_STATUS = 'Y'
+	</select>
+	
+	<insert id="postInsert" parameterType="Postbox">
+		INSERT INTO POSTBOX(PBOX_NO,PBOX_NAME,PRO_NO) VALUES('#{pboxNo}','#{pboxName}','#{proNo})
+	</insert>
+	
+	
+	<resultMap type="postbox" id="PostboxResultSet">
+		<result column="PBOX_NO" property="pboxNo"/>
+		<result column="PBOX_NAME" property="pboxName"/>
+		<result column="PRO_NO" property="proNo"/>
+		<result column="PRO_CATE_NO" property="proCateNo"/>
+		<result column="PRO_TITLE" property="proTitle"/>
+	</resultMap>
+	
+	<select id="selectListPost" resultMap="PostboxResultSet">
+		SELECT PRO_CATE_NO,PRO_TITLE,PBOX_NAME,PBOX_NO
+		FROM POSTBOX 
+		JOIN PRODUCT USING (PRO_NO)
+	</select>
+	
+	
+	<resultMap type="bid" id="BidResultSet">
+		<result column="BID_NO" property="bidNo"/>
+		<result column="BUYER_ID" property="buyerId"/>
+		<result column="PRO_NO" property="proNo"/>
+		<result column="BID_PRICE" property="bidPrice"/>
+		<result column="BID_STATUS" property="bidStatus"/>
+		<result column="PRO_CATE_NO" property="proCateNo"/>
+		<result column="PRO_TITLE" property="proTitle"/>
+	</resultMap>
+	
+	<select id="selectListAttend" resultMap="BidResultSet">
+		SELECT PRO_CATE_NO,BUYER_ID,PRO_TITLE,BID_PRICE,BID_STATUS
+		FROM BID B
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE BUYER_ID = 'admin'
+	</select>
+	
+	<select id="selectListBid" resultMap="BidResultSet"> 
+		SELECT PRO_CATE_NO,PRO_TITLE,BID_PRICE
+		FROM BID B
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE BID_STATUS = 'N'
+	</select>
+		<select id="selectNewMember" resultType="_int">
+		SELECT COUNT(ENTER_DATE) AS COUNT
+		FROM MEMBER
+		WHERE ENTER_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+	</select>
+	
+	<select id="selectRemoveMember" resultType="_int">		
+		SELECT COUNT(MODIFY_DATE) AS COUNT
+		FROM MEMBER
+		WHERE MODIFY_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+		AND USER_STATUS = 'N'
+	</select>
+ </mapper>

@@ -1,0 +1,102 @@
+div{
+    box-sizing: border-box;
+    /* border: 1px solid red; */
+}
+.wrap{
+    width: 1000px;
+    height: 500px;
+    margin: auto;
+}
+.wrap>div{ 
+    width: 100%;
+}
+#header{
+    height: 20%;
+}
+#content{
+    height: 70%; 
+}
+#footer{
+    height: 10%;
+}
+/* #content>div{
+    height: 100%;
+    float: left;
+} */
+#title{
+    height: 10%;
+    font-family: "Malgun Gothic";
+    font-size: 25px;
+    font-weight: 700;
+    padding-bottom: 50px;
+    padding-top: 20px;
+}
+#out{
+    height: 29%;
+    font-family: "Malgun Gothic";
+    font-size: 19px;
+    font-weight: 550;
+}
+#content1{
+    height: 150px;
+    background-color: #cccbcb;
+    text-align: center;
+}
+#content2{
+    height: 15px;
+}
+#content3{
+    height: 183px;
+}
+#content_3_1{
+    float: left;
+    width:12%;
+    height: 182px;
+    text-align: center;
+    padding-top: 74px;
+    font-family: "Malgun Gothic";
+    font-size: 17px;
+    font-weight: 550;
+    background-color: #cccbcb;
+    border-bottom: 1px solid gray;
+    border-top: 1px solid gray;
+}
+#content_3_2{
+    float: left;
+    width:88%;
+    height: 182px;
+    font-size: 13px;
+    border-bottom: 1px solid gray;
+    border-top: 1px solid gray;
+}
+.span{
+    padding-top: 50px;
+    font-family: "Malgun Gothic";
+}
+#pre{
+    font-family: "Malgun Gothic";
+}
+.btn3{
+    border-radius: 4px;
+    border: 0px;
+    height: 25px;
+    background-color: black;
+    color: white;
+    width: 70px;
+    height: 30px;
+    margin-left: 400px;
+    
+}
+.btn4{
+    border-radius: 4px;
+    border: 0px;
+    height: 25px;
+    background-color: #efefef;
+    color: dimgrey;
+    width: 70px;
+    height: 30px;
+}
+
+#footer_1{
+    padding-top: 20px;
+}

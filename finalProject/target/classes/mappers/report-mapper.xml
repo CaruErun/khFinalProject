@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="reportMapper">
+
+	<resultMap type="report" id="reportResultSet">
+		<result column = "REPORT_NO" property = "reportNo"/>
+		<result column = "REPORT_ID" property = "reportId"/>
+		<result column = "REPORTED_ID" property = "reportedId"/>
+		<result column = "PRO_NO" property = "proNo"/>
+		<result column = "REPORT_CATE_NO" property = "reportCateNo"/>
+		<result column = "REPORT_CONTENT" property = "reportContent"/>
+		<result column = "REPORT_STATUS" property = "reportStatus"/>
+		<result column = "CREATE_DATE" property = "createDate"/>
+		
+	</resultMap>
+
+	<select id="selectReportListCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM REPORT
+        WHERE REPORT_STATUS = 'Y'
+	</select>
+	
+	<select id="selectReportList" resultMap="reportResultSet">
+        SELECT ROWNUM AS RNUM, A.* FROM(
+        SELECT REPORT_NO, REPORT_ID, REPORTED_ID, PRO_NO, REPORT_CONTENT, CREATE_DATE, CATE_NAME AS REPORT_CATE_NO
+        FROM REPORT R
+        JOIN CATEGORY C
+        ON R.REPORT_CATE_NO = C.CATE_NO
+        WHERE REPORT_STATUS = 'Y'
+        ORDER BY CREATE_DATE) A
+        ORDER BY RNUM DESC
+	</select>
+	
+	<select id="selectReportContent" resultMap="reportResultSet">
+		SELECT REPORT_CONTENT
+		FROM REPORT
+		WHERE REPORT_NO = #{reportNo}
+	</select>
+<!-- 신고하기 -->
+	<insert id="reportMember" parameterType="report">
+		INSERT INTO REPORT (
+							REPORT_NO, 
+							REPORT_ID, 
+							REPORTED_ID, 
+							PRO_NO, 
+							REPORT_CATE_NO, 
+							REPORT_CONTENT, 
+							CREATE_DATE,
+							REPORT_STATUS
+							)
+	            	VALUES(
+	            			SEQ_RENO.NEXTVAL,
+	            			#{reportId}, 
+	            			#{reportedId}, 
+	            			#{proNo}, 
+	            			#{reportCategoryNo}, 
+	            			#{reportContent},
+	            			SYSDATE,
+	            			'Y'
+	            			)
+	</insert>
+
+</mapper>
