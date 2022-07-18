@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div>
-	<jsp:forward page="./WEB-INF/views/main.jsp"></jsp:forward>
+	<jsp:forward page="./WEB-INF/views/chat/chatroom.jsp"></jsp:forward>
 	</div>
 	
 </body>

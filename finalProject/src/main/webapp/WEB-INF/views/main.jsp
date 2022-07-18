@@ -1025,7 +1025,7 @@
 	                </div>
 	            </div>
 	    </div>
-	<jsp:include page="/WEB-INF/views/chatbot.jsp"/>    
+	<jsp:include page="/WEB-INF/views/chat/chatbot.jsp"/>    
 	</div>
 </body>
 </html>

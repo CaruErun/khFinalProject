@@ -1,4 +1,4 @@
-package com.kh.samsam;
+package com.kh.samsam.chat.controller;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

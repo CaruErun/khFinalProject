@@ -29,7 +29,9 @@ body {
 height:500px;
 	width:500px;
     max-width: 500px;
-border:3px solid black;
+border-width:3px;
+border-color:black;
+border-style:none solid solid solid;
 overflow:scroll;
 background:white;
 }
@@ -44,6 +46,7 @@ background:white;
 cursor:pointer;
 }
 .allowM,.sendM{
+padding:3px;
 max-width:60%;
 }
 .allowM{
@@ -81,18 +84,25 @@ font-size:15pt;
 	top:80%;
 	right:10%;
 }
+#meHeder{
+height:30px;
+width:500px;
+border-width:3px;
+border-color:black;
+border-style:solid solid none solid;
+	background:skyblue;
+}
 </style>
 </head>
 <body>    
 <div id="main-content">
 <div id="message">
+<div id="meHeder">ㅡ</div>
 <div id="chat-table">
+
         <div style="background-color:'white';">
             <table id="conversation" class="table table-striped">
                 <thead id="communicate-h">
-                <%--><tr>
-                    <th>메세지</th>
-                </tr> --%>
                 </thead>
                 <tbody id="communicate">
                 </tbody>
