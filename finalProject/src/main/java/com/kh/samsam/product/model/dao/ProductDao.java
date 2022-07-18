@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.product.model.vo.Product;
+import com.kh.samsam.product.model.vo.ProductImages;
 
 @Repository
 public class ProductDao {
@@ -18,6 +19,10 @@ public class ProductDao {
 
 	public int insertProduct(SqlSessionTemplate sqlSession, Product p) {
 		return sqlSession.insert("productMapper.insertProduct",p);
+	}
+
+	public Object insertProductImages(SqlSessionTemplate sqlSession, ArrayList<ProductImages> list) {
+		return sqlSession.insert("productMapper.insertProductImages",list);
 	}
 
 }

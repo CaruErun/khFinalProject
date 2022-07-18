@@ -5,16 +5,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="productMapper">
 	
 	<resultMap type="category" id="categoryResultSet">
-		<result column="CATE_NO" property="categoryNo"/>
-		<result column="CATE_NAME" property="categoryName"/>
+		<result column="CATE_NO" property="cateNo"/>
+		<result column="CATE_NAME" property="cateName"/>
 		
 	
 	</resultMap>
 	<select id="selectCategoryList" resultMap="categoryResultSet" parameterType="int">
 		SELECT CATE_NO, CATE_NAME 
 		FROM CATEGORY
-		WHERE TRUNC(CATE_NO,-2) =#{categoryNo}
-		AND NOT CATE_NO= #{categoryNo}
+		WHERE TRUNC(CATE_NO,-2) =#{cateNo}
+		AND NOT CATE_NO= #{cateNo}
 	</select>
 	<insert id="insertProduct" parameterType="product">
 		
@@ -41,11 +41,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     ,#{wishPrice}
                     ,#{postPrice}
                     ,SYSDATE
-                    ,SYSDATE+#{endDate}
+                    ,TO_DATE(SYSDATE+#{bidDate},'YYYY-MM-DD HH24:MI:SS')
                     ,#{proCateNo}
                     ,#{tradeCateNo}
                     ,#{tradeLocation}
                   )
 	
+	</insert>
+	<insert id="insertProductImages" >
+			INSERT INTO PRODUCT_IMAGES(
+														IMAGE_NO
+														,PRO_NO
+														,ORINAME
+														,SYSNAME
+														,PATH
+														)
+									VALUES
+								
+														(
+														 SEQ_IMGNO.NEXTVAL
+														,SEQ_PRNO.CURVAL
+		<foreach collection="list" item="oriName" index="index" separator="," >
+														,#{oriName[index]}
+		</foreach>
+		<foreach collection="list" item="sysName" index="index" separator="," >
+														,#{sysName[index]}
+		</foreach>
+		<foreach collection="list" item="path" index="index" separator="," >
+														,#{path[index]}
+		</foreach>
+														)
 	</insert>
 </mapper>

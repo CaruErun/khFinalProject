@@ -9,7 +9,7 @@
 	<typeAliases>
 		<typeAlias type="com.kh.samsam.product.model.vo.Product" alias="product"/>
 		<typeAlias type="com.kh.samsam.common.model.vo.Category" alias="category"/>
-		<typeAlias type="com.kh.samsam.product.model.vo.ProductImages" alias="productImg"/>
+		<typeAlias type="com.kh.samsam.product.model.vo.ProductImages" alias="productImages"/>
 	</typeAliases>
 
 	<mappers>

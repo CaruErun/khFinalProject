@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.product.model.dao.ProductDao;
 import com.kh.samsam.product.model.vo.Product;
+import com.kh.samsam.product.model.vo.ProductImages;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -30,6 +31,13 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public ArrayList<Category> selectCategoryList(int categoryNo) {
 		return productDao.selectCategoryList(sqlSession,categoryNo);
+	}
+
+
+
+	@Override
+	public Object insertProductImages(ArrayList<ProductImages> list) {
+		return productDao.insertProductImages(sqlSession,list);
 	}
 
 }

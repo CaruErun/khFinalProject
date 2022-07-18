@@ -49,26 +49,27 @@ public class ProductController {
 		System.out.println(p);
 	
 		ArrayList<ProductImages> list = new ArrayList<>();
-		for(int i=0; i<upfile.length; i++) {
-			ProductImages pi = new ProductImages();
-			
-			System.out.println(i+"번째 oN"+upfile[i].getOriginalFilename());
-			
-			pi.setOriName(upfile[i].getOriginalFilename());
 		
-			list.add(pi);
-		}
+			
+			for(int i=0; i<upfile.length; i++) {
+				ProductImages pi = new ProductImages();
+				if(!upfile[i].getOriginalFilename().equals("")) {
+					
+					pi.setOriName(upfile[i].getOriginalFilename());
+					String changeName = saveFile(upfile[i],session);
+					pi.setSysName(changeName);
+					pi.setPath("resources/uploadFiles/"+changeName);
+					list.add(pi);
+				}
+			}
+		
 		System.out.println(list);
-//		if(!upfile.getOriginalFilename().equals("")) {
-//					
-//			String changeName = saveFile(upfile,session);
-//		
-//		pi.setSysName(changeName);
-//		pi.setPath("resources/uploadFiles/"+changeName);
-//		}
-//		System.out.println(pi);
-//		int result =productService.insertProduct(p);
-//		
+		
+		int result =productService.insertProduct(p);
+		if(result>0) {
+			productService.insertProductImages(list);
+		}
+	
 		return null;
 		
 	}
@@ -77,7 +78,7 @@ public class ProductController {
 		String originName = upfile.getOriginalFilename();
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int ranNum = (int)(Math.random()*90000) +10000;
-		
+		System.out.println(originName);
 		String ext = originName.substring(originName.lastIndexOf("."));
 		String changeName = currentTime+ranNum+ext;
 		
