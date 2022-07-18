@@ -9,12 +9,23 @@ import org.springframework.stereotype.Repository;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Bid;
 import com.kh.samsam.member.model.vo.Member;
+import com.kh.samsam.member.model.vo.MemberChart;
 import com.kh.samsam.member.model.vo.Postbox;
 import com.kh.samsam.member.model.vo.Product;
 
 @Repository
 public class MemberDao {
 
+	public int selectNewMember(SqlSessionTemplate sqlSession, MemberChart c) {
+		int count = sqlSession.selectOne("memberMapper.selectNewMember", c);
+		return count;
+	}
+
+	public int selectRemoveMember(SqlSessionTemplate sqlSession, MemberChart c) {
+		int count = sqlSession.selectOne("memberMapper.selectRemoveMember", c);
+		return count;
+	}
+	
 public Member loginMember(SqlSessionTemplate sqlSession, Member m) {
 		
 	return sqlSession.selectOne("memberMapper.loginMember",m);
@@ -123,7 +134,6 @@ public ArrayList<Bid> selectListBid(SqlSessionTemplate sqlSession, PageInfo pi, 
 //	
 //	return (ArrayList)sqlSession.selectList("memberMapper.selectList", null, rowBounds);
 //}
-
 	
 
 }

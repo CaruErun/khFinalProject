@@ -1,38 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="boardMapper">
-
-
-
-<!-- //////////    QnA       ////////// -->
-	<resultMap type="qna" id="qnaResertSet">
-		<result column="QNA_NO" property="qnaNo"/>
-		<result column="QNA_TITLE" property="qnaTitle"/>
-		<result column="QNA_CATE_NO" property="qnaCateNo"/>
-		<result column="QNA_CONTENT" property="qnaContent"/>
-		<result column="QNA_ID" property="qnaId"/>
-		<result column="CREATE_DATE" property="craeteDate"/>
-		<result column="ANSWER_CONTENT" property="answerContent"/>
-		<result column="ANSWER_DATE" property="answerDate"/>
-		<result column="QNA_TYPE" property="qnaType"/>
-		<result column="PRO_NO" property="proNo"/>
-		<result column="QNA_STATUS" property="qnaStatus"/>
-		<result column="ANS_STATUS" property="ansStatus"/>
+	
+	<resultMap type="noticeFaq" id="noticeFaqResultSet">
+		<result column = "NF_NO" property="nfNo"/>
+		<result column = "NF_TYPE" property="nfType"/>
+		<result column = "NF_TITLE" property="nfTitle"/>
+		<result column = "NF_CATE_NO" property="nfCateNo"/>
+		<result column = "NF_CONTENT" property="nfContent"/>
+		<result column = "CREATE_DATE" property="createDate"/>
+		<result column = "COUNT" property="count"/>
+		<result column = "NF_STATUS" property="nfStatus"/>
+		<result column = "RNUM" property="rnum"/>
 	</resultMap>
 	
+	<resultMap type="qna" id="qnaResultSet">
+		<result column = "QNA_NO" property = "qnaNo"/>
+		<result column = "QNA_TITLE" property = "qnaTitle"/>
+		<result column = "QNA_CATE_NO" property = "qnaCateNo"/>
+		<result column = "QNA_CONTENT" property = "qnaContent"/>
+		<result column = "QNA_ID" property = "qnaId"/>
+		<result column = "CREATE_DATE" property = "createDate"/>
+		<result column = "ANSWER_CONTENT" property = "answerContent"/>
+		<result column = "ANSWER_DATE" property = "answerDate"/>
+		<result column = "QNA_TYPE" property = "qnaType"/>
+		<result column = "PRO_NO" property = "proNo"/>
+		<result column = "QNA_STATUS" property = "qnaStatus"/>
+		<result column = "ANS_STATUS" property = "ansStatus"/>
+	</resultMap>
 	
-<!-- 전체 QnA 개수 구하기 -->
+<!-- 	====================== 공지사항 ====================== -->
+	<select id="selectNoticeListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM NOTICE_FAQ
+		WHERE NF_STATUS = 'Y'
+		AND NF_TYPE = 1
+	</select>
+
+	<select id = "selectNoticeList" resultMap="noticeFaqResultSet">
+        SELECT ROWNUM AS RNUM, A.* FROM(
+        SELECT NF_NO, NF_TITLE, COUNT, CREATE_DATE
+        FROM NOTICE_FAQ
+        WHERE NF_STATUS = 'Y'
+        AND NF_TYPE = 1
+        ORDER BY CREATE_DATE) A
+        ORDER BY RNUM DESC
+	</select>
+	
+	<update id="increaseNoticeFaqCount" parameterType="_int">
+        UPDATE NOTICE_FAQ
+		SET COUNT = COUNT+1
+		WHERE NF_STATUS = 'Y'
+		AND NF_NO = #{nfNo}
+	</update>
+	
+	<select id="selectNoticeFaq" resultMap="noticeFaqResultSet">
+        SELECT NF_NO, NF_TITLE, CREATE_DATE, COUNT, NF_CONTENT
+		FROM NOTICE_FAQ
+		WHERE NF_NO = #{nfNo}
+	</select>
+	
+	<update id="updateNoticeFaq" parameterType="noticeFaq">
+        UPDATE NOTICE_FAQ SET
+		NF_TITLE = #{nfTitle},
+		NF_CONTENT = #{nfContent},
+        CREATE_DATE = SYSDATE
+		WHERE NF_NO = #{nfNo}
+	</update>
+	
+	<insert id = "insertNotice" parameterType="noticeFaq">
+		INSERT INTO NOTICE_FAQ(NF_NO, NF_TYPE, NF_TITLE, NF_CATE_NO, NF_CONTENT, CREATE_DATE, COUNT, NF_STATUS)
+    	VALUES(SEQ_NFNO.NEXTVAL, 1, #{nfTitle}, 1000, #{nfContent}, SYSDATE, 0, 'Y')
+	</insert>
+	
+	<update id="deleteNoticeFaq">
+		UPDATE NOTICE_FAQ
+	    SET NF_STATUS = 'N'
+	    WHERE NF_NO = #{nfNo}
+	</update>
+	
+<!-- 	====================== FAQ ====================== -->
+	<select id="selectFaqListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM NOTICE_FAQ
+		WHERE NF_STATUS = 'Y'
+		AND NF_TYPE = 2
+	</select>
+
+	<select id = "selectFaqList" resultMap="noticeFaqResultSet">
+        SELECT ROWNUM AS RNUM, A.* FROM(
+        SELECT NF_NO, NF_TITLE, COUNT, CREATE_DATE, NF_CONTENT
+        FROM NOTICE_FAQ
+        WHERE NF_STATUS = 'Y'
+        AND NF_TYPE = 2
+        ORDER BY CREATE_DATE) A
+        ORDER BY RNUM DESC
+	</select>
+	
+	<insert id = "insertFaq" parameterType="noticeFaq">
+		INSERT INTO NOTICE_FAQ(NF_NO, NF_TYPE, NF_TITLE, NF_CATE_NO, NF_CONTENT, CREATE_DATE, COUNT, NF_STATUS)
+    	VALUES(SEQ_NFNO.NEXTVAL, 2, #{nfTitle}, 1000, #{nfContent}, SYSDATE, 0, 'Y')
+	</insert>
+	
+<!-- 	====================== QNA ====================== -->
+	<select id="selectQnaListCount" resultType="_int">
+        SELECT COUNT(*)
+		FROM QNA
+		WHERE QNA_STATUS = 'Y'
+		AND QNA_TYPE = 2
+	</select>
+	
+	<select id="selectQnaList" resultMap="qnaResultSet">
+        SELECT ROWNUM AS RNUM, A.* FROM(
+        SELECT QNA_NO, QNA_ID, QNA_TITLE, CREATE_DATE, ANS_STATUS, ANSWER_CONTENT, CATE_NAME AS QNA_CATE_NO
+        FROM QNA Q
+        JOIN CATEGORY C
+        ON Q.QNA_CATE_NO = C.CATE_NO
+        WHERE QNA_STATUS = 'Y'
+        AND QNA_TYPE = 2
+        ORDER BY ANS_STATUS DESC, CREATE_DATE) A
+        ORDER BY RNUM DESC
+	</select>
+
+	<select id="selectQna" resultMap="qnaResultSet">
+        SELECT QNA_NO, QNA_TITLE, CREATE_DATE, QNA_CONTENT, ANSWER_CONTENT, ANSWER_DATE, CATE_NAME AS QNA_CATE_NO
+		FROM QNA Q
+        JOIN CATEGORY C
+        ON Q.QNA_CATE_NO = C.CATE_NO
+		WHERE QNA_NO = #{qNo}
+	</select>
+	
+	<update id="insertQnaAns">
+		UPDATE QNA
+        SET ANSWER_CONTENT = #{answerContent},
+            ANS_STATUS = 'Y',
+            ANSWER_DATE = SYSDATE
+        WHERE QNA_NO = #{qnaNo}
+	</update>
+
+	<!-- 전체 QnA 개수 구하기 -->
 	<select id="selectListCount" resultType="int">
 			SELECT COUNT (*)
 			FROM QNA
 			WHERE QNA_STATUS = 'Y'
 	</select>
 	
-	
-<!-- QnA 리스트 조회(페이징) -->
+	<!-- QnA 리스트 조회(페이징) -->
 	<select id="selectQnaListView" resultMap="qnaResertSet">
 			SELECT  QNA_NO,
 				    QNA_CATE_NO,
@@ -44,8 +160,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    WHERE QNA_STATUS='Y'
 		    ORDER BY CREATE_DATE DESC
 	</select>
-	
-		
+
+
 <!-- QnA 등록 -->
 	<insert id="insertQna">
 		INSERT INTO QNA(
@@ -72,20 +188,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             			)
 	</insert>
 	
-	
 <!-- QnA 상세조회 -->
-	<select id="selectQna" resultMap="qnaResertSet">
-			SELECT  QNA_NO, 
-				  	QNA_TITLE,
-				  	QNA_CATE_NO,
-				  	QNA_ID, 
-				  	QNA_CONTENT, 
-				  	CREATE_DATE, 
-				  	ANS_STATUS
-		  	FROM QNA
-		  	WHERE QNA_NO = #{qnaNo}
-		  	AND QNA_STATUS = 'Y'
-	</select>
+<!-- 	<select id="selectQna" resultMap="qnaResertSet"> -->
+<!-- 			SELECT  QNA_NO,  -->
+<!-- 				  	QNA_TITLE, -->
+<!-- 				  	QNA_CATE_NO, -->
+<!-- 				  	QNA_ID,  -->
+<!-- 				  	QNA_CONTENT,  -->
+<!-- 				  	CREATE_DATE,  -->
+<!-- 				  	ANS_STATUS -->
+<!-- 		  	FROM QNA -->
+<!-- 		  	WHERE QNA_NO = #{qnaNo} -->
+<!-- 		  	AND QNA_STATUS = 'Y' -->
+<!-- 	</select> -->
 	
 	
 <!-- QnA 삭제 -->
@@ -105,7 +220,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   				CREATE_DATE = SYSDATE
   			WHERE QNA_NO = #{qnaNo}
 	</update>
-	
-	
-	
+
+
 </mapper>
+
+
+	
+	
+
+	
+		

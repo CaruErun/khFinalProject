@@ -3,14 +3,55 @@ package com.kh.samsam.board.model.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kh.samsam.common.model.vo.PageInfo;
-import com.kh.samsam.common.model.vo.Category;
-import com.kh.samsam.member.model.vo.Member;
+import com.kh.samsam.board.model.vo.NoticeFaq;
 import com.kh.samsam.board.model.vo.QnA;
+import com.kh.samsam.common.model.vo.Category;
+import com.kh.samsam.common.model.vo.PageInfo;
 
 public interface BoardService {
 
-	////QnA////
+	// ============ 공지사항 ============
+	int selectNoticeListCount();
+
+	ArrayList<NoticeFaq> selectNoticeList(PageInfo pi);
+
+	int increaseNoticeCount(int nfNo);
+
+	NoticeFaq selectNotice(int nfNo);
+
+	int updateNotice(NoticeFaq n);
+
+	int insertNotice(NoticeFaq n);
+
+	int deleteNotice(int nfNo);
+
+	// ============ FAQ ============
+	int selectFaqListCount();
+
+	ArrayList<NoticeFaq> selectFaqList(PageInfo pi);
+
+	int increaseFaqCount(int nfNo);
+
+	NoticeFaq selectFaq(int nfNo);
+
+	int updateFaq(NoticeFaq f);
+
+	int insertFaq(NoticeFaq f);
+
+	int deleteFaq(int nfNo);
+
+
+	// ============ QNA ============
+	int selectQnaListCount();
+
+	ArrayList<QnA> selectQnaList(PageInfo pi);
+
+	//
+	QnA selectQnaa(int qno);
+
+	int insertQnaAns(QnA q);
+
+////QnA////
 	//큐앤에이 리스트 조회 + 페이징 처리
 	//전체 게시글 개수 구하기
 	int selectListCount();
@@ -34,6 +75,13 @@ public interface BoardService {
 	public List<Category> selectCategoryList();
 	
 	
-	
-	
+
 }
+
+
+
+
+
+
+
+

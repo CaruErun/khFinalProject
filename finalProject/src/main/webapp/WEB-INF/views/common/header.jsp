@@ -172,7 +172,7 @@
                     <li><a href="#">신규경매</a></li>
                     <li><a href="#">마감임박경매</a></li>
                     <li><a href="#">카테고리</a></li>
-                    <li><a href="#">물품등록</a></li>
+                    <li><a href="insertProductForm.pr">물품등록</a></li>
                 
                 </ul>
             </div>

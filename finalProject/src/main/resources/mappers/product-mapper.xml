@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper 
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
 <mapper namespace="productMapper">
 	
 	<resultMap type="category" id="categoryResultSet">
-		<result column="CATE_NO" property="categoryNo"/>
-		<result column="CATE_NAME" property="categoryName"/>
+		<result column="CATE_NO" property="cateNo"/>
+		<result column="CATE_NAME" property="cateName"/>
 		
 	
+	</resultMap>
+		<!-- product ResultMap -->
+	<resultMap type="product" id="productResultMap">
+		<result column="PRO_NO" property="proNo"/>
+		<result column="PRO_TITLE" property="proTitle"/>
+		<result column="PRO_CONTENT" property="proContent"/>
+		<result column="SELL_ID" property="sellId"/>
+		<result column="PRO_PRICE" property="proPrice"/>
+		<result column="WISH_PRICE" property="wishPrice"/>
+		<result column="POST_PRICE" property="postPrice"/>
+		<result column="START_DATE" property="startDate"/>
+		<result column="END_DATE" property="endDate"/>
+		<result column="PRO_CATE_NO" property="proCateNo"/>
+		<result column="TRADE_CATE_NO" property="tradeCateNo"/>
+		<result column="TRADE_LOCATION" property="tradeLocation"/>
+		<result column="COUNT" property="count"/>
+		<result column="PRO_STATUS" property="proStatus"/>
 	</resultMap>
 	<select id="selectCategoryList" resultMap="categoryResultSet" parameterType="int">
 		SELECT CATE_NO, CATE_NAME 
 		FROM CATEGORY
-		WHERE TRUNC(CATE_NO,-2) =#{categoryNo}
-		AND NOT CATE_NO= #{categoryNo}
+		WHERE TRUNC(CATE_NO,-2) =#{cateNo}
+		AND NOT CATE_NO= #{cateNo}
 	</select>
 	<insert id="insertProduct" parameterType="product">
 		
@@ -41,32 +59,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     ,#{wishPrice}
                     ,#{postPrice}
                     ,SYSDATE
-                    ,SYSDATE+#{endDate}
+                    ,TO_DATE(SYSDATE+#{bidDate},'YYYY-MM-DD HH24:MI:SS')
                     ,#{proCateNo}
                     ,#{tradeCateNo}
                     ,#{tradeLocation}
                   )
 	
 	</insert>
+
+	<insert id="insertProductImages" >
+			INSERT INTO PRODUCT_IMAGES(
+														IMAGE_NO
+														,PRO_NO
+														,ORINAME
+														,SYSNAME
+														,PATH
+														)
+									VALUES
+								
+														(
+														 SEQ_IMGNO.NEXTVAL
+														,SEQ_PRNO.CURVAL
+		<foreach collection="list" item="oriName" index="index" separator="," >
+														,#{oriName[index]}
+		</foreach>
+		<foreach collection="list" item="sysName" index="index" separator="," >
+														,#{sysName[index]}
+		</foreach>
+		<foreach collection="list" item="path" index="index" separator="," >
+														,#{path[index]}
+		</foreach>
+														)
+	</insert>
+
 	
 	
-	<!-- product ResultMap -->
-	<resultMap type="product" id="productResultMap">
-		<result column="PRO_NO" property="proNo"/>
-		<result column="PRO_TITLE" property="proTitle"/>
-		<result column="PRO_CONTENT" property="proContent"/>
-		<result column="SELL_ID" property="sellId"/>
-		<result column="PRO_PRICE" property="proPrice"/>
-		<result column="WISH_PRICE" property="wishPrice"/>
-		<result column="POST_PRICE" property="postPrice"/>
-		<result column="START_DATE" property="startDate"/>
-		<result column="END_DATE" property="endDate"/>
-		<result column="PRO_CATE_NO" property="proCateNo"/>
-		<result column="TRADE_CATE_NO" property="tradeCateNo"/>
-		<result column="TRADE_LOCATION" property="tradeLocation"/>
-		<result column="COUNT" property="count"/>
-		<result column="PRO_STATUS" property="proStatus"/>
-	</resultMap>
+
 	
 	
 	<!-- product 검색 -->
@@ -86,6 +114,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</when>
 		</choose>
 	</select>
+	<!--
+	DML 구문일때는 결과값이 항상 int이기때문에 resultType을 적지 않아도 되지만
+	select구문일때는 타입이 특정되지 않기 때문에 적어야한다.
+ -->
+ 
+	<select id="productEnrollAmount" resultType="_int">
+		SELECT COUNT(START_DATE) AS COUNT
+		FROM PRODUCT
+		WHERE START_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+	</select>
 	
+	<select id="productTradeAmount" resultType="_int">
+	    SELECT COUNT(PRO_NO) AS COUNT FROM 
+        (SELECT DISTINCT(P.PRO_NO)
+		FROM PRODUCT P
+        JOIN BID B
+        ON P.PRO_NO = B.PRO_NO
+		WHERE END_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+		AND PRO_STATUS = 'N'
+        AND BID_STATUS = 'Y') A
+	</select>
 	
+	<select id="productEnrollMoney" resultType="_int">
+        SELECT SUM(PRO_PRICE) AS SUM
+		FROM PRODUCT
+		WHERE START_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+	</select>
+	
+
+	<select id="productTradeMoney" resultType="_int">
+        SELECT SUM(BID_PRICE) AS SUM
+		FROM PRODUCT P
+        JOIN BID B
+        ON P.PRO_NO = B.PRO_NO
+		WHERE END_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+		AND PRO_STATUS = 'N'
+        AND BID_STATUS = 'Y'
+        AND BID_NO IN(SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO) 
+	</select>
+	
+
 </mapper>

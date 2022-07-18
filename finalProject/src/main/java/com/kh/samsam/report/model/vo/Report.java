@@ -1,6 +1,7 @@
 package com.kh.samsam.report.model.vo;
 
 import java.sql.Date;
+
 import lombok.Data;
 
 @Data

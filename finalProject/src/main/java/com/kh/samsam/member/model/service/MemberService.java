@@ -5,10 +5,15 @@ import java.util.ArrayList;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Bid;
 import com.kh.samsam.member.model.vo.Member;
+import com.kh.samsam.member.model.vo.MemberChart;
 import com.kh.samsam.member.model.vo.Postbox;
 import com.kh.samsam.member.model.vo.Product;
 
 public interface MemberService {
+
+	int selectNewMember(MemberChart c);
+
+	int selectRemoveMember(MemberChart c);
 
 	//로그인 서비스 (select)
 	Member loginMember(Member m);
