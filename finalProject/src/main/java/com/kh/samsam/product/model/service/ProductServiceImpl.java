@@ -6,11 +6,11 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.product.model.dao.ProductDao;
 import com.kh.samsam.product.model.vo.Product;
+import com.kh.samsam.product.model.vo.ProductImages;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -34,10 +34,15 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 
+
+	@Override
+	public Object insertProductImages(ArrayList<ProductImages> list) {
+		return productDao.insertProductImages(sqlSession,list);
+	}
 	
 	//검색
 	@Override
-	public List<Product> getSearchList(Product P) {
+	public List<Product> getSearchList(Product p) {
 		
 		return productDao.getSearchList(sqlSession,p);
 	}

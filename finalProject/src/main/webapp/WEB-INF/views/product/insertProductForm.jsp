@@ -525,7 +525,7 @@
                         
                                 let opt = "";
                                 for(var i=0; i<result.length; i++){
-                                    opt += '<option value="'+result[i].categoryNo+'">'+result[i].categoryName+'</option>';
+                                    opt += '<option value="'+result[i].cateNo+'">'+result[i].cateName+'</option>';
                                 }
                                 console.log(list2.children());
                                 list2.children().remove();
@@ -594,67 +594,71 @@
                                     
 		                        </div>
                                 <div class="upload-files">
-                                    <input type="file" id="upfile" onchange="loadImg(this);" style="display: none;">
-                                    <label for="upfile" class="upload-label">파일등록</label>
+                                    <input type="file" name="upfile" id="upfile0" onchange="loadImg(this);" style="display: none;">
+                                    <input type="file" name="upfile" id="upfile1" onchange="loadImg(this);" style="display: none;">
+                                    <input type="file" name="upfile" id="upfile2" onchange="loadImg(this);" style="display: none;">
+                                    <input type="file" name="upfile" id="upfile3" onchange="loadImg(this);" style="display: none;">
                                     
+                                    
+                                    <label for="upfile0" class="upload-label" onclick="check4();">파일등록</label>
+
                                 </div>
 		                    </div>
                			 </div>
                     </div>
-                    
+                
+                 
 					 	
 					 <script>
-		                //드레그엔드랍
+		                // //드레그엔드랍
 		                const dragArea = document.querySelector('.drag-area');
 		                const dragText = document.querySelector('.drag-drop');
 		                const dropArea = document.querySelector('.drop-area');
 		                const beforeDrop = document.querySelector('.before-drop');
-                        const files = document.querySelector("#upfile");
+                        
+                        
 		                let file;
 		                let num = 0;
-                        const formData = new FormData();
-		                
-		                //when file is inside the drag area
-		                dragArea.addEventListener('dragover',(event) => {
-		                    event.preventDefault();
-		                    dragText.textContent = 'Upload 하시겠습니까?';
-		                    dragArea.classList.add('active');
+		             
+		                // //when file is inside the drag area
+		                // dragArea.addEventListener('dragover',(event) => {
+		                //     event.preventDefault();
+		                //     dragText.textContent = 'Upload 하시겠습니까?';
+		                //     dragArea.classList.add('active');
 		                    
-		                });
-		                //when file leaces the drag area
-		                dragArea.addEventListener('dragleave', () => {
-		                    dragText.textContent ='Drag & Drop';
-		                    dragArea.classList.remove('active');
-		                });
-		                //when the file is dropped in the drag area
-		                dragArea.addEventListener('drop',(event) => {
-		                    event.preventDefault();
+		                // });
+		                // //when file leaces the drag area
+		                // dragArea.addEventListener('dragleave', () => {
+		                //     dragText.textContent ='Drag & Drop';
+		                //     dragArea.classList.remove('active');
+		                // });
+		                // //when the file is dropped in the drag area
+		                // dragArea.addEventListener('drop',(event) => {
+		                //     event.preventDefault();
                             
-		                    file = event.dataTransfer.files[0];
+		                //     file = event.dataTransfer;
                             
-                            console.log(num);
-                            if(num<4){
-                                displayFile();
-
-
-                            }else{
-                                alert('파일은 4개까지 등록 가능합니다.');
-                                dragArea.classList.remove('active');
-                            }
-		                });
+                        //     console.log(num);
+                        //     if(num<4){
+                        //         loadImg(file);
+                      
+                        //     }else{
+                        //         alert('파일은 4개까지 등록 가능합니다.');
+                        //         dragArea.classList.remove('active');
+                        //     }
+		                // });
                         function loadImg(inputfile){
 
-                        
+                            
                             if(num<4){
                                 file = inputfile.files[0];
                                 displayFile();
-                           
-                                $('#upfile').val("");
-                            }else{
-                                alert('파일은 4개까지 등록 가능합니다.');
-                                dragArea.classList.remove('active');
                             }
-                            
+                        }      
+                        function check4(){
+                            if(num>3){
+                                alert('파일은 4개까지 등록 가능합니다.');
+                            }
                         }
                      
 		                
@@ -664,8 +668,8 @@
                             let fileSize = file.size;
                             let fileName = file.name;
                             console.log(fileType);
-                            console.log(files);
-                            console.log(files.files)
+                     
+                            
 
 		                    let validExtensions = ['image/jpeg', 'image/jpg', 'image/png'];
 		                    
@@ -686,7 +690,7 @@
                                             str += '</li>';
                                             $(str).appendTo(dropArea);
                                             num++
-                                            
+                                            $('.upload-label').attr("for","upfile"+num);  
                                 
                                         }
                                         fileReader.readAsDataURL(file);
@@ -708,8 +712,12 @@
 		                }
                  
                         function delImg(inputfile){
+                            let index=$(inputfile).parent('li').index();
                             $(inputfile).parent('li').remove();
-                            $('#upfile').val("");
+
+                            $('#upfile'+index).val("");
+                            console.log($('#upfile'+index));
+                            $('.upload-label').attr("for","upfile"+index);
                             num--;
                         }
 
@@ -728,8 +736,8 @@
                                 * 시작가
                             </div>
                             <div class="sp-2">
-                                <input type="number" class="price1" required name="proPrice" maxlength="8" oninput="numberMaxLength(this);">원 
-                                <span class="kor-no"></span>
+                                <input type="text" class="price1" required name="proPrice" maxlength="8" oninput="numberMaxLength(this);">원 
+                                <span class="kor-no" id="ptext0"></span>
                             </div>
                         </div>
                    
@@ -742,8 +750,8 @@
                                 <input type="radio" name="wish" id="wp-no" ><span> 불가능</span>
 
                                 <div class="wp-price">
-                                    <input type="number" class="price2" name="wishPrice" maxlength="8" oninput="numberMaxLength(this);">원
-                                    <span class="kor-no"></span>
+                                    <input type="text" class="price2" name="wishPrice" required maxlength="8" oninput="numberMaxLength(this);">원
+                                    <span class="kor-no" id="ptext1"></span>
                                 </div>
                             </div>
                         </div>
@@ -759,8 +767,41 @@
                             $('#wp-no').on("click",function(){
                                console.log("111");
                                 $('.wp-price').css("display","none");
+                                $('.price2').attr('required',false);
                                 $('.price2').val("0");
+                                $('#ptext1').empty();
                             });
+                            $('.price2').on("focusout",function(){
+                                var price1 = parseInt($('.price1').val().replaceAll(',',''));
+                                var price2 = parseInt($('.price2').val().replaceAll(',',''));
+                                console.log(price1);
+                                console.log(price2);
+                                if((price2<price1)&&(price1!=0)){
+                                    alert('즉시구매가는 시작가보다 낮게 설정할 수 없습니다.');
+                                    console.log($('.price2').val());
+                                    console.log($('.price1').val());
+                                    $('.price2').val("");
+                                    $('#ptext1').empty();
+                                    setTimeout(function(){
+                                        $('.price2').focus();
+                                    });
+                                }
+                             
+                            })
+                            $('.price1').on("focusout",function(){
+                                var price1 = parseInt($('.price1').val().replaceAll(',',''));
+                                var price2 = parseInt($('.price2').val().replaceAll(',',''));
+                                
+                                if((price1>price2)&&(price2!=0)){
+                                    alert('시작가는 즉시구매가보다 높게 설정할 수 없습니다.');
+                                    $('.price1').val("");
+                                    $('#ptext0').empty();
+                                    setTimeout(function(){
+                                        $('.price1').focus();
+                                    });
+                                }
+                            })
+                                    
                         </script>
                         <div class="bid-date">
                             <div class="bd-1 black-area">
@@ -799,7 +840,7 @@
                             <div class="shp-2">
                                 <div class="shp-price">
                                     <input type="text" class="price3" name="postPrice" maxlength="8" oninput="numberMaxLength(this);">원
-                                    <span class="kor-no"></span>
+                                    <span class="kor-no" id="ptext2"></span>
                                 </div>
                             </div>
                         </div>
@@ -814,6 +855,7 @@
                             $('#stype-2').on("click",function(){
                                 $('.shp-price').css("display","none");
                                 $('.price3').val("0");
+                                $('#ptext2').empty();
                             });
                         </script>
                       
@@ -822,7 +864,17 @@
                         <button type="submit">확인</button>
                         <button type="button" onclick="location.href='${pageContext.request.contextPath }'">취소</button>
                     </span>
-
+                    <script>
+                        $(':submit').on('click',function(){
+                            console.log("1111");
+                            $('.price1').val($('.price1').val().replaceAll(',',''));
+                            $('.price2').val($('.price2').val().replaceAll(',',''));
+                            $('.price3').val($('.price3').val().replaceAll(',',''));
+                            console.log($('.price1'));
+                            console.log($('.price2'));
+                            console.log($('.price3'));
+                        })
+                    </script>
                 
                 <script>
                     //input[type=number] 글자수 제한
@@ -830,11 +882,16 @@
                         if(e.value.length > e.maxLength){
                             e.value = e.value.slice(0, e.maxLength);
                         }
+                        if(e.value.length==1){
+                            e.value = e.value.replace(/[0]/g,'');
+                        }
+                        e.value = e.value.replace(/[^0-9.]/g, '').replace(/(.*)\./g, '$1');
+                        e.value = e.value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     }
                     
                     //가격 표시
                     $('.price1').on("keyup",function(){
-                        let price =$('.price1').val();
+                        let price =$('.price1').val().replace(/[^\d]+/g, "");
                         let p1 = price.substr(price.length-4);
                         let p2 = price.substr(0,price.length-4);
                         if(price.length>4){
@@ -844,7 +901,7 @@
                         }
                     });
                     $('.price2').on("keyup",function(){
-                        let price =$('.price2').val();
+                        let price =$('.price2').val().replace(/[^\d]+/g, "");
                         let p1 = price.substr(price.length-4);
                         let p2 = price.substr(0,price.length-4);
                         if(price.length>4){
@@ -854,7 +911,7 @@
                         }
                     });
                     $('.price3').on("keyup",function(){
-                        let price =$('.price3').val();
+                        let price =$('.price3').val().replace(/[^\d]+/g, "");
                         let p1 = price.substr(price.length-4);
                         let p2 = price.substr(0,price.length-4);
                         if(price.length>4){
