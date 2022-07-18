@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -12,11 +11,15 @@
     
     <!-- jQuery 라이브러리 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!-- 부트스트랩에서 제공하고 있는 스타일 -->
+
+
+ <!-- 부트스트랩에서 제공하고 있는 스타일 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
+    
+    <!-- alert창 예쁘게 꾸미는 구문 Started -->
     <!-- JavaScript -->
 	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 	
@@ -26,6 +29,7 @@
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
 	<!-- Semantic UI theme -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+
     
    	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
@@ -324,13 +328,26 @@
                     <li><a href="insertProductForm.pr">물품등록</a></li>
                 </ul>
             </div>
-            <div class="h3">
-                <select name="" class="search-bar">
-                    <option value="">물품명</option>
-                </select>
-                <input type="text" class="search-bar"placeholder="검색어를 입력하세요.">
-                <button class="search-bar">검색</button>
-            </div>
+
+
+				<!-- 검색폼 -->
+				<div class="h3">
+					<form id="searchForm" action="" method="get" align="center">
+						<div class="select">
+							<select class="custom-select" name="searchType">
+								<option value="sellId">작성자</option>
+								<option value="proTitle">제목</option>
+								<option value="proContent">내용</option>
+							</select>
+						</div>
+						<div class="text">
+							<input type="text" class="form-control" name="searchKeyword">
+						</div>
+						<button type="submit" class="searchBtn btn btn-secondary">검색</button>
+					</form>
+				</div>
+				
+				
         </div>
 
     </div>

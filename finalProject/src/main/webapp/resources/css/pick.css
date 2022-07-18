@@ -148,7 +148,11 @@ th{
 }
 td{
     height: 100px;
-    color: darkgray;
+    color: navy;
+}
+#nokoriBid{
+    color: red;
+    font-weight: 500;
 }
 
 

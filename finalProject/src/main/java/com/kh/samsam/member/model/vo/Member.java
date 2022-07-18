@@ -11,12 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@NoArgsConstructor 
-@AllArgsConstructor 
-@Setter 
-@Getter 
-@ToString 
-@EqualsAndHashCode  
 @Data 
 public class Member {
 	

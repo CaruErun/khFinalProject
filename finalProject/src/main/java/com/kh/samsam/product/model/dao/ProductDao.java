@@ -1,9 +1,11 @@
 package com.kh.samsam.product.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.product.model.vo.Product;
@@ -20,4 +22,13 @@ public class ProductDao {
 		return sqlSession.insert("productMapper.insertProduct",p);
 	}
 
+	
+	//검색
+	public List<Product> getSearchList(SqlSessionTemplate sqlSession,Product p) {
+		return sqlSession.selectList("productMapper.getSearchList",p);
+	}
+
+	
+	
+	
 }

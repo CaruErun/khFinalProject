@@ -7,11 +7,15 @@
 	</settings>
 	
 	<typeAliases>
+		<typeAlias type="com.kh.samsam.common.model.vo.PageInfo" alias="pageInfo"/>
+		<typeAlias type="com.kh.samsam.common.model.vo.Category" alias="category"/>
 		<typeAlias type="com.kh.samsam.member.model.vo.Member" alias="member"/>
-		<typeAlias type="com.kh.samsam.member.model.vo.Product" alias="product"/>
-		<typeAlias type="com.kh.samsam.member.model.vo.Postbox" alias="postbox"/>
+		<typeAlias type="com.kh.samsam.board.model.vo.QnA" alias="qna"/>
+		<typeAlias type="com.kh.samsam.report.model.vo.Report" alias="report"/>
+		<typeAlias type="com.kh.samsam.member.model.vo.ProLike" alias="proLike"/>
+		<typeAlias type="com.kh.samsam.product.model.vo.Product" alias="product"/>
+				<typeAlias type="com.kh.samsam.member.model.vo.Postbox" alias="postbox"/>
 		<typeAlias type="com.kh.samsam.member.model.vo.Bid" alias="bid"/>
-				<typeAlias type="com.kh.samsam.common.model.vo.Category" alias="category"/>
 		<typeAlias type="com.kh.samsam.product.model.vo.ProductImages" alias="productImg"/>
 	</typeAliases>
 	
@@ -22,8 +26,11 @@
 	 -->
 	
 	<mappers>
-		<mapper resource="/mappers/member-mapper.xml"/>
+		<mapper resource="/mappers/board-mapper.xml"/>
+		<mapper resource="/mappers/common-mapper.xml"/>
 		<mapper resource="/mappers/product-mapper.xml"/>
+		<mapper resource="/mappers/report-mapper.xml"/>
+		<mapper resource="/mappers/member-mapper.xml"/>
 	</mappers>
 
 </configuration>

@@ -48,4 +48,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                   )
 	
 	</insert>
+	
+	
+	<!-- product ResultMap -->
+	<resultMap type="product" id="productResultMap">
+		<result column="PRO_NO" property="proNo"/>
+		<result column="PRO_TITLE" property="proTitle"/>
+		<result column="PRO_CONTENT" property="proContent"/>
+		<result column="SELL_ID" property="sellId"/>
+		<result column="PRO_PRICE" property="proPrice"/>
+		<result column="WISH_PRICE" property="wishPrice"/>
+		<result column="POST_PRICE" property="postPrice"/>
+		<result column="START_DATE" property="startDate"/>
+		<result column="END_DATE" property="endDate"/>
+		<result column="PRO_CATE_NO" property="proCateNo"/>
+		<result column="TRADE_CATE_NO" property="tradeCateNo"/>
+		<result column="TRADE_LOCATION" property="tradeLocation"/>
+		<result column="COUNT" property="count"/>
+		<result column="PRO_STATUS" property="proStatus"/>
+	</resultMap>
+	
+	
+	<!-- product 검색 -->
+	<select id="getSearchList" parameterType="product" resultMap="productResultMap">
+		SELECT *
+		FROM PRODUCT
+		
+		<choose>
+			<when test="searchType !=null and searchType.equals('proTitle')">
+				WHERE PRO_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+			</when>
+			<when test="searchType !=null and searchType.equals('proContent')">
+				WHERE PRO_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+			</when>
+			<when test="searchType !=null and searchType.equals('sellId')">
+				WHERE SELL_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+			</when>
+		</choose>
+	</select>
+	
+	
 </mapper>
