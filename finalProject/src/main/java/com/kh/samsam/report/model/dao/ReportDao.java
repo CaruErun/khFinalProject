@@ -31,6 +31,10 @@ public class ReportDao {
 		return sqlSession.selectOne("reportMapper.selectReportContent", reportNo);
 	}
 
-
+	//신고하기
+	public int reportMember(SqlSessionTemplate sqlSession, Report r) {
+		
+		return sqlSession.insert("reportMapper.reportMember",r);
+	}
 
 }

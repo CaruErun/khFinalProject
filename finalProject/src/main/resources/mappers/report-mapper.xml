@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper 
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
@@ -40,6 +39,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM REPORT
 		WHERE REPORT_NO = #{reportNo}
 	</select>
-
+<!-- 신고하기 -->
+	<insert id="reportMember" parameterType="report">
+		INSERT INTO REPORT (
+							REPORT_NO, 
+							REPORT_ID, 
+							REPORTED_ID, 
+							PRO_NO, 
+							REPORT_CATE_NO, 
+							REPORT_CONTENT, 
+							CREATE_DATE,
+							REPORT_STATUS
+							)
+	            	VALUES(
+	            			SEQ_RENO.NEXTVAL,
+	            			#{reportId}, 
+	            			#{reportedId}, 
+	            			#{proNo}, 
+	            			#{reportCategoryNo}, 
+	            			#{reportContent},
+	            			SYSDATE,
+	            			'Y'
+	            			)
+	</insert>
 
 </mapper>

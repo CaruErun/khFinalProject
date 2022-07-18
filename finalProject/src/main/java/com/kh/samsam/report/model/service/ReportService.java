@@ -13,4 +13,6 @@ public interface ReportService {
 
 	Report selectReportContent(int reportNo);
 
+	int reportMember(Report r);
+
 }

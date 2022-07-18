@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%String contextPath = request.getContextPath(); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,9 +8,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div>
-		<jsp:forward page="./WEB-INF/views/customerInfoMenubar.jsp"></jsp:forward>
-	</div>
 	
+	<jsp:forward page="WEB-INF/views/main.jsp"/>
+
+
 </body>
 </html>

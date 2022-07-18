@@ -17,6 +17,9 @@ public class ReportServiceImpl implements ReportService{
 	private ReportDao reportDao;
 	
 	@Autowired
+	private ReportDao dao;
+	
+	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
@@ -35,6 +38,13 @@ public class ReportServiceImpl implements ReportService{
 	public Report selectReportContent(int reportNo) {
 		 Report r = reportDao.selectReportContent(sqlSession, reportNo);
 		 return r;
+	}
+
+	//신고하기
+	@Override
+	public int reportMember(Report r) {
+		
+		return dao.reportMember(sqlSession, r);
 	}
 
 }

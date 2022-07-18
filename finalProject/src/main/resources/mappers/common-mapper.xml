@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="commonMapper">
+
+<!-- //////////    카테고리       ////////// -->
+	<resultMap type="category" id="categoryResultSet" >
+		<result column="CATE_NO" property="cateNo"/>
+		<result column="CATE_NAME" property="cateName"/>
+	</resultMap>
+	
+<!-- 카테고리 조회 -->
+	<select id="selectCategoryList" resultMap="categoryResultSet">
+		SELECT CATE_NO, CATE_NAME
+		FROM CATEGORY
+	</select>
+
+
+</mapper>
