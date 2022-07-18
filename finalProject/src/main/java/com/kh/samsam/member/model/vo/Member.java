@@ -1,4 +1,6 @@
+
 package com.kh.samsam.member.model.vo;
+
 import java.sql.Date;
 
 import lombok.AllArgsConstructor;
@@ -34,4 +36,17 @@ public class Member {
 	private int banCount;
 	private String userStatus;
 
+	
+	private String emailFirst;
+	private String emailBack;
+	private String phoneFirst;
+	private String phoneMiddle;
+	private String phoneBack;
+	
+	private String userPwd;
+	private String newPwd;
+	private String newPwdCheck;
+	
+	private String buyerId;
 }
+

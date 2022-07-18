@@ -5,23 +5,25 @@
 	<settings>
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
-
-<typeAliases>
-		
+	
+	<typeAliases>
 		<typeAlias type="com.kh.samsam.member.model.vo.Member" alias="member"/>
-		<typeAlias type="com.kh.samsam.product.model.vo.Product" alias="product"/>
-		<typeAlias type="com.kh.samsam.common.model.vo.Category" alias="category"/>
+		<typeAlias type="com.kh.samsam.member.model.vo.Product" alias="product"/>
+		<typeAlias type="com.kh.samsam.member.model.vo.Postbox" alias="postbox"/>
+		<typeAlias type="com.kh.samsam.member.model.vo.Bid" alias="bid"/>
+				<typeAlias type="com.kh.samsam.common.model.vo.Category" alias="category"/>
 		<typeAlias type="com.kh.samsam.product.model.vo.ProductImages" alias="productImg"/>
 	</typeAliases>
 	
+	<!-- 
+		environment,dataSource에 기술했던 DB연결정보는 root-context.xml에 작성한다.
+		->DB등록은 서버연동과 동시에 이루어져야하기 때문에
+		      서버 연결과 동시에 읽혀지는 root-context.xml에 기술하는것.
+	 -->
 	
 	<mappers>
-	
 		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/product-mapper.xml"/>
 	</mappers>
-
-
-
 
 </configuration>

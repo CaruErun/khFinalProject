@@ -208,9 +208,8 @@
 		    <artifactId>json-simple</artifactId>
 		    <version>1.1.1</version>
 		</dependency>
-			    
-			    
-	<dependency>
+
+<dependency>
 	<groupId>javax.mail</groupId>
 	<artifactId>mail</artifactId>
 	<version>1.4.7</version>
@@ -220,15 +219,24 @@
 	<artifactId>spring-context-support</artifactId>
 	<version>${org.springframework-version}</version>
 </dependency>
-
-	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+			    
+			    
+			<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
 		    <groupId>com.google.code.gson</groupId>
 		    <artifactId>gson</artifactId>
 		    <version>2.9.0</version>
 		</dependency>
 		
-		<!-- websocket dependency -->
+		<!-- 휴대폰 본인 인증 -->
+		<dependency>
+	<groupId>net.nurigo</groupId>
+    <artifactId>javaSDK</artifactId>
+    <version>2.2</version>
+</dependency>
+		
+
+<!-- websocket dependency -->
 		<dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-websocket</artifactId>
@@ -268,9 +276,6 @@
 		<!-- websocket End -->
 		
 		   
-				   
-				   
-				   
 	</dependencies>
 	<repositories>
   <repository>
