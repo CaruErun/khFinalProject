@@ -9,8 +9,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<jsp:include page="../common/header.jsp"/>
 
-
+		
+		<br><br><br><br><br><br>
+		
+		
 		
 		<!-- 찜하기 버튼을 누를경우 이벤트 발생 -->
 		<script type="text/javascript">
@@ -147,6 +151,6 @@
 		    </sec:authorize>
 		</div>
 
-
+	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

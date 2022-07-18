@@ -39,7 +39,6 @@
         }
         .select {width:20%;}
         .text {width:53%;}
-        .searchBtn {width:20%;}
 		#content{
             padding-top:100px;
 		}
@@ -54,7 +53,7 @@
 		#content{
 		    width: 1500px;
 		    height: 840px;
-		    margin: auto;
+ 		    margin-left: 20%;
 		}
 		#content_2{
 		    width: 70%;
@@ -67,15 +66,30 @@
 		#pagingArea{
 			margin-top:50px;
 		}
+        #searchFrom{
+			margin-left:3%;
+        }
+        
 	</style>
 
 </head>
 
 <body>
-		<jsp:include page="../common/header.jsp"/>	
-		
+			<jsp:include page="../common/header.jsp"/>	
+				
+		<br><br><br><br><br><br>
+                
 		<div id="content">
 		<h3>상담문의</h3>
+
+                       <!-- 로그인한 회원만 보일 수 있도록 -->
+<%--                 <c:if test="${!empty loginUser}"> --%>
+                	<div class="btn" style="background-color:#576480; float: right; margin-right:30%;">
+                		<a href="insertView.qu" style="color:white !important;  text-decoration: none; ">문의하기</a>
+                	</div>
+<%--                 </c:if> --%>
+<br><br>
+
             <div id="content_2">
                 <div id="content_2_2"></div>
            <form action="list.qo?kpage=1" method="post">
@@ -92,7 +106,7 @@
                                 <th class="text-center id" width="10%">답변상태</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="myTable">
                         <c:choose>
                         <c:when test="${empty list}">
                         	<tr>
@@ -120,6 +134,8 @@
                         <td>${q.qnaTitle}</td>
                         <td>${q.qnaId}</td>
                         <td>${q.craeteDate}</td>
+                        
+                        	<!-- 답변여부 표시 -->
                         	<c:choose>
                         		<c:when test="${q.ansStatus=='N'}">
                         		<td>답변대기</td>
@@ -136,15 +152,8 @@
                     </table>
                	</div>
                 </div>
-                <!-- 로그인한 회원만 보일 수 있도록 -->
-<%--                 <c:if test="${!empty loginUser}"> --%>
-                	<div class="btn" style="background-color:#576480; float: right; padding-top:10px;">
-                		<a href="insertView.qu" style="color:white !important;  text-decoration: none; ">문의하기</a>
-                	</div>
-<%--                 </c:if> --%>
-
-
-
+            
+            <!-- 게시글 보기 -->  
 			<script>
             	$(function(){
             		$("#qList>tbody>tr").click(function(){
@@ -154,9 +163,26 @@
             </script>
             
             
-            
-            
                 
+         <!-- 검색 -->
+         <div id="searchFrom">
+            <input class="form-control" id="myInput" type="text" placeholder="검색어를 입력하세요.">
+            <script>
+				$(function(){
+				  $("#myInput").on("keyup", function() {
+				    var value = $(this).val().toLowerCase();
+				    $("#myTable tr").filter(function() {
+				      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				    });
+				  });
+				});
+			</script>
+        </div>
+        
+
+
+
+                <!-- 페이징 -->
 				<div id="pagingArea" align="center">
                 	<ul class="pagination">
                 
@@ -185,11 +211,18 @@
 	            </div>
            </form>
              </div>
-        </div>
+             
+
+            
+             </div>
+             
+             
+             
+
         
         
         
-         <jsp:include page="../common/footer.jsp" />
+         	<jsp:include page="../common/footer.jsp"/>
 	
 </body>
 </html>

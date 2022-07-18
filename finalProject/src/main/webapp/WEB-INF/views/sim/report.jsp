@@ -46,21 +46,13 @@
 </style>
 </head>
 <body>
-
-
-
-	<c:if test="${not empty alertMsg }">
-		<script>
-			alertify.alert("${alertMsg}");
-		</script>
-		<c:remove var="alertMsg" scope="session"/>
-	</c:if>
+		<jsp:include page="../common/header.jsp"/>
 	
 	
 	
-	
-	
-  <br><br><br>
+  <br><br><br>		
+		<br><br><br><br><br><br>
+		
 
 <!-- Button to Open the Modal -->
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
@@ -102,16 +94,6 @@
               <option value="1205">기타</option>
             </select>
             
-        <!--카테고리-->
-		<%--<select class="form-select form-select-sm" aria-label=".form-select-sm example" name="qnaCateNo">
- 							<c:forEach var="c" items="${category }"> <!-- items에 키값을 넣어야해!! 
- 								<c:if test="${1201<=c.cateNo<=1205}">
- 		                            	<option value="${c.cateNo}">${c.cateName}</option> 
- 		                   		</c:forEach> 
-		 </select>--%>
-		 
-		 
-		 
             
             <BR><BR>
             <input type="text" id="reason3" name="reportContent" placeholder="상세 사유를 입력해주세요">
@@ -145,5 +127,7 @@
     </div>
   </div>
     
+    
+    	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

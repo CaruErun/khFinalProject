@@ -37,6 +37,13 @@
     </style>
 </head>
 <body>
+
+	<jsp:include page="../common/header.jsp"/>
+	
+			
+		<br><br><br><br><br><br>
+		
+		
     <div id="bid-area">
 
         <h1 align="center">축하합니다! 경매에 낙찰되셨습니다!</h1>
@@ -50,7 +57,7 @@
         <div id="inner-area">
         <div id="icon1">
         <a><i class="fa-solid fa-comments-dollar" id="Icon1-1"></i></a> <br><br>
-        <lable for="Icon1-1">판매자와 채팅하기(결제)</lable>
+        <label for="Icon1-1">판매자와 채팅하기(결제)</lable>
         </div>
     
         <div id="icon2">
@@ -59,5 +66,7 @@
         </div>
     </div>
     </div>
+    
+    	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

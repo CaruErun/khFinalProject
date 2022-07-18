@@ -46,8 +46,12 @@
 </style>
 </head>
 <body>
-    <br><br><br>
 
+	<jsp:include page="../common/header.jsp"/>
+    
+    		
+		<br><br><br><br><br><br><br><br><br>
+	
 
     <div>
     <h3>신고가 완료되었습니다.</h3>
@@ -87,5 +91,7 @@
     <p>소비자보호원에 신고를 원하시면 아래의 버튼을 눌러주세요.</p>
     <button type="button" class="btn btn-dark" id="button" onclick="location.href='https://www.kca.go.kr/odr/link/pg/pr/osPgReqFormW.do#none'">소비자보호원으로 이동</button>
     </div>
+    
+    	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

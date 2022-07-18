@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="boardMapper">
+
+
+
+<!-- //////////    QnA       ////////// -->
+	<resultMap type="qna" id="qnaResertSet">
+		<result column="QNA_NO" property="qnaNo"/>
+		<result column="QNA_TITLE" property="qnaTitle"/>
+		<result column="QNA_CATE_NO" property="qnaCateNo"/>
+		<result column="QNA_CONTENT" property="qnaContent"/>
+		<result column="QNA_ID" property="qnaId"/>
+		<result column="CREATE_DATE" property="craeteDate"/>
+		<result column="ANSWER_CONTENT" property="answerContent"/>
+		<result column="ANSWER_DATE" property="answerDate"/>
+		<result column="QNA_TYPE" property="qnaType"/>
+		<result column="PRO_NO" property="proNo"/>
+		<result column="QNA_STATUS" property="qnaStatus"/>
+		<result column="ANS_STATUS" property="ansStatus"/>
+	</resultMap>
+	
+	
+<!-- 전체 QnA 개수 구하기 -->
+	<select id="selectListCount" resultType="int">
+			SELECT COUNT (*)
+			FROM QNA
+			WHERE QNA_STATUS = 'Y'
+	</select>
+	
+	
+<!-- QnA 리스트 조회(페이징) -->
+	<select id="selectQnaListView" resultMap="qnaResertSet">
+			SELECT  QNA_NO,
+				    QNA_CATE_NO,
+				    QNA_TITLE, 
+				    QNA_ID,
+					CREATE_DATE,
+					ANS_STATUS
+		    FROM QNA
+		    WHERE QNA_STATUS='Y'
+		    ORDER BY CREATE_DATE DESC
+	</select>
+	
+		
+<!-- QnA 등록 -->
+	<insert id="insertQna">
+		INSERT INTO QNA(
+						QNA_NO, 
+						QNA_TYPE, 
+						PRO_NO,
+						QNA_CATE_NO, 
+						QNA_TITLE, 
+						QNA_CONTENT,
+						QNA_ID, 
+						CREATE_DATE,
+						ANS_STATUS
+						) 
+            	VALUES(
+            			SEQ_QANO.NEXTVAL, 
+            			2, 
+            			#{proNo},
+            			#{qnaCateNo}, 
+            			#{qnaTitle},
+            			#{qnaContent},
+            			#{qnaId}, 
+            			SYSDATE, 
+            			'N'
+            			)
+	</insert>
+	
+	
+<!-- QnA 상세조회 -->
+	<select id="selectQna" resultMap="qnaResertSet">
+			SELECT  QNA_NO, 
+				  	QNA_TITLE,
+				  	QNA_CATE_NO,
+				  	QNA_ID, 
+				  	QNA_CONTENT, 
+				  	CREATE_DATE, 
+				  	ANS_STATUS
+		  	FROM QNA
+		  	WHERE QNA_NO = #{qnaNo}
+		  	AND QNA_STATUS = 'Y'
+	</select>
+	
+	
+<!-- QnA 삭제 -->
+	<delete id="deleteQna" parameterType="int">
+		  	UPDATE QNA
+  			SET QNA_STATUS = 'N'
+  			WHERE QNA_NO = #{qnaNo}
+	</delete>
+	
+	
+<!-- QnA 수정 -->
+	<update id="updateQna" parameterType="qna">
+		  	UPDATE QNA
+  			SET QNA_CATE_NO = #{qnaCateNo},
+  				QNA_TITLE = #{qnaTitle},
+  				QNA_CONTENT = #{qnaContent},
+  				CREATE_DATE = SYSDATE
+  			WHERE QNA_NO = #{qnaNo}
+	</update>
+	
+	
+	
+</mapper>

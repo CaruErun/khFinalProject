@@ -144,6 +144,9 @@
     }
 </style>
 <body>
+
+	<jsp:include page="common/header.jsp"/>
+
 	<!-- swiper -->
 	<div class="swiper-area" >
 	    
@@ -274,24 +277,24 @@
 	    </div>
 	
 	    <div class="product-box">
-	        <div class="padding-line">
+	        <div class="padding-line"><!--  -->
 	            <div class="img-box">
 	                <img class="item-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
 	            </div>
 	            <div class="text-box">
 	                <div class="content-box">
-	                    <p>젠북 초특가 세일~</p>
+	                    <p>${p.proTitle }</p>
 	                    <i>하트</i>
 	                </div>
 	            </div>
 	            <div class="price-box">
 	                <div class="price-content">
 	                    <p>즉시구매가</p>
-	                    <p>600,000</p>
+	                    <p>${p.wishPrice }</p>
 	                </div>
 	                <div class="price-content">
 	                    <p>시작가</p>
-	                    <p>500,000</p>
+	                    <p>${p.proPrice }</p>
 	                </div>
 	                <div class="price-content">
 	                    <p>현재가</p>
@@ -309,7 +312,7 @@
 	                </div>
 	                <div class="count-content">
 	                    <p>조회</p>
-	                    <p>150</p>
+	                    <p>${p.count }</p>
 	                </div>
 	            </div>
 	    </div>
@@ -321,7 +324,7 @@
 	            </div>
 	            <div class="text-box">
 	                <div class="content-box">
-	                    <p>젠북 초특가 세일~</p>
+	                    <p>하트 초특가 세일~</p>
 	                    <i>하트</i>
 	                </div>
 	            </div>
@@ -1025,7 +1028,10 @@
 	                </div>
 	            </div>
 	    </div>
-	<jsp:include page="/WEB-INF/views/chatbot.jsp"/>    
+
+	    
 	</div>
+	<jsp:include page="common/footer.jsp"/>
+
 </body>
 </html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="productMapper">
+	
+	<resultMap type="category" id="categoryResultSet">
+		<result column="CATE_NO" property="categoryNo"/>
+		<result column="CATE_NAME" property="categoryName"/>
+		
+	
+	</resultMap>
+	<select id="selectCategoryList" resultMap="categoryResultSet" parameterType="int">
+		SELECT CATE_NO, CATE_NAME 
+		FROM CATEGORY
+		WHERE TRUNC(CATE_NO,-2) =#{categoryNo}
+		AND NOT CATE_NO= #{categoryNo}
+	</select>
+	<insert id="insertProduct" parameterType="product">
+		
+		INSERT INTO PRODUCT(
+                    PRO_NO
+                    ,PRO_TITLE
+                    ,PRO_CONTENT
+                    ,SELL_ID
+                    ,PRO_PRICE
+                    ,WISH_PRICE
+                    ,POST_PRICE
+                    ,START_DATE
+                    ,END_DATE
+                    ,PRO_CATE_NO
+                    ,TRADE_CATE_NO
+                    ,TRADE_LOCATION
+                    )
+            VALUES(
+                    SEQ_PRNO.NEXTVAL
+                    ,#{proTitle}
+                    ,#{proContent}
+                    ,#{sellId}
+                    ,#{proPrice}
+                    ,#{wishPrice}
+                    ,#{postPrice}
+                    ,SYSDATE
+                    ,SYSDATE+#{endDate}
+                    ,#{proCateNo}
+                    ,#{tradeCateNo}
+                    ,#{tradeLocation}
+                  )
+	
+	</insert>
+	
+	
+	<!-- product ResultMap -->
+	<resultMap type="product" id="productResultMap">
+		<result column="PRO_NO" property="proNo"/>
+		<result column="PRO_TITLE" property="proTitle"/>
+		<result column="PRO_CONTENT" property="proContent"/>
+		<result column="SELL_ID" property="sellId"/>
+		<result column="PRO_PRICE" property="proPrice"/>
+		<result column="WISH_PRICE" property="wishPrice"/>
+		<result column="POST_PRICE" property="postPrice"/>
+		<result column="START_DATE" property="startDate"/>
+		<result column="END_DATE" property="endDate"/>
+		<result column="PRO_CATE_NO" property="proCateNo"/>
+		<result column="TRADE_CATE_NO" property="tradeCateNo"/>
+		<result column="TRADE_LOCATION" property="tradeLocation"/>
+		<result column="COUNT" property="count"/>
+		<result column="PRO_STATUS" property="proStatus"/>
+	</resultMap>
+	
+	
+	<!-- product 검색 -->
+	<select id="getSearchList" parameterType="product" resultMap="productResultMap">
+		SELECT *
+		FROM PRODUCT
+		
+		<choose>
+			<when test="searchType !=null and searchType.equals('proTitle')">
+				WHERE PRO_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+			</when>
+			<when test="searchType !=null and searchType.equals('proContent')">
+				WHERE PRO_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
+			</when>
+			<when test="searchType !=null and searchType.equals('sellId')">
+				WHERE SELL_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+			</when>
+		</choose>
+	</select>
+	
+	
+</mapper>
