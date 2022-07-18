@@ -112,9 +112,7 @@ public class ProductController {
 
 		model.addAttribute("searchType",p.getSearchType());
 		model.addAttribute("searchKeyword",p.getSearchKeyword());
-//		model.addAttribute("p",p);
 		
-//		return productService.getSearchList(model);
 		return "sim/searchList";
 		
 	}
