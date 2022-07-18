@@ -39,5 +39,12 @@ public class ProductServiceImpl implements ProductService{
 	public Object insertProductImages(ArrayList<ProductImages> list) {
 		return productDao.insertProductImages(sqlSession,list);
 	}
+	
+	//검색
+	@Override
+	public List<Product> getSearchList(Product p) {
+		
+		return productDao.getSearchList(sqlSession,p);
+	}
 
 }

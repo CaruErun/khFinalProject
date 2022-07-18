@@ -80,7 +80,7 @@
 					<artifactId>jmxri</artifactId>
 				</exclusion>
 			</exclusions>
-			<!-- <scope>runtime</scope> -->
+			<!--<scope>runtime</scope>-->
 		</dependency>
 
 		<!-- @Inject -->
@@ -208,6 +208,18 @@
 		    <artifactId>json-simple</artifactId>
 		    <version>1.1.1</version>
 		</dependency>
+
+<dependency>
+	<groupId>javax.mail</groupId>
+	<artifactId>mail</artifactId>
+	<version>1.4.7</version>
+</dependency>
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-context-support</artifactId>
+	<version>${org.springframework-version}</version>
+</dependency>
+			    
 			    
 			    
 			<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
@@ -217,7 +229,15 @@
 		    <version>2.9.0</version>
 		</dependency>
 		
-		<!-- websocket dependency -->
+		<!-- 휴대폰 본인 인증 -->
+		<dependency>
+	<groupId>net.nurigo</groupId>
+    <artifactId>javaSDK</artifactId>
+    <version>2.2</version>
+</dependency>
+		
+
+<!-- websocket dependency -->
 		<dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-websocket</artifactId>
@@ -286,8 +306,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
