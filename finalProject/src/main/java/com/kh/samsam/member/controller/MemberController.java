@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.common.template.Pagenation;
+import com.kh.samsam.member.model.service.MailSendService;
 import com.kh.samsam.member.model.service.MemberService;
 import com.kh.samsam.member.model.vo.Bid;
 import com.kh.samsam.member.model.vo.Member;
@@ -36,9 +39,9 @@ public class MemberController {
 
 	
 	@RequestMapping("login.me")
-	   public String loginMember(Member m, HttpSession session, ModelAndView mv, String email, String address, String phone) {
+	   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv, String email, String address, String phone) {
 		Member loginUser = memberService.loginMember(m);
-		
+		System.out.println(bcryptPasswordEncoder.encode(m.getUserPw()));
 	if(loginUser != null && bcryptPasswordEncoder.matches(m.getUserPw(), loginUser.getUserPw())) {
 			
 		String emailFirst = memberService.emailFirst(email);
@@ -125,7 +128,6 @@ public class MemberController {
 	
 	
 
-}
 	
 	
 	@RequestMapping("pwdChangeHome.me")

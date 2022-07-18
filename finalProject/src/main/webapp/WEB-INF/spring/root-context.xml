@@ -47,7 +47,7 @@
 	   		<property name="maxInMemorySize" value="10485760"/>
 	   
 	   </bean>
-	   <context:component-scan base-package="com">
+	   <context:component-scan base-package="com.kh.samsam">
 		
 	</context:component-scan>
 </beans>
