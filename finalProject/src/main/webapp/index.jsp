@@ -15,9 +15,7 @@
 	<a href="qnaList.qu">QnA 목록</a> <br>
 	
 	<jsp:forward page="WEB-INF/views/main.jsp"/>
-	<div>
-	<jsp:forward page="./WEB-INF/views/main.jsp"></jsp:forward>
-	</div>
-	
+
+
 </body>
 </html>
