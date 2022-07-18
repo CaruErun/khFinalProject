@@ -30,36 +30,103 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 
 	
 	@RequestMapping("login.me")
 	   public String loginMember(Member m, HttpSession session, ModelAndView mv, String email, String address, String phone) {
 		Member loginUser = memberService.loginMember(m);
 		
-		if(loginUser == null) {
-			mv.addObject("errorMsg","로그인 실패");
+	if(loginUser != null && bcryptPasswordEncoder.matches(m.getUserPw(), loginUser.getUserPw())) {
 			
-			mv.setViewName("common/errorPage");
-		}else {
-			String emailFirst = memberService.emailFirst(email);
-			String emailBack = memberService.emailBack(email);
-//			String phoneFirst = memberService.phoneFirst(phone);
-//			String phoneMiddle = memberService.phoneMiddle(phone);
-//			String phoneBack = memberService.phoneBack(phone);
-			
-			loginUser.setEmailFirst(emailFirst); //가져온 emailFirst를 Member객체로 선언한 loginUser라는 변수 안에있는 emailFirst로 넣어줘야한다.
-			loginUser.setEmailBack(emailBack);
-//			loginUser.setPhoneFirst(phoneFirst);
-//			loginUser.setPhoneMiddle(phoneMiddle);
-//			loginUser.setPhoneBack(phoneBack);
+		String emailFirst = memberService.emailFirst(email);
+		String emailBack = memberService.emailBack(email);
+//		String phoneFirst = memberService.phoneFirst(phone);
+//		String phoneMiddle = memberService.phoneMiddle(phone);
+//		String phoneBack = memberService.phoneBack(phone);
+		
+		loginUser.setEmailFirst(emailFirst); //가져온 emailFirst를 Member객체로 선언한 loginUser라는 변수 안에있는 emailFirst로 넣어줘야한다.
+		loginUser.setEmailBack(emailBack);
+//		loginUser.setPhoneFirst(phoneFirst);
+//		loginUser.setPhoneMiddle(phoneMiddle);
+//		loginUser.setPhoneBack(phoneBack);
 			
 			
 			session.setAttribute("loginUser", loginUser);
-			
 			mv.setViewName("redirect:/");
+		}else {
+			
+			mv.addObject("errorMsg","로그인 실패");
+			mv.setViewName("common/errorPage");
 		}
-		return "member/test";
+		
+		return mv;
+		
 	   }
+	
+	@RequestMapping("logout.me")
+	public String logoutMember(HttpSession session) {
+		
+		session.removeAttribute("loginUser");
+		
+		return "redirect:/";
+	}
+	
+	@RequestMapping("enrollForm.me")
+	public String enrollForm() {
+		
+		return "member/memberEnrollForm";
+	}
+	
+	@RequestMapping("insert.me")
+	public String insertMember(Member m
+							  ,HttpSession session
+							  ,Model model) {
+		
+			
+		System.out.println("암호화 전 비밀번호 : "+m.getUserPw());
+		
+		//암호화 작업
+		String encPwd = bcryptPasswordEncoder.encode(m.getUserPw());
+		
+		System.out.println("암호화 후 비밀번호 : "+encPwd);
+		
+		//암호화 된 pwd를 Member m 에 담아주기 (평문과 바꿔치기)
+		m.setUserPw(encPwd);
+		
+		int result = memberService.insertMember(m);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "회원가입 성공!");
+			return "redirect:/";
+		}else {
+			 
+			model.addAttribute("errorMsg","회원가입 실패!");
+			return "common/errorPage";
+		}
+		
+	}
+
+	@Autowired
+	private MailSendService mailService;
+	
+
+	
+	//이메일 인증
+		@GetMapping("/mailCheck")
+		@ResponseBody
+		public String mailCheck(String email) {
+			System.out.println("이메일 인증 요청이 들어옴!");
+			System.out.println("이메일 인증 이메일 : " + email);
+			return mailService.joinEmail(email);
+		}
+	
+	
+
+}
+	
 	
 	@RequestMapping("pwdChangeHome.me")
 	public String pwdChangeHome() {

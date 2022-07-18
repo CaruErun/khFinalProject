@@ -20,6 +20,10 @@ public Member loginMember(SqlSessionTemplate sqlSession, Member m) {
 	return sqlSession.selectOne("memberMapper.loginMember",m);
 	}
 
+public int insertMember(SqlSessionTemplate sqlSession, Member m) {
+	return sqlSession.insert("memberMapper.insertMember",m);
+}
+
 public String emailFirst(SqlSessionTemplate sqlSession, String email) {
 	// TODO Auto-generated method stub
 	return sqlSession.selectOne("memberMapper.emailFirst",email);

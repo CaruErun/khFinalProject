@@ -34,6 +34,15 @@ public class MemberServiceImpl implements MemberService{
 		
 		return loginUser;
 	}
+	
+	@Override
+	public int insertMember(Member m) {
+		
+		int result = memberDao.insertMember(sqlSession,m);
+		
+		return result;
+	}
+	
 
 	@Override
 	public String emailFirst(String email) {
