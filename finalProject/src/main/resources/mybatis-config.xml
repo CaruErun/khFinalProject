@@ -6,15 +6,22 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 
-	<typeAliases>
+<typeAliases>
+		
+		<typeAlias type="com.kh.samsam.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.samsam.product.model.vo.Product" alias="product"/>
 		<typeAlias type="com.kh.samsam.common.model.vo.Category" alias="category"/>
 		<typeAlias type="com.kh.samsam.product.model.vo.ProductImages" alias="productImg"/>
 	</typeAliases>
-
+	
+	
 	<mappers>
+	
+		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/product-mapper.xml"/>
 	</mappers>
+
+
 
 
 </configuration>

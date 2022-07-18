@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberMapper">
+
+	<resultMap type="member" id="memberResultSet">
+		<result column="USER_ID" property="userId"/>
+		<result column="USER_PW" property="userPw"/>
+		<result column="USER_NAME" property="userName"/>
+		<result column="USER_BIRTH" property="userBirth"/>
+		<result column="GENDER" property="gender"/>
+		<result column="EMAIL" property="email"/>
+		<result column="PHONE" property="phone"/>
+		<result column="ADDRESS" property="address"/>
+		<result column="ADDRESS_NUM" property="addressNum"/>
+		<result column="ADDRESS_DETAIL" property="addressDetail"/>
+		<result column="ENTER_DATE" property="enterDate"/>
+		<result column="BAN_DATE" property="banDate"/>
+		<result column="BAN_COUNT" property="banCount"/>
+		<result column="USER_STATUS" property="userStatus"/>
+	</resultMap>
+  
+  <!-- 로그인 -->
+  <select id="loginMember" resultMap="memberResultSet">
+  	SELECT USER_ID
+	       ,USER_PW
+	       ,USER_NAME
+	       ,USER_BIRTH
+	       ,GENDER
+	       ,EMAIL
+	       ,PHONE
+	       ,ADDRESS
+	       ,ADDRESS_NUM
+	       ,ADDRESS_DETAIL
+	       ,ENTER_DATE
+	       ,BAN_DATE
+	       ,BAN_COUNT
+	       ,USER_STATUS
+		FROM MEMBER
+		WHERE USER_ID = #{userId}	
+		AND USER_STATUS = 'Y'
+  </select>
+  
+  <!-- 회원가입 -->
+  
+  
+  
+  <insert id="insertMember" parameterType="member">
+  		
+  	INSERT INTO MEMBER(
+  			USER_ID
+	       ,USER_PW
+	       ,USER_NAME
+	       ,USER_BIRTH
+	       ,EMAIL
+	       ,PHONE
+	       ,GENDER
+	       ,ADDRESS_NUM
+	       ,ADDRESS
+	       ,ADDRESS_DETAIL
+	       )
+	         VALUES(
+		            #{userId},
+		            #{userPw},
+		            #{userName},
+		            #{userBirth},
+		            #{email},
+		            #{phone},
+		            #{gender},
+		            #{addressNum},
+		            #{address},
+		            #{addressDetail}
+             )
+  </insert>
+  
+  
+</mapper>
