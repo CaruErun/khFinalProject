@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="productMapper">
+<!--
+	DML 구문일때는 결과값이 항상 int이기때문에 resultType을 적지 않아도 되지만
+	select구문일때는 타입이 특정되지 않기 때문에 적어야한다.
+ -->
+ 
+	<select id="productEnrollAmount" resultType="_int">
+		SELECT COUNT(START_DATE) AS COUNT
+		FROM PRODUCT
+		WHERE START_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+	</select>
+	
+	<select id="productTradeAmount" resultType="_int">
+	    SELECT COUNT(PRO_NO) AS COUNT FROM 
+        (SELECT DISTINCT(P.PRO_NO)
+		FROM PRODUCT P
+        JOIN BID B
+        ON P.PRO_NO = B.PRO_NO
+		WHERE END_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+		AND PRO_STATUS = 'N'
+        AND BID_STATUS = 'Y') A
+	</select>
+	
+	<select id="productEnrollMoney" resultType="_int">
+        SELECT SUM(PRO_PRICE) AS SUM
+		FROM PRODUCT
+		WHERE START_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+	</select>
+	
+
+	<select id="productTradeMoney" resultType="_int">
+        SELECT SUM(BID_PRICE) AS SUM
+		FROM PRODUCT P
+        JOIN BID B
+        ON P.PRO_NO = B.PRO_NO
+		WHERE END_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+		AND PRO_STATUS = 'N'
+        AND BID_STATUS = 'Y'
+        AND BID_NO IN(SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO) 
+	</select>
+
+
+
+
+</mapper>
