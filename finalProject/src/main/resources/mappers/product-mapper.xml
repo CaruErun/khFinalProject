@@ -134,6 +134,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</when>
 		</choose>
 	</select>
+	
+	
 	<!--
 	DML 구문일때는 결과값이 항상 int이기때문에 resultType을 적지 않아도 되지만
 	select구문일때는 타입이 특정되지 않기 때문에 적어야한다.
