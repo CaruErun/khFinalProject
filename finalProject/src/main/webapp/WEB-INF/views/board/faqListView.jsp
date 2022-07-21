@@ -11,41 +11,54 @@
 	<style>
 		#faqList {text-align:center;}
         #faqList>tbody>tr:hover {cursor:pointer;}
-
-        .text {width:53%;}
-        .searchBtn {width:20%;}	
         #faqList a{
         	color:black;
         	text-decoration: none;
         }
+                #pagingArea{
+        	width:fit-content; margin:auto; 
+ 			margin-top:50px; 
+        }
+        #content{
+            padding-top:50px;
+		    width: 1500px;
+		    height: 840px;
+ 		    margin-left: 20%;
+		}	
+		table{
+		    border-top: 1px solid gray;
+		    border-bottom: 1px solid gray;
+		}
+		#content_2{
+		    width: 70%;
+		    height: 100%;
+		}
+		
+        .text {width:53%;}
+
         .btn-secondary{
             margin-right: 10px;
         }
-        #pagingArea{
-        	width:fit-content; margin:auto;
-        }
+
         #nfContent{
         display: none;
         }
         
 	</style>
-
 </head>
 
 <body>
 		<jsp:include page="../customerInfoMenubar.jsp"/>
-		<br>
-		<div class="content">
-        <div class="innerOuter" style="padding:0% 10%;">
-        	<br>
+		<div id="content">
             <h2>FAQ</h2>
             <h4>자주 묻는 질문들을 안내해 드립니다.</h4>
+        <div id="content_2">
             <br>
-<%--             <c:if test="${loginUser.userId eq 'admin' }"> --%>
+            <c:if test="${loginUser.userId eq 'admin' }">
             	<a class="btn btn-secondary" style="float:right;" href="enrollForm.fq">FAQ 작성</a>
-<%--             </c:if> --%>
+            </c:if>
             <br><br><br>
-            <table id="faqList" class="table table-hover" align="center">
+            <table id="faqList" class="table table-hover" style="width: 1050px; text-align:center">
                 <thead>
                     <tr>
                         <th width="10%">글번호</th>
@@ -71,7 +84,7 @@
 	                    <tr id="nfContent">
 	                    	<td width="60%" colspan="3"><b>${f.nfContent }</b></td>
 	                    	<td onclick="event.cancelBubble='true'">
-	                        	<c:if test="${1 eq 1 }">
+	                        	<c:if test="${loginUser.userId eq 'admin' }">
                 					<a class="btn btn-secondary" href="updateForm.fq?nfNo=${f.nfNo}">수정/삭제</a>
                 					<input type="hidden">
 								</c:if>
@@ -110,5 +123,6 @@
 
     </div>
 	
+         	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

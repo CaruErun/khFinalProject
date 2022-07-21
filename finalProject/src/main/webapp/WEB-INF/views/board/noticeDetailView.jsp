@@ -26,7 +26,7 @@
             <br>
 
             <a class="btn btn-secondary" style="float:right;" href="noticeList.no">목록으로</a>
-            <br><br>
+            <br><br><br><br>
 
             <table id="contentArea" align="center" class="table">
                 <tr>
@@ -41,7 +41,7 @@
             </table>
             <br>
 
-			<c:if test="${loginUser.userId eq admin }">
+			<c:if test="${loginUser.userId eq 'admin' }">
             <div align="center">
                 <!-- 관리자가 로그인했을때만 -->
                 <a class="btn btn-secondary" onclick="postFormSubmit(1)">수정하기</a>
@@ -66,7 +66,9 @@
             </script>
         </div>
     </div>
+    <br><br><br><br>
     
+         	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>
 

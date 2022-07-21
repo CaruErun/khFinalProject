@@ -17,7 +17,7 @@
 
 </head>
 <body>
-		<jsp:include page="../customerInfoMenubar.jsp"/>
+		<jsp:include page="../chartMenubar.jsp"/>
 		
 		<div style="width: 900px; height: 900px;">
 			<!--차트가 그려질 부분-->
@@ -156,5 +156,6 @@
             });
         </script>
 
+         	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

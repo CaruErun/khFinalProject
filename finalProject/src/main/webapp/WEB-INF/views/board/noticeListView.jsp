@@ -11,19 +11,35 @@
 	<style>
 		#noticeList {text-align:center;}
         #noticeList>tbody>tr:hover {cursor:pointer;}
-
-        .text {width:53%;}
-        .searchBtn {width:20%;}	
         #noticeList a{
         	color:black;
         	text-decoration: none;
         }
+        #pagingArea{
+        	width:fit-content; margin:auto; 
+ 			margin-top:50px; 
+        }
+        #content{
+            padding-top:50px; 
+		    width: 1500px;
+		    height: 840px;
+ 		    margin-left: 20%;
+		}		
+		table{
+		    border-top: 1px solid gray;
+		    border-bottom: 1px solid gray;
+		}
+		#content_2{
+		    width: 70%;
+		    height: 100%;
+		}
+		
+        .text {width:53%;}
+
         .btn-secondary{
             margin-right: 10px;
         }
-        #pagingArea{
-        	width:fit-content; margin:auto;
-        }
+
         
 	</style>
 
@@ -31,19 +47,16 @@
 
 <body>
 		<jsp:include page="../customerInfoMenubar.jsp"/>
-		<div class="content">
-        <div class="innerOuter" style="padding:0% 10%;">
-        
-<%--             <input type="hidden" name="nno" value="${n.nfNo }"> --%>
-			<br>
+			<div id="content">
             <h2>공지사항</h2>
             <h4>삼삼옥션 서비스의 오류, 장애, 기타 공지사항을 안내드립니다.</h4>
+        	<div id="content_2">
             <br>
-<%--             <c:if test="${loginUser.userId eq 'admin' }"> --%>
+            <c:if test="${loginUser.userId eq 'admin' }">
             	<a class="btn btn-secondary" style="float:right;" href="enrollForm.no">공지사항 작성</a>
-<%--             </c:if> --%>
+            </c:if>
             <br><br><br>
-            <table id="noticeList" class="table table-hover" align="center">
+            <table id="noticeList" class="table table-hover" style="width: 1050px; text-align:center">
                 <thead>
                     <tr>
                         <th>글번호</th>
@@ -97,9 +110,9 @@
                 </ul>
             </div>
         </div>
-        <br><br>
 
     </div>
 	
+         	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

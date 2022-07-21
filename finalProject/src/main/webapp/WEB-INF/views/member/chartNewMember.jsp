@@ -17,7 +17,7 @@
 
 </head>
 <body>
-		<jsp:include page="../customerInfoMenubar.jsp"/>
+		<jsp:include page="../chartMenubar.jsp"/>
 		
 		<div style="width: 900px; height: 900px;">
 			<!--차트가 그려질 부분-->
@@ -88,16 +88,7 @@
                                 'rgba(255, 159, 64, 1)'
                             ],
                             borderWidth: 1 //경계선 굵기
-                        }/* ,
-                        {
-                            label: 'test2',
-                            fill: false,
-                            data: [
-                                8, 34, 12, 24
-                            ],
-                            backgroundColor: 'rgb(157, 109, 12)',
-                            borderColor: 'rgb(157, 109, 12)'
-                        } */
+                        }
                     ]
                 },
                 options: {
@@ -114,5 +105,6 @@
             });
         </script>
 
+         	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

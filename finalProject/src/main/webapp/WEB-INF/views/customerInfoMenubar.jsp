@@ -26,7 +26,7 @@
 
 <style>
 .menu{
-    width: 1000px;
+    width: 1200px;
     height: 120px;
     /* text-align: center; */
     margin: 5%;
@@ -82,8 +82,10 @@
 </style>    
 </head>
 
+
 <body>
 
+	<jsp:include page="common/header.jsp"/>
 	<c:if test="${not empty alertMsg }">
 		<script>
 			alertify.alert("서비스 요청 성공", "${alertMsg}");
@@ -99,23 +101,27 @@
             <div class="menu2">
                 <a class="mtit2" href="noticeList.no">공지사항</a>
                 <a class="mtit2" href="faqList.fq">FAQ</a>
-                <a class="mtit2" href="qnaList.qa">Q&A</a>
+                <a class="mtit2" href="qnaList.qu">Q&A</a>
+                
+            <c:if test="${loginUser.userId eq 'admin' }">
                 <a class="mtit2" href="reportList.re">신고관리</a>
-                <a class="mtit2" href="product.ct">등록/거래 수량</a>
-                <a class="mtit2" href="money.ct">등록/거래 금액</a>
+			</c:if>
             </div>
         </div>
         
-        <div class="menu">
-            <div class="menu1">
-                <a class="mtit1" href="new.me">회원관리</a>
-            </div>
-            <div class="menu2">
-                <a class="mtit2" href="new.me">신규회원</a>
-                <a class="mtit2" href="remove.me">탈퇴회원</a>
-            </div>
-        </div>
-        
+<%--         <c:if test="${loginUser.userId eq 'admin' }"> --%>
+<!-- 	        <div class="menu"> -->
+<!-- 	            <div class="menu1"> -->
+<!-- 	                <a class="mtit1" href="new.me">차트</a> -->
+<!-- 	            </div> -->
+<!-- 	            <div class="menu2"> -->
+<!-- 	                <a class="mtit2" href="new.me">신규회원</a> -->
+<!-- 	                <a class="mtit2" href="remove.me">탈퇴회원</a> -->
+<!--                 	<a class="mtit2" href="product.ct">등록/거래 수량</a> -->
+<!--                 	<a class="mtit2" href="money.ct">등록/거래 금액</a> -->
+<!-- 	            </div> -->
+<!-- 	        </div> -->
+<%--         </c:if> --%>
     </div>
 </body>
 </html>

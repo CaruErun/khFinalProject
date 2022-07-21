@@ -14,7 +14,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column = "REPORT_CONTENT" property = "reportContent"/>
 		<result column = "REPORT_STATUS" property = "reportStatus"/>
 		<result column = "CREATE_DATE" property = "createDate"/>
-		
 	</resultMap>
 
 	<select id="selectReportListCount" resultType="_int">

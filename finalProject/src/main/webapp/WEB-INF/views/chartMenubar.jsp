@@ -83,6 +83,7 @@
 </head>
 
 <body>
+	<jsp:include page="common/header.jsp"/>
 	<c:if test="${not empty alertMsg }">
 		<script>
 			alertify.alert("서비스 요청 성공", "${alertMsg}");
@@ -96,8 +97,10 @@
                 <a class="mtit1" href="">회원 관리</a>
             </div>
             <div class="menu2">
-                <a class="mtit2" href="">신규회원</a>
-                <a class="mtit2" href="">탈퇴회원</a>
+                <a class="mtit2" href="new.me">신규회원</a>
+                <a class="mtit2" href="remove.me">탈퇴회원</a>
+                <a class="mtit2" href="product.ct">등록/거래 수량</a>
+                <a class="mtit2" href="money.ct">등록/거래 금액</a>
             </div>
         </div>
     </div>
