@@ -5,12 +5,7 @@ span,
 applet,
 object,
 iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
+
 p,
 blockquote,
 pre,
@@ -37,7 +32,7 @@ sub,
 sup,
 tt,
 var,
-b,
+
 u,
 i,
 center,
@@ -102,9 +97,7 @@ section {
   display: block;
 }
 
-body {
-  line-height: 1;
-}
+
 
 ol,
 ul {

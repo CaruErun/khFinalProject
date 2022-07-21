@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.dao.MemberDao;
-import com.kh.samsam.member.model.vo.Bid;
 import com.kh.samsam.member.model.vo.Member;
-import com.kh.samsam.member.model.vo.Postbox;
-import com.kh.samsam.member.model.vo.Product;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -61,45 +58,6 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 
-	@Override
-	public String emailFirst(String email) {
-		// TODO Auto-generated method stub
-		String emailFirst = memberDao.emailFirst(sqlSession,email);
-		
-		return emailFirst;
-	}
-
-	@Override
-	public String emailBack(String email) {
-		// TODO Auto-generated method stub
-		String emailBack = memberDao.emailBack(sqlSession,email);
-		
-		return emailBack;
-	}
-
-	@Override
-	public String phoneFirst(String phone) {
-		// TODO Auto-generated method stub
-		String phoneFirst = memberDao.phoneFirst(sqlSession,phone);
-		
-		return phoneFirst;
-	}
-
-	@Override
-	public String phoneMiddle(String phone) {
-		// TODO Auto-generated method stub
-		String phoneMiddle = memberDao.phoneMiddle(sqlSession,phone);
-		
-		return phoneMiddle;
-	}
-
-	@Override
-	public String phoneBack(String phone) {
-		// TODO Auto-generated method stub
-		String phoneBack = memberDao.phoneBack(sqlSession,phone);
-		
-		return phoneBack;
-	}
 
 	@Override
 	public int pwdChange(Member m) {
@@ -147,42 +105,8 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
-	@Override
-	public int selectListCount() {
-		// TODO Auto-generated method stub
-		int count = memberDao.selectListCount(sqlSession);
-		
-		return count;
-	}
 
-	@Override
-	public ArrayList<Product> selectList(String userId, PageInfo pi) {
-		// TODO Auto-generated method stub
-		return memberDao.selectList(sqlSession,pi,userId);
-	}
 
-	@Override
-	public int postInsert(Postbox p) {
-		// TODO Auto-generated method stub
-		return memberDao.postInsert(sqlSession,p);
-	}
-
-	@Override
-	public ArrayList<Postbox> selectListPost(String userId, PageInfo pi) {
-		// TODO Auto-generated method stub
-		return memberDao.selectListPost(sqlSession,pi,userId);
-	}
-
-	@Override
-	public ArrayList<Bid> selectListAttend(String userId, PageInfo pi) {
-		// TODO Auto-generated method stub
-		return memberDao.selectListAttend(sqlSession,pi,userId);
-	}
-
-	@Override
-	public ArrayList<Bid> selectListBid(String userId, PageInfo pi) {
-		// TODO Auto-generated method stub
-		return memberDao.selectListBid(sqlSession,pi,userId);
-	}
+	
 
 }
