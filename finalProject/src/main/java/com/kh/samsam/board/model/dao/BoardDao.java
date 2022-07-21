@@ -114,11 +114,11 @@ public class BoardDao {
 //	}
 
 	public static QnA selectQnaa(SqlSessionTemplate sqlSession, int qno) {
-		return sqlSession.selectOne("qnaMapper.selectQna", qno);
+		return sqlSession.selectOne("boardMapper.selectQna", qno);
 	}
 
 	public int insertQnaAns(SqlSessionTemplate sqlSession, QnA q) {
-		return sqlSession.update("qnaMapper.insertQnaAns", q);
+		return sqlSession.update("boardMapper.insertQnaAns", q);
 	}
 	
 	

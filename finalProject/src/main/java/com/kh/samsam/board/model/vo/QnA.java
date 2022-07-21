@@ -9,7 +9,7 @@ public class QnA {
 
 	private int qnaNo;
 	private String qnaTitle;
-	private int qnaCateNo;
+	private String qnaCateNo;
 	private String qnaContent;
 	private String qnaId;
 	private Date createDate;

@@ -1,4 +1,4 @@
-package com.kh.samsam.member.model.vo;
+package com.kh.samsam.product.model.vo;
 
 import java.sql.Date;
 

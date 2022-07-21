@@ -215,8 +215,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- QnA 수정 -->
 	<update id="updateQna" parameterType="qna">
 		  	UPDATE QNA
-  			SET QNA_CATE_NO = #{qnaCateNo},
-  				QNA_TITLE = #{qnaTitle},
+  			SET QNA_TITLE = #{qnaTitle},
   				QNA_CONTENT = #{qnaContent},
   				CREATE_DATE = SYSDATE
   			WHERE QNA_NO = #{qnaNo}

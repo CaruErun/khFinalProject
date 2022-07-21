@@ -254,34 +254,6 @@ public class BoardController {
 		}
 	
 //		================================================QnA================================================
-//		// qna 목록 조회
-//		@RequestMapping("qnaList.qa")
-//		public String selectQnaList(@RequestParam(value="cpage", defaultValue="1") int currentPage, Model model) {
-//			
-//			int listCount = boardService.selectQnaListCount();
-//			
-//			int pageLimit = 10;
-//			int boardLimit = 10;
-//			
-//			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-//			ArrayList<QnA> list = boardService.selectQnaList(pi);
-//			
-//			model.addAttribute("list", list);
-//			model.addAttribute("pi", pi);
-//			
-//			return "qna/qnaListView";
-//		}
-//		
-//		// qna 상세 보기
-//		@RequestMapping("detail.qa")
-//		public ModelAndView selectQnaa(int qno, ModelAndView mv) {
-//			
-//			QnA q = boardService.selectQnaa(qno);
-//				
-//			mv.addObject("q", q);
-//			mv.setViewName("qna/qnaDetailView");
-//			return mv;
-//		}
 		
 		// qna 답변 등록
 		@RequestMapping("insert.ans")
@@ -294,7 +266,7 @@ public class BoardController {
 				
 				if(result>0) {
 					session.setAttribute("alertMsg", "QNA답변 등록 성공");
-					return "redirect:qnaList.qa";
+					return "redirect:qnaList.qu";
 					
 				}else {	// 실패
 					model.addAttribute("errorMsg", "QNA답변 등록 실패");

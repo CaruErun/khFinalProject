@@ -31,7 +31,7 @@
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 
     
-   	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
+  <%--    	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
     <style>
       *{
@@ -120,20 +120,10 @@
     }
 
     </style>
-       	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
+      	<%--        	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
 </head>
 <body>
-
-	<c:if test="${not empty alertMsg }">
-		<script>
-			alertify.alert("${alertMsg}");
-		</script>
-<!-- 	alertMsg를 계속 갖고 있으면 안되니까 지워줘 -->
-		<c:remove var="alertMsg" scope="session"/>
-	</c:if>
-	
-	
 	<div class="menubar">
     <!-- Navigation-->
     <div class="navbar">
@@ -142,17 +132,27 @@
             <ul class="nav-list">
              <c:choose>
 				    <c:when test="${ empty loginUser }">
-<!--                 <li><a href="#!">samsam은 처음이신가요?</a></li> -->
-                <li><a data-toggle="modal" data-target="#login_modal2">로그인</a></li>
-                <li><a href="enrollForm.me">회원가입</a></li>
-<!--                 <li><a href="#">고객센터</a></li> -->
-                  </c:when>      
-                  <c:otherwise>
-	               		<!-- 로그인 후 -->
-	                    <lable>${ loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
-	                    <a href="myPageSale.me">마이페이지</a>
-	                    <a href="logout.me">로그아웃</a>
-            </c:otherwise>	                
+  <li><a href="#!">samsam은 처음이신가요?</a></li>
+		                <li><a data-toggle="modal" data-target="#login_modal2">로그인</a></li>
+		                <li><a href="enrollForm.me">회원가입</a></li>
+		                <li><a href="noticeList.no">고객센터</a></li>
+                  	</c:when>      
+                  	<c:otherwise>
+	                    <c:choose>
+	                    	<c:when test="${loginUser.userId eq 'admin' }">
+	                    		<lable>${ loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
+	                   	 		<a href="logout.me">로그아웃</a>
+	                    		<a href="noticeList.no">고객센터</a>
+	                    		<a href="new.me">차트</a>
+	                    	</c:when>
+	                    	<c:otherwise>
+	                    		<lable>${ loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
+	                    		<a href="myPageSale.me">마이페이지</a>
+	                   	 		<a href="logout.me">로그아웃</a>
+	                    		<a href="noticeList.no">고객센터</a>
+	                    	</c:otherwise>
+	                    </c:choose>
+            		</c:otherwise>	                
                 </c:choose>
             </ul>
         </div>
@@ -301,9 +301,6 @@
         let userID = $("#user-id").val();
         if (userID =="") {
         	$(".info-error").show();
-        	<!--
-        	$(".id-error").show();
-          $(".error-line").show(); -->
           $("#user-id").css("border", "2px solid #F4492E");
         } else {
           
@@ -340,15 +337,9 @@
             </div>
 
 
-
-
-
-
-
 				<!-- 검색폼 -->
 				<div class="h3">
 					<form id="searchForm" action="search.Pr" method="post" align="center">
-					
 						<div class="select">
 							<select class="custom-select" name="searchType">
 								<option value="sellId">작성자</option>

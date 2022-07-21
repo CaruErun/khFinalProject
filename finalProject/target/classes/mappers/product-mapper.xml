@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</resultMap>
 		<!-- product ResultMap -->
-	<resultMap type="product" id="productResultMap">
+	<resultMap type="product" id="productResultSet">
 		<result column="PRO_NO" property="proNo"/>
 		<result column="PRO_TITLE" property="proTitle"/>
 		<result column="PRO_CONTENT" property="proContent"/>
@@ -28,6 +28,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="COUNT" property="count"/>
 		<result column="PRO_STATUS" property="proStatus"/>
 	</resultMap>
+	
+	<resultMap type="postbox" id="PostboxResultSet">
+		<result column="PBOX_NO" property="pboxNo"/>
+		<result column="PBOX_NAME" property="pboxName"/>
+		<result column="PRO_NO" property="proNo"/>
+		<result column="PRO_CATE_NO" property="proCateNo"/>
+		<result column="PRO_TITLE" property="proTitle"/>
+	</resultMap>
+	
+	<resultMap type="bid" id="BidResultSet">
+		<result column="BID_NO" property="bidNo"/>
+		<result column="BUYER_ID" property="buyerId"/>
+		<result column="PRO_NO" property="proNo"/>
+		<result column="BID_PRICE" property="bidPrice"/>
+		<result column="BID_STATUS" property="bidStatus"/>
+		<result column="PRO_CATE_NO" property="proCateNo"/>
+		<result column="PRO_TITLE" property="proTitle"/>
+	</resultMap>
+	
+	
 	<select id="selectCategoryList" resultMap="categoryResultSet" parameterType="int">
 		SELECT CATE_NO, CATE_NAME 
 		FROM CATEGORY
@@ -98,7 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<!-- product 검색 -->
-	<select id="getSearchList" parameterType="product" resultMap="productResultMap">
+	<select id="getSearchList" parameterType="product" resultMap="productResultSet">
 		SELECT *
 		FROM PRODUCT
 		
@@ -158,9 +178,80 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND BID_NO IN(SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO) 
 	</select>
 	
+<<<<<<< HEAD
 
 
 
 	
 	
+=======
+	
+	<select id="selectListCount" resultType="_int" >
+		SELECT COUNT(*)
+		FROM PRODUCT
+		WHERE PRO_STATUS='Y'
+		AND SELL_ID = 'admin'
+	</select>
+	
+	<select id="selectListCountt" resultType="_int">
+		SELECT COUNT(*)
+		FROM POSTBOX
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE PRO_STATUS='Y'
+		AND SELL_ID = 'admin'
+	</select>
+	
+	<select id="selectList" resultMap="productResultSet">
+		SELECT PRO_NO,PRO_TITLE,PRO_PRICE,COUNT,PRO_STATUS
+		FROM PRODUCT
+		WHERE SELL_ID= 'admin' <!-- ${buyId} -->
+	</select>
+	
+	<insert id="postInsert" parameterType="Postbox">
+		INSERT INTO POSTBOX(PBOX_NO,PBOX_NAME,PRO_NO) VALUES(#{pboxNo},#{pboxName},#{proNo})
+	</insert>
+	
+	
+	
+	
+	<select id="selectListPost" resultMap="PostboxResultSet">
+		SELECT PRO_TITLE,PBOX_NAME,PBOX_NO
+		FROM POSTBOX 
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE SELL_ID= 'admin'
+	</select>
+	
+	
+	
+	
+	<select id="selectListAttend" resultMap="BidResultSet">
+		SELECT BUYER_ID,PRO_TITLE,BID_PRICE,BID_STATUS
+		FROM BID B
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE BUYER_ID = 'admin'
+	</select>
+	
+	<select id="selectListBid" resultMap="BidResultSet"> 
+		SELECT PRO_TITLE,BID_PRICE
+		FROM BID B
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE BID_STATUS = 'N'
+	</select>
+		<select id="selectNewMember" resultType="_int">
+		SELECT COUNT(ENTER_DATE) AS COUNT
+		FROM MEMBER
+		WHERE ENTER_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+	</select>
+	
+	<select id="selectRemoveMember" resultType="_int">		
+		SELECT COUNT(MODIFY_DATE) AS COUNT
+		FROM MEMBER
+		WHERE MODIFY_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+		AND USER_STATUS = 'N'
+	</select>
+	
+
+>>>>>>> refs/remotes/origin/main
 </mapper>

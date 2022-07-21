@@ -7,7 +7,7 @@
 	</settings>
 
 	<typeAliases>
-			<typeAlias type="com.kh.samsam.common.model.vo.PageInfo" alias="pageInfo"/>
+		<typeAlias type="com.kh.samsam.common.model.vo.PageInfo" alias="pageInfo"/>
 		<typeAlias type="com.kh.samsam.common.model.vo.Category" alias="category"/>
 		<typeAlias type="com.kh.samsam.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.samsam.board.model.vo.NoticeFaq" alias="noticeFaq"/>
@@ -18,8 +18,8 @@
 		<typeAlias type="com.kh.samsam.product.model.vo.ProductImages" alias="productImages"/>
 		<typeAlias type="com.kh.samsam.member.model.vo.ProLike" alias="proLike"/>
 		<typeAlias type="com.kh.samsam.product.model.vo.Product" alias="product"/>
-		<typeAlias type="com.kh.samsam.member.model.vo.Postbox" alias="postbox"/>
-		<typeAlias type="com.kh.samsam.member.model.vo.Bid" alias="bid"/>		
+		<typeAlias type="com.kh.samsam.product.model.vo.Postbox" alias="postbox"/>
+		<typeAlias type="com.kh.samsam.product.model.vo.Bid" alias="bid"/>		
 	</typeAliases>
 
 	<mappers>
@@ -27,7 +27,12 @@
 		<mapper resource="mappers/board-mapper.xml"/>
 		<mapper resource="mappers/report-mapper.xml"/>
 		<mapper resource="mappers/product-mapper.xml"/>
+<<<<<<< HEAD
 		<mapper resource="mappers/common-mapper.xml"/>
+=======
+		<mapper resource="/mappers/common-mapper.xml"/>
+
+>>>>>>> refs/remotes/origin/main
 	</mappers>
 
 </configuration>

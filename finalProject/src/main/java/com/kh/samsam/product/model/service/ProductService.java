@@ -1,10 +1,13 @@
 package com.kh.samsam.product.model.service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.kh.samsam.common.model.vo.Category;
-import com.kh.samsam.member.model.vo.Postbox;
+import com.kh.samsam.common.model.vo.PageInfo;
+import com.kh.samsam.product.model.vo.Bid;
+import com.kh.samsam.product.model.vo.Postbox;
 import com.kh.samsam.product.model.vo.Product;
 import com.kh.samsam.product.model.vo.ProductChart;
 import com.kh.samsam.product.model.vo.ProductImages;
@@ -28,8 +31,38 @@ public interface ProductService {
 	Object insertProductImages(ArrayList<ProductImages> list);
 	
 	
+	int selectProListCount();
+	ArrayList<Product> selectProductList(PageInfo pi);
+
+	
+	
+	
+//	//리스트 조회 해오기
+	ArrayList<Product> selectList(String userId, PageInfo pi);
+
+	//운송장 등록
+	int postInsert(Postbox p);
+	
+	//리스트 조회 해오기
+	ArrayList<Postbox> selectListPost(String userId, PageInfo pi);
+
+	//리스트 조회 해오기
+	ArrayList<Bid> selectListAttend(String userId, PageInfo pi);
+
+	//리스트 조회 해오기
+	ArrayList<Bid> selectListBid(String userId, PageInfo pi);
+
+	//판매
+	int selectListCount();
+
+	//운송장
+	int selectListCountt();
+	
+	
+
 	//검색
 	List<Product> getSearchList(Product p);
 
-
+	
+	
 }

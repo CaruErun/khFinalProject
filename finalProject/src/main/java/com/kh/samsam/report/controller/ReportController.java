@@ -61,6 +61,7 @@ public class ReportController {
 		Report r = reportService.selectReportContent(reportNo);
 		return new Gson().toJson(r);
 	}
+	
 	//report
 	//신고하기 form으로 전달하기
 	@RequestMapping("reportView.mem")

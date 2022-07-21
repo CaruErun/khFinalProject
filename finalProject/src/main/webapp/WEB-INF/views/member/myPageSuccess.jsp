@@ -13,18 +13,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
+<%-- <jsp:include page="../common/header.jsp"/> --%>
+
     <div class="wrap">
         <div id="header">
-            <div id="title">마이페이지</div>
+            <div id="title">마이페이지(낙찰)</div>
         </div>
         <div id="content">
             <form action="">
                 <div id="content_1">
-                    <div id="content_1_1"><p>&nbsp; ${loginUser.userName}</p></div>
+                    <div id="content_1_1"><p>&nbsp; ${loginUser.userName} 님</p></div>
                     <div id="content_1_2">
                         <div id="top_icon">
                             <i class="fa-regular fa-circle-check fa-4x" id="top_icon4" onclick="success()"></i><br><br>
-                            <label for="top_icon4">낙찰</label>
+                            <label for="top_icon4" id="one">낙찰</label>
                         </div>
                         <div id="top_icon">
                             <i class="fa-regular fa-newspaper fa-4x" id="top_icon3" onclick="sale()"></i><br><br>
@@ -48,13 +50,13 @@
                         <table id="attend">
                             <thead>
                                 <tr>
-                                    <th height="30" width="50" id="tata"><input type="checkbox" name="" id=""></th>
-                                    <th height="30" width="150" id="tata">카테고리</th>
+                                    <th height="30" width="70" id="tata"><input type="checkbox" name="" id=""></th>
+<!--                                     <th height="30" width="150" id="tata">카테고리</th> -->
                                     <th height="30" width="130" id="tata">판매자</th>
-                                    <th height="30" width="300" id="tata">입찰상품</th>
-                                    <th height="30" width="100" id="tata">응찰가</th>
-                                    <th height="30" width="100"id="tata">현재가</th>
-                                    <th height="30" width="130" id="tata">상태</th>
+                                    <th height="30" width="320" id="tata">입찰상품</th>
+                                    <th height="30" width="160" id="tata">응찰가</th>
+                                    <th height="30" width="160"id="tata">현재가</th>
+                                    <th height="30" width="140" id="tata">상태</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,11 +78,11 @@
                         <table id="bid">
                             <thead>
                                 <tr>
-                                    <th height="30" width="50" id="tata"><input type="checkbox" name="" id=""></th>
-                                    <th height="30" width="150" id="tata">카테고리</th>
-                                    <th height="30" width="350" id="tata">판매상품</th>
-                                    <th height="30" width="220" id="tata">낙찰가</th>
-                                    <th height="30" width="220" id="tata">낙찰일</th>
+                                    <th height="30" width="70" id="tata"><input type="checkbox" name="" id=""></th>
+<!--                                     <th height="30" width="150" id="tata">카테고리</th> -->
+                                    <th height="30" width="400" id="tata">판매상품</th>
+                                    <th height="30" width="260" id="tata">낙찰가</th>
+                                    <th height="30" width="260" id="tata">낙찰일</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,24 +99,18 @@
                         &nbsp· 운송장 조회
                     </div>
                     <div id="content_12">
-                        <table id="tata">
+                        <table >
                             <thead>
                                 <tr>
-                                    <th height="30" width="50" id="tata"><input type="checkbox" name="" id=""></th>
-                                    <th height="30" width="150" id="tata">카테고리</th>
-                                    <th height="30" width="300" id="tata">구매한 물품</th>
-                                    <th height="30" width="120" id="tata">택배회사</th>
-                                    <th height="30" width="350" id="tata">운송장 번호</th>
+                                    <th height="30" width="70" id="tata"><input type="checkbox" name="" id=""></th>
+<!--                                     <th height="30" width="150" id="tata">카테고리</th> -->
+                                    <th height="30" width="400" id="tata">구매한 물품</th>
+                                    <th height="30" width="180" id="tata">택배회사</th>
+                                    <th height="30" width="320" id="tata">운송장 번호</th>
                                 </tr>
                             </thead>
                             <tbody id="td">
-                                <tr>
-                                    <td id="tata"><input type="checkbox" name="" id=""></td>
-                                    <td id="tata">비밀</td>
-                                    <td id="tata">냠냠상품</td>
-                                    <td id="tata">CJ 대한통운</td>
-                                    <td id="tata">600-12-55455-454</td>
-                                </tr>
+                                
                             </tbody>  
                             </table>
                     </div>
@@ -133,6 +129,7 @@
     <script>
     	function success(){
         	location.href="myPageSuccess.me";
+        	
         }
     	
     	function sale(){
@@ -147,6 +144,7 @@
     		location.href="myInfo.me"
     	}
     </script>
+    
     
     <script>
     window.onload = function(){
@@ -182,7 +180,7 @@
 						
 							resultStr += "<tr>" 
 										+"<td style=\"text-align: center;\">"+"<input type=\"checkbox\">"+"</td>"
-										+"<td style=\"text-align: center;\">"+result.list[i].cateNo+"</td>"
+// 										+"<td style=\"text-align: center;\">"+result.list[i].cateNo+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].buyerId+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].proTitle+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].bidPrice+"</td>"
@@ -240,7 +238,7 @@
 						
 							resultStr += "<tr>" 
 										+"<td style=\"text-align: center;\">"+"<input type=\"checkbox\">"+"</td>"
-										+"<td style=\"text-align: center;\">"+result.list[i].cateNo+"</td>"
+// 										+"<td style=\"text-align: center;\">"+result.list[i].cateNo+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].proTitle+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].bidPrice+"</td>"
 										+"<td style=\"text-align: center;\">"+"</td>"
@@ -266,5 +264,7 @@
     	}
 //     })
     </script>
+    
+    
 </body>
 </html>
