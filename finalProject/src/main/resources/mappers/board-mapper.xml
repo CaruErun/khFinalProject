@@ -126,7 +126,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectQna" resultMap="qnaResultSet">
-        SELECT QNA_NO, QNA_TITLE, CREATE_DATE, QNA_CONTENT, ANSWER_CONTENT, ANSWER_DATE, CATE_NAME AS QNA_CATE_NO
+        SELECT QNA_NO, QNA_TITLE, QNA_ID, CREATE_DATE, QNA_CONTENT, ANSWER_CONTENT, ANSWER_DATE, CATE_NAME AS QNA_CATE_NO
 		FROM QNA Q
         JOIN CATEGORY C
         ON Q.QNA_CATE_NO = C.CATE_NO
@@ -214,8 +214,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- QnA 수정 -->
 	<update id="updateQna" parameterType="qna">
 		  	UPDATE QNA
-  			SET QNA_CATE_NO = #{qnaCateNo},
-  				QNA_TITLE = #{qnaTitle},
+  			SET QNA_TITLE = #{qnaTitle},
   				QNA_CONTENT = #{qnaContent},
   				CREATE_DATE = SYSDATE
   			WHERE QNA_NO = #{qnaNo}

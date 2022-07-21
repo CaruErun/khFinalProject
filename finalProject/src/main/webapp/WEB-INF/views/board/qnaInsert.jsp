@@ -60,14 +60,9 @@
 	
 	
   	 <!-- header.jsp include -->
-	 	<jsp:include page="../common/header.jsp"/>
 	
+	<jsp:include page="../customerInfoMenubar.jsp"/>
 	
-			
-		<br><br><br><br><br><br>
-		
-		
-		
      <form action="insert.qu" method="post" id="queEnrollform" enctype="multipart/form-data" >
         
         <div class="outer position-relative" >
@@ -90,8 +85,6 @@
 		                            	<option value="${c.cateNo}">${c.cateName}</option>
 		                        </c:if>
 		                    </c:forEach>
-		                    
-            
 		 </select>
 
                 <br>
@@ -119,12 +112,7 @@
         </div>
 </form>
 
-        
 	
-	
-   
-   
-   
    
    	<!-- footer.jsp include -->
 		<jsp:include page="../common/footer.jsp"/>
