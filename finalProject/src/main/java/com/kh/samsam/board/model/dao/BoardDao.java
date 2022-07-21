@@ -100,7 +100,7 @@ public class BoardDao {
 //	============ QNA ============
 	public int selectQnaListCount(SqlSessionTemplate sqlSession) {
 		
-		return sqlSession.selectOne("qnaMapper.selectQnaListCount");
+		return sqlSession.selectOne("boardMapper.selectQnaListCount");
 	}
 
 	public ArrayList<QnA> selectQnaList(SqlSessionTemplate sqlSession, PageInfo pi) {
@@ -110,15 +110,15 @@ public class BoardDao {
 		
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("qnaMapper.selectQnaList", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("boardMapper.selectQnaList", null, rowBounds);
 	}
 
 	public static QnA selectQnaa(SqlSessionTemplate sqlSession, int qno) {
-		return sqlSession.selectOne("qnaMapper.selectQna", qno);
+		return sqlSession.selectOne("boardMapper.selectQna", qno);
 	}
 
 	public int insertQnaAns(SqlSessionTemplate sqlSession, QnA q) {
-		return sqlSession.update("qnaMapper.insertQnaAns", q);
+		return sqlSession.update("boardMapper.insertQnaAns", q);
 	}
 	////QnA////
 	//전체 QnA 개수 구하기
@@ -137,7 +137,7 @@ public class BoardDao {
 		RowBounds rowBounds=new RowBounds(offset,limit);
 		
 				
-		return (ArrayList)sqlSession.selectList("boardMapper.selectQnaListView",null,rowBounds);
+		return (ArrayList)sqlSession.selectList("boardMapper.selectQnaList",null,rowBounds);
 	}
 
 

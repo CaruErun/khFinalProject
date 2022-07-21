@@ -254,36 +254,8 @@ public class BoardController {
 		}
 	
 		//=============================================================
-		// qna 목록 조회
-		@RequestMapping("qnaList.qa")
-		public String selectQnaList(@RequestParam(value="cpage", defaultValue="1") int currentPage, Model model) {
-			
-			int listCount = boardService.selectQnaListCount();
-			
-			int pageLimit = 10;
-			int boardLimit = 10;
-			
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-			ArrayList<QnA> list = boardService.selectQnaList(pi);
-			
-			model.addAttribute("list", list);
-			model.addAttribute("pi", pi);
-			
-			return "qna/qnaListView";
-		}
 		
-		// qna 상세 보기
-		@RequestMapping("detail.qa")
-		public ModelAndView selectQnaa(int qno, ModelAndView mv) {
-			
-			QnA q = boardService.selectQnaa(qno);
-				
-			mv.addObject("q", q);
-			mv.setViewName("qna/qnaDetailView");
-			return mv;
-		}
-		
-		// qna 등록
+		// qna 답변 등록
 		@RequestMapping("insert.ans")
 		public String insertNotice(
 									QnA q, 
@@ -294,7 +266,7 @@ public class BoardController {
 				
 				if(result>0) {
 					session.setAttribute("alertMsg", "QNA답변 등록 성공");
-					return "redirect:qnaList.qa";
+					return "redirect:qnaList.qu";
 					
 				}else {	// 실패
 					model.addAttribute("errorMsg", "QNA답변 등록 실패");
@@ -313,7 +285,7 @@ public class BoardController {
 			int listCount = service.selectListCount();
 			
 			int pageLimit = 10;
-			int boardLimit = 5;
+			int boardLimit = 10;
 			
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 			
@@ -322,7 +294,7 @@ public class BoardController {
 			model.addAttribute("list", list);
 			model.addAttribute("pi",pi);
 			
-			return "sim/qnaListView";
+			return "board/qnaListView";
 			
 		}
 		
@@ -335,7 +307,7 @@ public class BoardController {
 			
 			model.addAttribute("category", category); //<c:forEach var="c" items="${category }"> 여기 items에 키값(category)가 들어가야함!
 			
-			return "sim/qnaInsert";
+			return "board/qnaInsert";
 		}
 		
 		
@@ -364,7 +336,7 @@ public class BoardController {
 				//상세보기할 정보를 select로 조회 해오기
 				QnA q = service.selectQna(qNo);
 				
-				mv.addObject("q",q).setViewName("sim/qnaDetail");
+				mv.addObject("q",q).setViewName("board/qnaDetail");
 
 				return mv;
 		}
@@ -403,7 +375,7 @@ public class BoardController {
 			QnA q = service.selectQna(qNo);
 			
 			mv.addObject("q",q);
-			mv.setViewName("sim/qnaModi");
+			mv.setViewName("board/qnaModi");
 			return mv;
 		}
 		
