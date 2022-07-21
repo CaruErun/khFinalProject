@@ -28,12 +28,14 @@ public interface ProductService {
 	
 	int insertProduct(Product p);
 	ArrayList<Category> selectCategoryList(int categoryNo);
-	Object insertProductImages(ArrayList<ProductImages> list);
+	int insertProductImages(ArrayList<ProductImages> list);
 	
 	
 	int selectProListCount();
 	ArrayList<Product> selectProductList(PageInfo pi);
-
+	int increaseCount(int pNo);
+	Product selectProduct(int pNo);
+	ArrayList<ProductImages> selectImgList(int pNo);
 	
 	
 	

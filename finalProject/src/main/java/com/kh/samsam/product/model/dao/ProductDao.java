@@ -56,7 +56,7 @@ public class ProductDao {
 		return sqlSession.insert("productMapper.insertProduct",p);
 	}
 
-	public Object insertProductImages(SqlSessionTemplate sqlSession, ArrayList<ProductImages> list) {
+	public int insertProductImages(SqlSessionTemplate sqlSession, ArrayList<ProductImages> list) {
 		return sqlSession.insert("productMapper.insertProductImages",list);
 	}
 
@@ -71,6 +71,17 @@ public class ProductDao {
 			
 			RowBounds rowBounds = new RowBounds(offset,limit);
 		return (ArrayList)sqlSession.selectList("productMapper.selectProductList",null,rowBounds);
+	}
+	public int increaseCount(SqlSessionTemplate sqlSession, int pNo) {
+		return sqlSession.update("productMapper.increaseCount",pNo);
+	}
+
+	public Product selectProduct(SqlSessionTemplate sqlSession, int pNo) {
+		return sqlSession.selectOne("productMapper.selectProduct",pNo);
+	}
+
+	public ArrayList<ProductImages> selectImgList(SqlSessionTemplate sqlSession, int pNo) {
+		return (ArrayList)sqlSession.selectList("productMapper.selectImgList",pNo);
 	}
 
 

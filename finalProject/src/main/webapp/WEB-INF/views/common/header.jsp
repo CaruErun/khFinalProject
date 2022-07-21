@@ -31,7 +31,7 @@
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 
     
-  <%--    	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
+    <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
     <style>
       *{
@@ -120,7 +120,6 @@
     }
 
     </style>
-      	<%--        	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
 </head>
 <body>
@@ -174,8 +173,7 @@
         <div class="head-inner">
             <div class="h1">
 <!--                 <img src="#" alt=""> -->
-<!--                 <a href="#">samsam<br>Auction</a> -->
-            </div>
+			<a href="${pageContext.request.contextPath }">samsam<br>Auction</a>            </div>
             <div class="h2">
                 <ul class="header-nav">
                 
@@ -318,49 +316,5 @@
 
 </body>
 
-    <!-- Header-->
-    <div class="header">
-        <div class="head-inner">
-
-            <div class="h1">
-<!--                 <img src="#" alt=""> -->
-                <a href="${pageContext.request.contextPath }">samsam<br>Auction</a>
-            </div>
-            <div class="h2">
-                <ul class="header-nav">
-                    
-<!--                     <li><a href="#">신규경매</a></li> -->
-<!--                     <li><a href="#">마감임박경매</a></li> -->
-<!--                     <li><a href="#">카테고리</a></li> -->
-                    <li><a href="insertProductForm.pr">물품등록</a></li>
-                </ul>
-            </div>
-
-
-				<!-- 검색폼 -->
-				<div class="h3">
-					<form id="searchForm" action="search.Pr" method="post" align="center">
-						<div class="select">
-							<select class="custom-select" name="searchType">
-								<option value="sellId">작성자</option>
-								<option value="proTitle">제목</option>
-								<option value="proContent">내용</option>
-							</select>
-						</div>
-						
-						<div class="text">
-							<input type="text" class="form-control" name="searchKeyword">
-						</div>
-						
-						<button type="submit" class="searchBtn btn btn-secondary">검색</button>
-					</form>
-				</div>
-				
-				
-        </div>
-
-    </div>
-
-
-</body>
+   
 </html>
