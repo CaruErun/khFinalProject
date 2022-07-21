@@ -267,30 +267,6 @@ public class ProductController {
 
 
 
-	
-	
-	//검색
-	@GetMapping("/getSearchList")
-	@ResponseBody
-	public String getSearchList(Model model, Product p) {
-		
-		
-		 List<Product> proList =  productService.getSearchList(p);
-		 
-		model.addAttribute("proList",proList);
-
-		model.addAttribute("searchType",p.getSearchType());
-		model.addAttribute("searchKeyword",p.getSearchKeyword());
-//		model.addAttribute("p",p);
-		
-//		return productService.getSearchList(model);
-		return "sim/searchList";
-		
-	}
-	
-	
-	
-	
 	@ResponseBody
 	@RequestMapping(value="sale.me", produces="application/json; charset=UTF-8")
 	public String sale(String userId, int cPage) {
@@ -410,4 +386,33 @@ public class ProductController {
 		
 		return new Gson().toJson(ob);
 	}
+	
+//	================================================검색================================================
+	@GetMapping("getSearchList.pr")
+	@ResponseBody
+	public String getSearchList(Model model, Product p) {
+		
+		
+		 List<Product> proList =  productService.getSearchList(p);
+		 
+		model.addAttribute("proList",proList);
+
+		model.addAttribute("searchType",p.getSearchType());
+		model.addAttribute("searchKeyword",p.getSearchKeyword());
+		
+		return "product/searchList";
+		
+	}
+	
+	
+	
+//	================================================찜하기================================================
+	@RequestMapping("pickProduct.pr")
+	public String pickProduct(Product p) {
+		
+		
+		return "main";
+	}
+	
+	
 }

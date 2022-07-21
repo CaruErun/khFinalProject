@@ -27,8 +27,7 @@
 		<mapper resource="mappers/board-mapper.xml"/>
 		<mapper resource="mappers/report-mapper.xml"/>
 		<mapper resource="mappers/product-mapper.xml"/>
-		<mapper resource="/mappers/common-mapper.xml"/>
-
+		<mapper resource="mappers/common-mapper.xml"/>
 	</mappers>
 
 </configuration>

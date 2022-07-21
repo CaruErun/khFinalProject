@@ -507,7 +507,18 @@
                             </select>
                             <select name="proCateNo" id="se-list2" size="5" required>
                                 <option value="none" disabled>- 선택하세요 -</option>
-                              
+                              	<option value="110">TV</option>
+                              	<option value="120">에어컨</option>
+                              	<option value="130">전자레인지</option>
+                              	<option value="140">노트북</option>
+                              	<option value="210">밴드</option>
+                              	<option value="220">골프채</option>
+                              	<option value="230">축구화</option>
+                              	<option value="240">축구공</option>
+                              	<option value="310">햇반</option>
+                              	<option value="320">카레</option>
+                              	<option value="330">짜장</option>
+                              	<option value="340">하이라이스</option>
                             </select>
                         </div>
                     </div>

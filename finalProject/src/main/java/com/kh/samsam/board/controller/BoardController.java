@@ -253,7 +253,7 @@ public class BoardController {
 			return mv;
 		}
 	
-		//=============================================================
+//		================================================QnA================================================
 		
 		// qna 답변 등록
 		@RequestMapping("insert.ans")
@@ -285,7 +285,7 @@ public class BoardController {
 			int listCount = service.selectListCount();
 			
 			int pageLimit = 10;
-			int boardLimit = 10;
+			int boardLimit = 5;
 			
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 			
@@ -294,7 +294,7 @@ public class BoardController {
 			model.addAttribute("list", list);
 			model.addAttribute("pi",pi);
 			
-			return "board/qnaListView";
+			return "qna/qnaListView";
 			
 		}
 		
@@ -307,7 +307,7 @@ public class BoardController {
 			
 			model.addAttribute("category", category); //<c:forEach var="c" items="${category }"> 여기 items에 키값(category)가 들어가야함!
 			
-			return "board/qnaInsert";
+			return "qna/qnaInsert";
 		}
 		
 		
@@ -336,7 +336,7 @@ public class BoardController {
 				//상세보기할 정보를 select로 조회 해오기
 				QnA q = service.selectQna(qNo);
 				
-				mv.addObject("q",q).setViewName("board/qnaDetail");
+				mv.addObject("q",q).setViewName("qna/qnaDetail");
 
 				return mv;
 		}
@@ -375,7 +375,7 @@ public class BoardController {
 			QnA q = service.selectQna(qNo);
 			
 			mv.addObject("q",q);
-			mv.setViewName("board/qnaModi");
+			mv.setViewName("qna/qnaModi");
 			return mv;
 		}
 		

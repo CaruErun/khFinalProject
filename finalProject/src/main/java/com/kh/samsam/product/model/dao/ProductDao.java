@@ -75,13 +75,6 @@ public class ProductDao {
 
 
 	
-	//검색
-	public List<Product> getSearchList(SqlSessionTemplate sqlSession,Product p) {
-		return sqlSession.selectList("productMapper.getSearchList",p);
-	}
-	
-	
-	
 	public ArrayList<Product> selectList(SqlSessionTemplate sqlSession, PageInfo pi, String userId) {
 		// TODO Auto-generated method stub
 		
@@ -137,6 +130,12 @@ public class ProductDao {
 	}
 
 
+
+	
+	//검색
+	public List<Product> getSearchList(SqlSessionTemplate sqlSession,Product p) {
+		return sqlSession.selectList("productMapper.getSearchList",p);
+	}
 
 	
 	

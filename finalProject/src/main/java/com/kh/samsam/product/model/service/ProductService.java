@@ -36,9 +36,6 @@ public interface ProductService {
 
 	
 	
-	//검색
-	List<Product> getSearchList(Product p);
-	
 	
 //	//리스트 조회 해오기
 	ArrayList<Product> selectList(String userId, PageInfo pi);
@@ -60,4 +57,12 @@ public interface ProductService {
 
 	//운송장
 	int selectListCountt();
+	
+	
+
+	//검색
+	List<Product> getSearchList(Product p);
+
+	
+	
 }

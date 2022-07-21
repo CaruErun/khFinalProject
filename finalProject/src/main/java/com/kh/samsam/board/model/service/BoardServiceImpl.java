@@ -109,17 +109,17 @@ public class BoardServiceImpl implements BoardService{
 	
 
 //	============ QNA ============
-	@Override
-	public int selectQnaListCount() {
-		int listCount = boardDao.selectQnaListCount(sqlSession);
-		return listCount;
-	}
-
-	@Override
-	public ArrayList<QnA> selectQnaList(PageInfo pi) {
-		ArrayList<QnA> list = boardDao.selectQnaList(sqlSession, pi);
-		return list;
-	}
+//	@Override
+//	public int selectQnaListCount() {
+//		int listCount = boardDao.selectQnaListCount(sqlSession);
+//		return listCount;
+//	}
+//
+//	@Override
+//	public ArrayList<QnA> selectQnaList(PageInfo pi) {
+//		ArrayList<QnA> list = boardDao.selectQnaList(sqlSession, pi);
+//		return list;
+//	}
 
 	@Override
 	public QnA selectQnaa(int qno) {

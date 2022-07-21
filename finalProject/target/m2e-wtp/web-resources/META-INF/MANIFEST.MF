@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
+Built-By: sim51
+Build-Jdk: 1.8.0_332
+=======
 Built-By: up925
 Build-Jdk: 1.8.0_322
+>>>>>>> refs/remotes/origin/main
 Created-By: Maven Integration for Eclipse
 

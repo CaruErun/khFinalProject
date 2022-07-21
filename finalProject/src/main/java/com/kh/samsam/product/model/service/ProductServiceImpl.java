@@ -81,14 +81,6 @@ public class ProductServiceImpl implements ProductService{
 
 	
 	
-	
-	//검색
-	@Override
-	public List<Product> getSearchList(Product p) {
-		
-		return productDao.getSearchList(sqlSession,p);
-	}
-	
 	@Override
 	public ArrayList<Product> selectList(String userId, PageInfo pi) {
 		// TODO Auto-generated method stub
@@ -130,5 +122,15 @@ public class ProductServiceImpl implements ProductService{
 		// TODO Auto-generated method stub
 		return productDao.selectListCountt(sqlSession);
 	}
+	
+	
+
+	//검색
+	@Override
+	public List<Product> getSearchList(Product p) {
+		
+		return productDao.getSearchList(sqlSession,p);
+	}
+	
 
 }

@@ -148,13 +148,17 @@
         padding: 5px;
     }
     
-     #h_mark{
+    #h_mark{
         color: lightgray;
     }
 </style>
 <body>
 
 	<jsp:include page="common/header.jsp"/>
+
+
+
+
 
 	<!-- swiper -->
 	<div class="swiper-area" >
@@ -191,11 +195,6 @@
     </script>
 
 
-
-<a href="reportView.mem">신고하기</a> <br>
-<a href="qnaList.qu">QnA 목록</a> <br>
-<a href="pick.me">찜 목록</a> <br>
-	
 	<div class="see-all">
 	    <div>    
 	        <h2>마감임박경매</h2>
@@ -243,6 +242,7 @@
 	                    <p>입찰</p>
 	                    <p>10</p>
 	                </div>
+	                
 	                <div class="count-content">
 	                    <p>조회</p>
 	                    <p>150</p>
@@ -251,9 +251,12 @@
 	    </div>
 	    
 	    
+	    
+	    
+	    
 	    <!-- =======찜하기 버튼을 누를경우 이벤트 발생======= -->
 		<script type="text/javascript">
-		    $(document).ready(function() {
+		    $(function() {
 		        $('#h_mark').click(function(event) {
 		            event.preventDefault();
 		            // 비로그인 상태시 찜하기 버튼을 누르면
@@ -264,7 +267,7 @@
 		                }
 		            // 로그인 상태시 찜하기 버튼을 누르면    
 		             else {
-		                // 해당 멤버ID와 상품ID의 정보를 가져온다
+		                // 해당 멤버ID와 상품ID의 정보를 가져옴
 		                var userId = "${loginUser.userId}";
 		                var proNo = "${p.proNo}";
 		
@@ -275,20 +278,25 @@
 		                		userId : userId,
 		                		proNo : proNo,
 		                };
+		                
+		                
 		
 		                $.ajax({
 		                    type : "POST",
-		                    url : "${pageContext.request.contextPath}/product/{proNo}",
+		                    url : "pickProduct.pr",
 		                    cache : false,
 		                    contentType : 'application/json; charset=utf-8',
-		                    data : JSON.stringify(form),
+		                    data : JSON.stringify(form), //userId, proNo 담은 거!
 		                    success : function(result) {
 		                        console.log(result);
 		                        if (result == "SUCCESS") {
+		                        	 $('#h_mark').css("color","hotpink");
+		                        	 
 		                            console.log("찜 성공!")
+		                            
 		                            if (confirm("해당 상품을 찜하셨습니다. 목록 페이지로 이동하시겠습니까?")) {
 		                                // 승낙하면 마이페이지의 찜하기 리스트로 이동
-		                                location.href = '${pageContext.request.contextPath}/member/pickList';
+		                                location.href = '../member/pickList';
 		                            } else {
 		                                // 거부하면 해당 페이지 새로고침하여 찜한거 반영되게하기(HTTP의 속성 때문...)
 		                                location.reload();

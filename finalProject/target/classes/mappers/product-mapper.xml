@@ -178,6 +178,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND BID_NO IN(SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO) 
 	</select>
 	
+<<<<<<< HEAD
+
+
+
+	
+	
+=======
 	
 	<select id="selectListCount" resultType="_int" >
 		SELECT COUNT(*)
@@ -246,4 +253,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 
+>>>>>>> refs/remotes/origin/main
 </mapper>
