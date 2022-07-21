@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService{
 
 
 	@Override
-	public Object insertProductImages(ArrayList<ProductImages> list) {
+	public int insertProductImages(ArrayList<ProductImages> list) {
 		return productDao.insertProductImages(sqlSession,list);
 	}
 	
@@ -78,8 +78,28 @@ public class ProductServiceImpl implements ProductService{
 	public ArrayList<Product> selectProductList(PageInfo pi) {
 		return productDao.selectProductList(sqlSession,pi);
 	}
+	@Override
+	public int increaseCount(int pNo) {
+		// TODO Auto-generated method stub
+		return productDao.increaseCount(sqlSession, pNo);
+	}
 
-	
+
+
+	@Override
+	public Product selectProduct(int pNo) {
+		return productDao.selectProduct(sqlSession, pNo);
+	}
+
+
+
+	@Override
+	public ArrayList<ProductImages> selectImgList(int pNo) {
+		
+		return productDao.selectImgList(sqlSession,pNo);
+	}
+
+	//=======================
 	
 	@Override
 	public ArrayList<Product> selectList(String userId, PageInfo pi) {

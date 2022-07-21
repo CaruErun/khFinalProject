@@ -5,6 +5,8 @@
 
         <head>
             <meta charset="UTF-8">
+            <jsp:include page="../common/header.jsp" />
+
             <link 
                 rel="stylesheet" 
                 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
@@ -97,7 +99,7 @@
                 justify-content: space-between;
             }
 
-            #item-info>h5 {
+            #item-info>h6 {
                 padding-right: 5px;
                 padding-top: 10px;
             }
@@ -461,6 +463,9 @@
                 background-color: black;
                 color: white;
             }
+            button[type=button]{
+                border: 1px solid black;
+            }
 
             .black-area {
                 background-color: black;
@@ -484,7 +489,6 @@
         </style>
 
         <body>
-            <jsp:include page="../common/header.jsp" />
             <div class="enroll-area">
 
                 <h1>온라인 물품등록</h1>
@@ -507,18 +511,7 @@
                             </select>
                             <select name="proCateNo" id="se-list2" size="5" required>
                                 <option value="none" disabled>- 선택하세요 -</option>
-                              	<option value="110">TV</option>
-                              	<option value="120">에어컨</option>
-                              	<option value="130">전자레인지</option>
-                              	<option value="140">노트북</option>
-                              	<option value="210">밴드</option>
-                              	<option value="220">골프채</option>
-                              	<option value="230">축구화</option>
-                              	<option value="240">축구공</option>
-                              	<option value="310">햇반</option>
-                              	<option value="320">카레</option>
-                              	<option value="330">짜장</option>
-                              	<option value="340">하이라이스</option>
+                              
                             </select>
                         </div>
                     </div>
@@ -561,7 +554,7 @@
                     <div class="enroll-item">
                         <div id="item-info">
                             <h3>◆ 물품정보</h3>
-                            <h5>* 표시는 필수 항목입니다.</h5>
+                            <h6>* 표시는 필수 항목입니다.</h6>
                         </div>
                         <div class="item-title">
                             <div class="it-1 black-area">

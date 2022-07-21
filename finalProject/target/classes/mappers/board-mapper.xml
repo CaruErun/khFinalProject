@@ -125,7 +125,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--         ORDER BY RNUM DESC -->
 <!-- 	</select> -->
 
-<<<<<<< HEAD
 <!-- 	<select id="selectQna" resultMap="qnaResultSet"> -->
 <!--         SELECT QNA_NO, QNA_TITLE, CREATE_DATE, QNA_CONTENT, ANSWER_CONTENT, ANSWER_DATE, CATE_NAME AS QNA_CATE_NO -->
 <!-- 		FROM QNA Q -->
@@ -133,15 +132,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--         ON Q.QNA_CATE_NO = C.CATE_NO -->
 <!-- 		WHERE QNA_NO = #{qNo} -->
 <!-- 	</select> -->
-=======
-	<select id="selectQna" resultMap="qnaResultSet">
-        SELECT QNA_NO, QNA_TITLE, QNA_ID, CREATE_DATE, QNA_CONTENT, ANSWER_CONTENT, ANSWER_DATE, CATE_NAME AS QNA_CATE_NO
-		FROM QNA Q
-        JOIN CATEGORY C
-        ON Q.QNA_CATE_NO = C.CATE_NO
-		WHERE QNA_NO = #{qNo}
-	</select>
->>>>>>> refs/remotes/origin/main
 	
 	<update id="insertQnaAns">
 		UPDATE QNA

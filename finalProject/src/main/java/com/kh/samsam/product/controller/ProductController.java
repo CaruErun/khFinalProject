@@ -190,10 +190,10 @@ public class ProductController {
 		
 	}
 	@RequestMapping("insertProduct.pr")
-	public String insertProduct(Product p
+	public ModelAndView insertProduct(Product p
 								,MultipartFile[] upfile
 								,HttpSession session
-								,Model model) {
+								,ModelAndView mv) {
 		
 		System.out.println(p);
 	
@@ -216,10 +216,55 @@ public class ProductController {
 		
 		int result =productService.insertProduct(p);
 		if(result>0) {
-			productService.insertProductImages(list);
+			int result1 =productService.insertProductImages(list);
+			if(result1>0) {
+				session.setAttribute("alertMsg", "상품등록 성공");
+				mv.setViewName("redirect:productList.pr");
+			}else {
+				mv.addObject("errorMsg", "상품등록 실패");
+				mv.setViewName("common/errorPage");
+			}
+		}else {
+			mv.addObject("errorMsg", "상품등록 실패");
+			mv.setViewName("common/errorPage");
 		}
-	
-		return null;
+		return mv;
+	}
+	@RequestMapping("productList.pr")
+	public String selectList(
+						@RequestParam(value="cPage", defaultValue="1") int currentPage,
+						Model model
+					) {
+		
+		int listCount = productService.selectProListCount();
+		System.out.println(listCount);
+		int pageLimit =10;
+		int boardLimit = 20;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
+		ArrayList<Product> plist = productService.selectProductList(pi);
+		System.out.println(plist);
+		model.addAttribute("plist",plist);
+		model.addAttribute("pi",pi);
+		return "product/productListView";
+	}
+	@RequestMapping("productDetail.pr")
+	public String selectProduct(int pNo
+								,Model model) {
+		System.out.println(pNo);
+		
+		int result=productService.increaseCount(pNo);
+		if(result > 0) {
+			Product p =productService.selectProduct(pNo);
+			ArrayList<ProductImages> piList = productService.selectImgList(pNo);
+			model.addAttribute("p",p);
+			model.addAttribute("piList",piList);
+			return "product/productDetail";
+		}else {
+			model.addAttribute("errorMsg", "상품조회 실패");
+			return "common/errorPage";
+		}
 		
 	}
 	public String saveFile(MultipartFile upfile, HttpSession session) {
@@ -245,27 +290,7 @@ public class ProductController {
 		return changeName;
 	}	
 	
-	@RequestMapping("productList.pr")
-	public String selectList(
-						@RequestParam(value="cPage", defaultValue="1") int currentPage,
-						Model model
-					) {
-		
-		int listCount = productService.selectProListCount();
-		System.out.println(listCount);
-		int pageLimit =10;
-		int boardLimit = 20;
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		
-		ArrayList<Product> plist = productService.selectProductList(pi);
-		
-		model.addAttribute("plist",plist);
-		model.addAttribute("pi",pi);
-		return "product/productListView";
-	}
-
-
+	
 
 	@ResponseBody
 	@RequestMapping(value="sale.me", produces="application/json; charset=UTF-8")
