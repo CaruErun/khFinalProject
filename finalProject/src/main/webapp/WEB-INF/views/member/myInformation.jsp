@@ -13,7 +13,7 @@
 <style>
 div{
     box-sizing: border-box;
-/* border: 1px solid red */
+/*   border: 1px solid red */
 }
 .wrap{
     width: 1000px;
@@ -23,8 +23,13 @@ div{
 .wrap>div{ 
     width: 100%;
 }
-#header,#footer{
+#header{
     height: 20%;
+}
+#footer{
+ height: 300px;
+ padding-top :300px;
+
 }
 
 #content>div{
@@ -229,7 +234,7 @@ border-radius: 4px;
 
 <jsp:include page="../common/header.jsp"/>
 
-<br><br><br><br>
+<br><br><br>
 
     <div class="wrap">
                 <form action="update.me" method="post">
@@ -292,7 +297,7 @@ border-radius: 4px;
 		}
 		
 		function backbackback(){
-			location.href="myPageSuccess.me"
+			location.href="myPageSale.me"
 		}
     </script>
     

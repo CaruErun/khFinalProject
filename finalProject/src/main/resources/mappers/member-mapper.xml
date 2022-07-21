@@ -78,36 +78,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              )
   </insert>
   
-  <select id="emailFirst" resultType="String">
-  	SELECT SUBSTR(EMAIL,1,INSTR(EMAIL,'@')-1) AS EMAIL_FIRST
-	FROM MEMBER
-	WHERE USER_ID = #{userId}
-  </select>
-  
-  <select id="emailBack" resultType="String">
- 	SELECT SUBSTR(EMAIL,INSTR(EMAIL,'@')+1) AS EMAIL_BACK
-	FROM MEMBER
-	WHERE USER_ID = #{userId}
-  </select>
-  
-  <select id="phoneFirst" resultType="String">
-  	SELECT SUBSTR(PHONE,1,INSTR(PHONE,'-')-1) AS PHONE_FIRST
-	FROM MEMBER
-	WHERE USER_ID = #{userId}
-  </select>
-  
-  <select id="phoneMiddle" resultType="String">
-  	SELECT SUBSTR(PHONE,5,INSTR(PHONE,'-')) AS PHONE_MIDDLE
-	FROM MEMBER
-	WHERE USER_ID = #{userId}
-  </select>
-  
-  <select id="phoneBack" resultType="String">
-  	SELECT SUBSTR(PHONE,10,INSTR(PHONE,'-')+1) AS PHONE_BACK
-	FROM MEMBER
-	WHERE USER_ID = #{userId}
-  </select>
-  
   <select id="pwdChange" parameterType="member">
   	UPDATE  MEMBER
 	SET USER_PW = #{newPwd}

@@ -207,26 +207,23 @@ public class MemberController {
 		String newPwd = m.getNewPwd();
 		String newPwdCheck = m.getNewPwdCheck();
 		
-		String encPwd = bcryptPasswordEncoder.encode(m.getUserPw());
-		
-//		if(userPw!=null && userPwd!=null && !userPw.equals(userPwd)) {
-			
-			if(!bcryptPasswordEncoder.matches(userPwd,encPwd)) {
+			if(!bcryptPasswordEncoder.matches(userPwd,userPw)) {
 				
-//			if(bcryptPasswordEncoder.matches(userPw, encPwd)) {
-			
 			session.setAttribute("alertMsg", "이전 비밀번호와 동일하지 않습니다.");
 			
 			return "member/changePassword" ;
 		}else {
 			
+			String encPwd = bcryptPasswordEncoder.encode(m.getNewPwd());
+			
+			m.setNewPwd(encPwd);
+			m.setUserId(userId);
+			
 			int result = memberService.pwdChange(m);
 			
-//			if(newPwd!=null && newPwdCheck!=null && newPwd.equals(newPwdCheck)) {
-			if(bcryptPasswordEncoder.matches(userPwd,encPwd)) {
+			if(newPwd!=null && newPwdCheck!=null && newPwd.equals(newPwdCheck)) {
 				
 				Member updatePwd = memberService.loginMember(m);
-				
 				session.setAttribute("loginUser", updatePwd);
 				
 				session.setAttribute("alertMsg", "비밀번호가 변경되었습니다");
@@ -280,19 +277,20 @@ public class MemberController {
 				
 				String userPwd = m.getUserPwd();
 				
-				
 				//비밀번호가 일치할 경우 - 탈퇴 처리
-				if(userPw!=null && userPwd!=null && userPw.equals(userPwd)) {
+					if(bcryptPasswordEncoder.matches(userPwd,userPw)) {
+						
+						m.setUserId(userId);
+						
 					int result = memberService.deleteMember(userId);
-					
 					
 					if(result>0) {
 						//탈퇴성공 - session에 등록된 loginUser정보 삭제(로그아웃)
 						session.removeAttribute("loginUser");
 						
-						session.setAttribute("alertMsg", "만나서 즐거웠고 다신보지말자");
+						session.setAttribute("alertMsg", "잘가~");
 						
-						return "redirect:myPageSuccess.me"; //메인으로 갈 예정 
+						return "redirect:/";
 						
 					}else {
 						//탈퇴실패
@@ -304,7 +302,6 @@ public class MemberController {
 					session.setAttribute("alertMsg", "비밀번호를 잘못입력하셨습니다.");
 					return "common/errorPage";
 				}
-			
 	}
 	
 	
@@ -313,16 +310,10 @@ public class MemberController {
 	      return "member/myPageSuccess";
 	   }
 	
-	
-	
-	
-	
 	@RequestMapping("changePwd.me")
 	   public String changePassword() {
 	      return "member/changePassword";
 	   }
-	
-	
 	
 	@RequestMapping("pick.me")
 	   public String interestItem() {

@@ -124,6 +124,15 @@
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
 </head>
 <body>
+
+<c:if test="${ not empty alertMsg }">
+<script>
+	alert("${alertMsg}");
+</script>
+<c:remove var="alertMsg" scope="session"/>
+</c:if>
+
+
 	<div class="menubar">
     <!-- Navigation-->
     <div class="navbar">
