@@ -120,7 +120,7 @@
     }
 
     </style>
-<%--        	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
+       	<%--        	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
 </head>
 <body>
@@ -130,9 +130,9 @@
         <div id="clock" style="color:black"></div>
         <div>
             <ul class="nav-list">
-             	<c:choose>
+             <c:choose>
 				    <c:when test="${ empty loginUser }">
-		                <li><a href="#!">samsam은 처음이신가요?</a></li>
+  <li><a href="#!">samsam은 처음이신가요?</a></li>
 		                <li><a data-toggle="modal" data-target="#login_modal2">로그인</a></li>
 		                <li><a href="enrollForm.me">회원가입</a></li>
 		                <li><a href="noticeList.no">고객센터</a></li>
@@ -173,15 +173,15 @@
     <div class="header">
         <div class="head-inner">
             <div class="h1">
-                <img src="#" alt="">
-                <a href="#">samsam<br>Auction</a>
+<!--                 <img src="#" alt=""> -->
+<!--                 <a href="#">samsam<br>Auction</a> -->
             </div>
             <div class="h2">
                 <ul class="header-nav">
                 
-                    <li><a href="#">신규경매</a></li>
-                    <li><a href="#">마감임박경매</a></li>
-                    <li><a href="#">카테고리</a></li>
+<!--                     <li><a href="#">신규경매</a></li> -->
+<!--                     <li><a href="#">마감임박경매</a></li> -->
+<!--                     <li><a href="#">카테고리</a></li> -->
                     <li><a href="insertProductForm.pr">물품등록</a></li>
                 
                 </ul>
@@ -301,9 +301,6 @@
         let userID = $("#user-id").val();
         if (userID =="") {
         	$(".info-error").show();
-        	<!--
-        	$(".id-error").show();
-          $(".error-line").show(); -->
           $("#user-id").css("border", "2px solid #F4492E");
         } else {
           
@@ -326,15 +323,15 @@
         <div class="head-inner">
 
             <div class="h1">
-                <img src="#" alt="">
+<!--                 <img src="#" alt=""> -->
                 <a href="${pageContext.request.contextPath }">samsam<br>Auction</a>
             </div>
             <div class="h2">
                 <ul class="header-nav">
                     
-                    <li><a href="#">신규경매</a></li>
-                    <li><a href="#">마감임박경매</a></li>
-                    <li><a href="#">카테고리</a></li>
+<!--                     <li><a href="#">신규경매</a></li> -->
+<!--                     <li><a href="#">마감임박경매</a></li> -->
+<!--                     <li><a href="#">카테고리</a></li> -->
                     <li><a href="insertProductForm.pr">물품등록</a></li>
                 </ul>
             </div>
@@ -361,7 +358,6 @@
         </div>
 
     </div>
-</div>
 
 
 </body>

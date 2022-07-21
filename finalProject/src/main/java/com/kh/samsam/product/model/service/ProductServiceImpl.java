@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.samsam.common.model.vo.Category;
-import com.kh.samsam.product.model.vo.Product;
+import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.product.model.dao.ProductDao;
+import com.kh.samsam.product.model.vo.Bid;
+import com.kh.samsam.product.model.vo.Postbox;
+import com.kh.samsam.product.model.vo.Product;
 import com.kh.samsam.product.model.vo.ProductChart;
 import com.kh.samsam.product.model.vo.ProductImages;
 
@@ -63,11 +66,69 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.insertProductImages(sqlSession,list);
 	}
 	
+	
+	@Override
+	public int selectProListCount() {
+		return productDao.selectProListCount(sqlSession);
+	}
+
+
+
+	@Override
+	public ArrayList<Product> selectProductList(PageInfo pi) {
+		return productDao.selectProductList(sqlSession,pi);
+	}
+
+	
+	
+	
 	//검색
 	@Override
 	public List<Product> getSearchList(Product p) {
 		
 		return productDao.getSearchList(sqlSession,p);
+	}
+	
+	@Override
+	public ArrayList<Product> selectList(String userId, PageInfo pi) {
+		// TODO Auto-generated method stub
+		return productDao.selectList(sqlSession,pi,userId);
+	}
+
+	@Override
+	public int postInsert(Postbox p) {
+		// TODO Auto-generated method stub
+		return productDao.postInsert(sqlSession,p);
+	}
+
+	@Override
+	public ArrayList<Postbox> selectListPost(String userId, PageInfo pi) {
+		// TODO Auto-generated method stub
+		return productDao.selectListPost(sqlSession,pi,userId);
+	}
+
+	@Override
+	public ArrayList<Bid> selectListAttend(String userId, PageInfo pi) {
+		// TODO Auto-generated method stub
+		return productDao.selectListAttend(sqlSession,pi,userId);
+	}
+
+	@Override
+	public ArrayList<Bid> selectListBid(String userId, PageInfo pi) {
+		// TODO Auto-generated method stub
+		return productDao.selectListBid(sqlSession,pi,userId);
+	}
+
+	@Override
+	public int selectListCount() {
+		// TODO Auto-generated method stub
+		return productDao.selectListCount(sqlSession);
+	}
+
+	@Override
+	public int selectListCountt() {
+		// TODO Auto-generated method stub
+		return productDao.selectListCountt(sqlSession);
 	}
 
 }
