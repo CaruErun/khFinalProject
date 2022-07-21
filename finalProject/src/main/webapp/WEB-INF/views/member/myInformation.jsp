@@ -9,8 +9,188 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나의 정보</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="resources/css/myInformation.css">
     
+<style>
+div{
+    box-sizing: border-box;
+/* border: 1px solid red */
+}
+.wrap{
+    width: 1000px;
+    height: 500px;
+    margin: auto;
+}
+.wrap>div{ 
+    width: 100%;
+}
+#header,#footer{
+    height: 20%;
+}
+
+#content>div{
+    height: 100%;
+    float: left;
+}
+#title{
+    height: 100%;
+    font-family: "Malgun Gothic";
+    font-size: 25px;
+    font-weight: 700;
+    padding-bottom: 50px;
+    padding-top: 35px;
+}
+#content{
+    height: 60%;
+    
+}
+#content1{
+    float: left;
+    width:12%;
+}
+#content2{
+    float: left;
+    width:88%;
+}
+#content_1_1{
+    height: 42px;
+    padding-top: 8%;
+    text-align: center;
+    background-color: #efefef;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+    font-family: "Malgun Gothic";
+}
+#content_1_2{
+    height: 42px;
+    padding-top: 8%;
+    text-align: center;
+    background-color: #efefef;
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+    font-family: "Malgun Gothic";
+}
+#content_1_3{
+    height: 42px;
+    padding-top: 8%;
+    text-align: center;
+    background-color: #efefef;
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+    font-family: "Malgun Gothic";
+    
+}
+#content_1_4{
+    height: 84px;
+    padding-top: 25%;
+    text-align: center;
+    background-color: #efefef;
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+    font-family: "Malgun Gothic";
+}
+#content_1_5{
+    height: 50px;
+    padding-top: 10%;
+    text-align: center;
+    background-color: #efefef;
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+    font-family: "Malgun Gothic";
+}
+#content_2_1{
+    height: 42px;
+    padding-top: 0.8%;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+}
+#content_2_2{
+    height: 42px;
+    padding-top: 1%;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+    
+}
+#content_2_3{
+    height: 42px;
+    padding-top: 0.8%;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+}
+#content_2_4{
+    height: 42px;
+    padding-top: 0.8%;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+}
+#content_2_5{
+    height: 42px;
+    padding-top: 0.8%;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+}
+#content_2_6{
+    height: 50px;
+    padding-top: 1.2%;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+}
+/* #content_2_7{ */
+/*     height: 42px; */
+/*     padding-top: 0.8%; */
+/*     border-bottom: 1px solid gray; */
+/*     font-family: "Malgun Gothic"; */
+/* } */
+.email_1{
+    width: 80px;
+    height: 20px;
+}
+.email_2{
+    width: 160px;
+    height: 20px;
+}
+.btn{
+    border-radius: 5px;
+    background-color: rgb(134,134,134);
+    color: white;
+    border: 0px;
+    height: 25px;
+}
+.btn2{
+    border-radius: 4px;
+    border: 0px;
+    height: 25px;
+    background-color: rgb(134,134,134);
+    color: white;
+    width: 70px;
+    height: 30px;
+    text-align: center;
+    margin-left: 400px;
+}
+.btn3{
+    border-radius: 4px;
+    border: 0px;
+    height: 25px;
+    background-color: black;
+    color: white;
+    width: 70px;
+    height: 30px;
+}
+.btn4{
+    border-radius: 4px;
+    border: 0px;
+    height: 25px;
+    background-color: #efefef;
+    color: dimgrey;
+    width: 70px;
+    height: 30px;
+}
+
+
+
+
+</style>
 </head>
 <body>
 
@@ -23,11 +203,11 @@
 
 
     <div class="wrap">
-        <div id="header">
-            <div id="title">나의정보</div>
-        </div>
-        <div id="content">
-                <form action="update.me">
+         <form action="update.me" method="post">
+			        <div id="header">
+			            <div id="title">나의정보</div>
+			        </div>
+			        <div id="content">
                     <div id="content1">
                         <div id="content_1_1">아이디</div>
                         <div id="content_1_2">이름</div>
@@ -36,19 +216,20 @@
                         <div id="content_1_5">휴대폰 번호</div>
                     </div>
                     <div id="content2">
+                    <input type="hidden" value="${loginUser.userId}">
                         <div id="content_2_1">&nbsp&nbsp&nbsp&nbsp ${loginUser.userId}
                             &nbsp&nbsp<button  type="button" class="btn" onclick="pwdChange()">비밀번호변경</button>
                         </div>
                         <div id="content_2_2">&nbsp&nbsp&nbsp&nbsp ${loginUser.userName}</div>
                         <div id="content_2_3">
-                            &nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" class="email_1" id="" value="${loginUser.emailFirst}" name="emailFirst"> @ <input type="text" id="emailback" class="email_1" value="${loginUser.emailBack}" name="emailBack"> 
-                            <select style="width: 100px;" id="site">
-                                <option value="0">선택하세요</option>
-                                <option value="naver.com">naver.com</option>
-                                <option value="daum.com">daum.com</option>
-                                <option value="nate.com">nate.com</option>
-                                <option value="gmail.com">gmail.com</option>
-                            </select>
+                            &nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" class="" id="emailthis" value="${loginUser.email}" name="email">  
+<!--                             <select style="width: 100px;" id="site"> -->
+<!--                                 <option value="0">선택하세요</option> -->
+<!--                                 <option value="naver.com">naver.com</option> -->
+<!--                                 <option value="daum.com">daum.com</option> -->
+<!--                                 <option value="nate.com">nate.com</option> -->
+<!--                                 <option value="gmail.com">gmail.com</option> -->
+<!--                             </select> -->
                         </div>
                         <div id="content_2_4">
                             &nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="address_kakao" name="addressNum" class="email_1" value="${loginUser.addressNum }">
@@ -59,25 +240,7 @@
                         </div>
                         <div id="content_2_6">
                         &nbsp&nbsp&nbsp&nbsp&nbsp<input id="phone" type="text" name="phone" value="${loginUser.phone }"title="전화번호 입력" required/>
-                        <button type="button" id="phoneChk" class="btn">인증번호 보내기</button><br>
-<!-- 						<span id="phoneChk" class="btn">인증번호 보내기</span><br/> -->
-						&nbsp&nbsp&nbsp&nbsp&nbsp<input id="phone2" type="text" name="phone2" title="인증번호 입력" disabled required/>
-<!-- 						<span id="phoneChk2" class="btn">본인인증</span> -->
-						<button type="button" id="phoneChk2" class="btn">본인인증</button>
-						<span class="point successPhoneChk">휴대폰 번호 입력후 인증번호 보내기를 해주십시오.</span>
-						<input type="hidden" id="phoneDoubleChk"/><br>
-						&nbsp&nbsp&nbsp&nbsp <span class="tip" style="color:midnightblue">
-						따로 저장되지 않습니다.(번호만 입력해주세요.)
-						</span>
 						</div>
-<!--                        <div id="content_2_6"> -->
-<!--                             &nbsp&nbsp&nbsp&nbsp <input type="text" class="email_2" id="phone" value="" name="phone" title="전화번호 입력" required>  -->
-<!--                             &nbsp&nbsp<button class="btn" id="phoneChk">휴대폰번호변경</button><br> -->
-<!--                         </div> -->
-<!--                         <div id="content_2_7"> -->
-<!--                             &nbsp&nbsp&nbsp&nbsp&nbsp<input id="phone2" type="text" name="phone2" title="인증번호 입력" disabled required/> -->
-<!--                             <span class="point successPhoneChk">휴대폰 번호 입력후 인증번호 보내기를 해주십시오.</span> -->
-<!--                         </div> -->
                     </div>
         </div>
         <div id="footer">
@@ -85,7 +248,8 @@
             <button type="button" class="btn3" onclick="deleteMe()">탈퇴</button>
             <button type="button" class="btn4" onclick="backbackback()">취소</button>
         </div>
-                </form>
+
+		</form>
     </div>
     
     <script>

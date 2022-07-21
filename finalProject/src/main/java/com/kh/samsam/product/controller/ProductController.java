@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.samsam.common.model.vo.Category;
+import com.kh.samsam.member.model.vo.Postbox;
 import com.kh.samsam.product.model.service.ProductService;
 import com.kh.samsam.product.model.vo.Product;
 import com.kh.samsam.product.model.vo.ProductChart;
@@ -180,6 +181,8 @@ public class ProductController {
 		return new Gson().toJson(cateList);
 		
 	}
+	
+	
 	@RequestMapping("insertProduct.pr")
 	public String insertProduct(Product p
 								,MultipartFile[] upfile
@@ -239,8 +242,8 @@ public class ProductController {
 	
 	
 	
-	//검색
-	@GetMapping("/getSearchList")
+//	================================================검색================================================
+	@GetMapping("getSearchList.pr")
 	@ResponseBody
 	public String getSearchList(Model model, Product p) {
 		
@@ -252,7 +255,22 @@ public class ProductController {
 		model.addAttribute("searchType",p.getSearchType());
 		model.addAttribute("searchKeyword",p.getSearchKeyword());
 		
-		return "sim/searchList";
+		return "product/searchList";
 		
 	}
+	
+	
+	
+//	================================================찜하기================================================
+	@RequestMapping("pickProduct.pr")
+	public String pickProduct(Product p) {
+		
+		
+		return "main";
+	}
+	
+	
+	
+
+
 }

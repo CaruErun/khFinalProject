@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.samsam.common.model.vo.Category;
+import com.kh.samsam.member.model.vo.Postbox;
 import com.kh.samsam.product.model.vo.Product;
 import com.kh.samsam.product.model.vo.ProductChart;
 import com.kh.samsam.product.model.vo.ProductImages;
@@ -63,6 +64,10 @@ public class ProductDao {
 	public List<Product> getSearchList(SqlSessionTemplate sqlSession,Product p) {
 		return sqlSession.selectList("productMapper.getSearchList",p);
 	}
+
+	
+	
+
 
 	
 	

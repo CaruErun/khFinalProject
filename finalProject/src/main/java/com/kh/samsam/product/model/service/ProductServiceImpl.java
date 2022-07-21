@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.samsam.common.model.vo.Category;
+import com.kh.samsam.member.model.vo.Postbox;
 import com.kh.samsam.product.model.vo.Product;
 import com.kh.samsam.product.model.dao.ProductDao;
 import com.kh.samsam.product.model.vo.ProductChart;
@@ -70,4 +71,7 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.getSearchList(sqlSession,p);
 	}
 
+	
+
+	
 }

@@ -81,37 +81,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   <select id="emailFirst" resultType="String">
   	SELECT SUBSTR(EMAIL,1,INSTR(EMAIL,'@')-1) AS EMAIL_FIRST
 	FROM MEMBER
-	WHERE USER_ID = 'admin'
+	WHERE USER_ID = #{userId}
   </select>
   
   <select id="emailBack" resultType="String">
  	SELECT SUBSTR(EMAIL,INSTR(EMAIL,'@')+1) AS EMAIL_BACK
 	FROM MEMBER
-	WHERE USER_ID = 'admin'
+	WHERE USER_ID = #{userId}
   </select>
   
   <select id="phoneFirst" resultType="String">
   	SELECT SUBSTR(PHONE,1,INSTR(PHONE,'-')-1) AS PHONE_FIRST
 	FROM MEMBER
-	WHERE USER_ID = 'admin'
+	WHERE USER_ID = #{userId}
   </select>
   
   <select id="phoneMiddle" resultType="String">
   	SELECT SUBSTR(PHONE,5,INSTR(PHONE,'-')) AS PHONE_MIDDLE
 	FROM MEMBER
-	WHERE USER_ID = 'admin'
+	WHERE USER_ID = #{userId}
   </select>
   
   <select id="phoneBack" resultType="String">
   	SELECT SUBSTR(PHONE,10,INSTR(PHONE,'-')+1) AS PHONE_BACK
 	FROM MEMBER
-	WHERE USER_ID = 'admin'
+	WHERE USER_ID = #{userId}
   </select>
   
   <select id="pwdChange" parameterType="Member">
   	UPDATE  MEMBER
 	SET USER_PW = #{newPwd}
-	WHERE USER_ID = 'admin'
+	WHERE USER_ID = #{userId}
   </select>
   
   <update id="updateMember" parameterType="Member">
@@ -121,20 +121,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  		ADDRESS= #{address},
 	  		ADDRESS_NUM = #{addressNum},
 	  		ADDRESS_DETAIL = #{addressDetail}
-	  	WHERE USER_ID = 'admin'
+	  	WHERE USER_ID = #{userId}
   </update>
   
    <update id="deleteMember" parameterType="String">
 		UPDATE MEMBER 
 		SET USER_STATUS = 'N'
-		WHERE USER_ID = 'admin'
+		WHERE USER_ID = #{userId}
 	</update>
 	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM PRODUCT
 		WHERE PRO_STATUS='Y'
-		AND SELL_ID='admin'
+		AND SELL_ID=#{userId}
 	
 	</select>
 	
@@ -159,7 +159,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectList" resultMap="productResultSet">
 		SELECT PRO_CATE_NO,PRO_TITLE,PRO_PRICE,COUNT,PRO_STATUS
 		FROM PRODUCT
-		WHERE SELL_ID= 'admin' <!-- ${buyId} -->
+		WHERE SELL_ID= #{userId} <!-- ${buyId} -->
 		AND PRO_STATUS = 'Y'
 	</select>
 	
@@ -197,7 +197,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT PRO_CATE_NO,BUYER_ID,PRO_TITLE,BID_PRICE,BID_STATUS
 		FROM BID B
 		JOIN PRODUCT USING (PRO_NO)
-		WHERE BUYER_ID = 'admin'
+		WHERE BUYER_ID = #{userId}
 	</select>
 	
 	<select id="selectListBid" resultMap="BidResultSet"> 

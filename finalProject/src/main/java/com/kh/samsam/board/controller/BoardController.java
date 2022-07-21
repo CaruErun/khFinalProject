@@ -253,37 +253,37 @@ public class BoardController {
 			return mv;
 		}
 	
-		//=============================================================
-		// qna 목록 조회
-		@RequestMapping("qnaList.qa")
-		public String selectQnaList(@RequestParam(value="cpage", defaultValue="1") int currentPage, Model model) {
-			
-			int listCount = boardService.selectQnaListCount();
-			
-			int pageLimit = 10;
-			int boardLimit = 10;
-			
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-			ArrayList<QnA> list = boardService.selectQnaList(pi);
-			
-			model.addAttribute("list", list);
-			model.addAttribute("pi", pi);
-			
-			return "qna/qnaListView";
-		}
+//		================================================QnA================================================
+//		// qna 목록 조회
+//		@RequestMapping("qnaList.qa")
+//		public String selectQnaList(@RequestParam(value="cpage", defaultValue="1") int currentPage, Model model) {
+//			
+//			int listCount = boardService.selectQnaListCount();
+//			
+//			int pageLimit = 10;
+//			int boardLimit = 10;
+//			
+//			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+//			ArrayList<QnA> list = boardService.selectQnaList(pi);
+//			
+//			model.addAttribute("list", list);
+//			model.addAttribute("pi", pi);
+//			
+//			return "qna/qnaListView";
+//		}
+//		
+//		// qna 상세 보기
+//		@RequestMapping("detail.qa")
+//		public ModelAndView selectQnaa(int qno, ModelAndView mv) {
+//			
+//			QnA q = boardService.selectQnaa(qno);
+//				
+//			mv.addObject("q", q);
+//			mv.setViewName("qna/qnaDetailView");
+//			return mv;
+//		}
 		
-		// qna 상세 보기
-		@RequestMapping("detail.qa")
-		public ModelAndView selectQnaa(int qno, ModelAndView mv) {
-			
-			QnA q = boardService.selectQnaa(qno);
-				
-			mv.addObject("q", q);
-			mv.setViewName("qna/qnaDetailView");
-			return mv;
-		}
-		
-		// qna 등록
+		// qna 답변 등록
 		@RequestMapping("insert.ans")
 		public String insertNotice(
 									QnA q, 
@@ -322,7 +322,7 @@ public class BoardController {
 			model.addAttribute("list", list);
 			model.addAttribute("pi",pi);
 			
-			return "sim/qnaListView";
+			return "qna/qnaListView";
 			
 		}
 		
@@ -335,7 +335,7 @@ public class BoardController {
 			
 			model.addAttribute("category", category); //<c:forEach var="c" items="${category }"> 여기 items에 키값(category)가 들어가야함!
 			
-			return "sim/qnaInsert";
+			return "qna/qnaInsert";
 		}
 		
 		
@@ -364,7 +364,7 @@ public class BoardController {
 				//상세보기할 정보를 select로 조회 해오기
 				QnA q = service.selectQna(qNo);
 				
-				mv.addObject("q",q).setViewName("sim/qnaDetail");
+				mv.addObject("q",q).setViewName("qna/qnaDetail");
 
 				return mv;
 		}
@@ -403,7 +403,7 @@ public class BoardController {
 			QnA q = service.selectQna(qNo);
 			
 			mv.addObject("q",q);
-			mv.setViewName("sim/qnaModi");
+			mv.setViewName("qna/qnaModi");
 			return mv;
 		}
 		

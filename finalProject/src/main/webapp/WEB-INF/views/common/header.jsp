@@ -13,7 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 
- <!-- 부트스트랩에서 제공하고 있는 스타일 -->
+	<!-- 부트스트랩에서 제공하고 있는 스타일 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -124,6 +124,16 @@
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
 </head>
 <body>
+
+	<c:if test="${not empty alertMsg }">
+		<script>
+			alertify.alert("${alertMsg}");
+		</script>
+<!-- 	alertMsg를 계속 갖고 있으면 안되니까 지워줘 -->
+		<c:remove var="alertMsg" scope="session"/>
+	</c:if>
+	
+	
 	<div class="menubar">
     <!-- Navigation-->
     <div class="navbar">
@@ -132,10 +142,10 @@
             <ul class="nav-list">
              <c:choose>
 				    <c:when test="${ empty loginUser }">
-                <li><a href="#!">samsam은 처음이신가요?</a></li>
+<!--                 <li><a href="#!">samsam은 처음이신가요?</a></li> -->
                 <li><a data-toggle="modal" data-target="#login_modal2">로그인</a></li>
                 <li><a href="enrollForm.me">회원가입</a></li>
-                <li><a href="#">고객센터</a></li>
+<!--                 <li><a href="#">고객센터</a></li> -->
                   </c:when>      
                   <c:otherwise>
 	               		<!-- 로그인 후 -->
@@ -163,15 +173,15 @@
     <div class="header">
         <div class="head-inner">
             <div class="h1">
-                <img src="#" alt="">
-                <a href="#">samsam<br>Auction</a>
+<!--                 <img src="#" alt=""> -->
+<!--                 <a href="#">samsam<br>Auction</a> -->
             </div>
             <div class="h2">
                 <ul class="header-nav">
                 
-                    <li><a href="#">신규경매</a></li>
-                    <li><a href="#">마감임박경매</a></li>
-                    <li><a href="#">카테고리</a></li>
+<!--                     <li><a href="#">신규경매</a></li> -->
+<!--                     <li><a href="#">마감임박경매</a></li> -->
+<!--                     <li><a href="#">카테고리</a></li> -->
                     <li><a href="insertProductForm.pr">물품등록</a></li>
                 
                 </ul>
@@ -316,23 +326,29 @@
         <div class="head-inner">
 
             <div class="h1">
-                <img src="#" alt="">
+<!--                 <img src="#" alt=""> -->
                 <a href="${pageContext.request.contextPath }">samsam<br>Auction</a>
             </div>
             <div class="h2">
                 <ul class="header-nav">
                     
-                    <li><a href="#">신규경매</a></li>
-                    <li><a href="#">마감임박경매</a></li>
-                    <li><a href="#">카테고리</a></li>
+<!--                     <li><a href="#">신규경매</a></li> -->
+<!--                     <li><a href="#">마감임박경매</a></li> -->
+<!--                     <li><a href="#">카테고리</a></li> -->
                     <li><a href="insertProductForm.pr">물품등록</a></li>
                 </ul>
             </div>
 
 
+
+
+
+
+
 				<!-- 검색폼 -->
 				<div class="h3">
-					<form id="searchForm" action="" method="get" align="center">
+					<form id="searchForm" action="search.Pr" method="post" align="center">
+					
 						<div class="select">
 							<select class="custom-select" name="searchType">
 								<option value="sellId">작성자</option>
@@ -340,9 +356,11 @@
 								<option value="proContent">내용</option>
 							</select>
 						</div>
+						
 						<div class="text">
 							<input type="text" class="form-control" name="searchKeyword">
 						</div>
+						
 						<button type="submit" class="searchBtn btn btn-secondary">검색</button>
 					</form>
 				</div>
@@ -351,7 +369,6 @@
         </div>
 
     </div>
-</div>
 
 
 </body>

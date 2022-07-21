@@ -11,12 +11,6 @@
 </head>
 <body>
 
-<c:if test="${ not empty alertMsg }">
-<script>
-	alert("${alertMsg}");
-</script>
-<c:remove var="alertMsg" scope="session"/>
-</c:if>
 
     <div class="wrap">
         <div id="header">
@@ -48,13 +42,13 @@
                             <input type="hidden" name="userId">
                         </div> 
                     </div>
-        </div>
-        <div id="footer">
-            <div id="footer_1">
-                <input type="submit" id="" class="btn3" value="등록">
-                <button type="button" class="btn4">취소</button>
-            </div>
-        </div>
+			        </div>
+			        <div id="footer">
+			            <div id="footer_1">
+			                <input type="submit" id="" class="btn3" value="등록">
+			                <button type="button" class="btn4">취소</button>
+			            </div>
+			        </div>
                 </form>
     </div>  
 </body>

@@ -32,21 +32,21 @@
                         <div id="content_1_1"><p>&nbsp; ((싸욥)) 님</p></div>
                         <div id="content_1_2">
                             <div id="top_icon">
-                            <i class="fa-regular fa-user fa-4x" id="top_icon1"></i><br><br>
-                            <label for="top_icon1">나의 정보</label>
-                            </div>
-                            <div id="top_icon">
-                            <i class="fa-regular fa-heart fa-4x" id="top_icon2"></i><br><br>
-                            <label for="top_icon2">관심물품</label>
-                            </div>
-                            <div id="top_icon">
-                            <i class="fa-regular fa-newspaper fa-4x" id="top_icon3"></i><br><br>
-                            <label for="top_icon3">판매</label>
-                            </div>
-                            <div id="top_icon">
-                            <i class="fa-regular fa-circle-check fa-4x" id="top_icon4"></i><br><br>
-                            <label for="top_icon4">낙찰</label>
-                            </div>
+	                            <i class="fa-regular fa-circle-check fa-4x" id="top_icon4" onclick="success()"></i><br><br>
+	                            <label for="top_icon4">낙찰</label>
+	                        </div>
+	                        <div id="top_icon">
+	                            <i class="fa-regular fa-newspaper fa-4x" id="top_icon3" onclick="sale()"></i><br><br>
+	                            <label for="top_icon3">판매</label>
+	                        </div>
+	                        <div id="top_icon">
+	                            <i class="fa-regular fa-heart fa-4x" id="top_icon2" onclick="pickListView()"></i><br><br>
+	                            <label for="top_icon2">관심물품</label>
+	                        </div>
+	                        <div id="top_icon">
+	                            <i class="fa-regular fa-user fa-4x" id="top_icon1" onclick="myInfo()"></i><br><br>
+	                            <label for="top_icon1">나의 정보</label>
+	                        </div>
                         </div>
                     </div> <br><br><br>
 
@@ -115,44 +115,36 @@
 
 
 
-
-                            
-
                         
-                        
-                        <!--페이징바-->
-                        <br><br><br><br><br>
-                        <div id="pagingArea" align="center">
-                            <ul class="pagination">
-                            
-                                <c:choose>
-                                    <c:when test="${pi.currentPage eq 1 }">
-                                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                                    </c:when>
-                                    <c:otherwise>
-                                    <li class="page-item"><a class="page-link" href="list.bo?cpage=${pi.currentPage-1}">Previous</a></li>
-                                    </c:otherwise>
-                                </c:choose>
-                                
-                                <c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
-                                    <li class="page-item"><a class="page-link" href="list.bo?cpage=${p}">${p }</a></li>
-                                </c:forEach>
-                                
-                                <c:choose>
-                                    <c:when test="${pi.currentPage eq pi.maxPage }">
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                    </c:when>
-                                    <c:otherwise>
-                                    <li class="page-item"><a class="page-link" href="list.bo?cpage=${pi.currentPage+1 }">Next</a></li>
-                                    </c:otherwise>
-                                </c:choose>
-                                
-                            </ul>
-                        </div>
+
 
                 </form>
         </div>
     </div>
+    
+    
+    
+        <script>
+    	function success(){
+        	location.href="myPageSuccess.me";
+        }
+    	
+    	function sale(){
+    		location.href="myPageSale.me";
+    	}
+    	
+    	function pickListView(){
+    		location.href="pick.me"
+    	}
+    	
+    	function myInfo(){
+    		location.href="myInfo.me"
+    	}
+    </script>
+    
+    
+    
+    
     
     	<jsp:include page="../common/footer.jsp"/>
     	

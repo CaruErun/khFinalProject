@@ -31,7 +31,7 @@
                             <label for="top_icon3">판매</label>
                         </div>
                         <div id="top_icon">
-                            <i class="fa-regular fa-heart fa-4x" id="top_icon2" onclick="interest()"></i><br><br>
+                            <i class="fa-regular fa-heart fa-4x" id="top_icon2" onclick="pickListView()"></i><br><br>
                             <label for="top_icon2">관심물품</label>
                         </div>
                         <div id="top_icon">
@@ -139,7 +139,7 @@
     		location.href="myPageSale.me";
     	}
     	
-    	function interest(){
+    	function pickListView(){
     		location.href="pick.me"
     	}
     	

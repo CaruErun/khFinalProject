@@ -37,6 +37,10 @@ public class MemberController {
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+	
+	
+	
 	// 차트 신규 회원
 	@RequestMapping("new.me")
 	public ModelAndView selectNewMember(ModelAndView mv) {
@@ -117,6 +121,9 @@ public class MemberController {
 	}
 	@RequestMapping("login.me")
 	   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv, String email, String address, String phone) {
+		
+		System.out.println(bcryptPasswordEncoder.encode(m.getUserPw())); //암호화된 비밀번호 DB에 넣기
+		
 		Member loginUser = memberService.loginMember(m);
 		System.out.println(bcryptPasswordEncoder.encode(m.getUserPw()));
 	if(loginUser != null && bcryptPasswordEncoder.matches(m.getUserPw(), loginUser.getUserPw())) {
@@ -134,7 +141,10 @@ public class MemberController {
 //		loginUser.setPhoneBack(phoneBack);
 			
 			
+		
 			session.setAttribute("loginUser", loginUser);
+			session.setAttribute("emailFirst", emailFirst);
+			session.setAttribute("emailBack", emailBack);
 			mv.setViewName("redirect:/");
 		}else {
 			
@@ -291,9 +301,7 @@ public class MemberController {
 	@RequestMapping("update.me")
 	public String updateMember(Member m, HttpSession session, Model model, HttpServletRequest request) {
 		
-		String email = request.getParameter("emailFirst")+"@"+request.getParameter("emailBack");
 		
-		m.setEmail(email);
 		
 		int result = memberService.updateMember(m);
 		
@@ -301,21 +309,13 @@ public class MemberController {
 			//성공했으니 DB에 등록된 변경정보를 다시 조회해와서 세션에 담아야한다.
 			Member updateMem = memberService.loginMember(m);
 			
-			String emailFirst = memberService.emailFirst(updateMem.getEmail());
-			String emailBack = memberService.emailBack(updateMem.getEmail());
-//			String phoneFirst = memberService.phoneFirst(updateMem.getPhone());
-//			String phoneMiddle = memberService.phoneMiddle(updateMem.getPhone());
-//			String phoneBack = memberService.phoneBack(updateMem.getPhone());
-			
-			updateMem.setEmailFirst(emailFirst); //가져온 emailFirst를 Member객체로 선언한 loginUser라는 변수 안에있는 emailFirst로 넣어줘야한다.
-			updateMem.setEmailBack(emailBack);
-//			updateMem.setPhoneFirst(phoneFirst);
-//			updateMem.setPhoneMiddle(phoneMiddle);
-//			updateMem.setPhoneBack(phoneBack);
-			
-			session.setAttribute("loginUser", updateMem);
+//			session.setAttribute("loginUser", updateMem);
+//			session.setAttribute("alertMsg", "정보 수정 성공");
 			
 			session.setAttribute("alertMsg", "정보 수정 성공");
+			
+			model.addAttribute("loginUser", updateMem);
+			
 			return "redirect:myInfo.me" ;
 			
 		}else { //실패
@@ -323,6 +323,10 @@ public class MemberController {
 			return "common/errorPage";
 		}
 	}
+	
+	
+	
+	
 	
 	@RequestMapping("delete.me")
 	public String myDelete() {
@@ -395,29 +399,11 @@ public class MemberController {
 		return "common/postBox";
 	}
 	
-	@RequestMapping("postInsert.me")
-	public String postInsert(Postbox p,HttpSession session ,Model model) {
-		
-		int result = memberService.postInsert(p); 
-		
-		System.out.println(result);
-		
-		
-		if(result>0) {
-			session.setAttribute("alertMsg", "운송장 등록 완료");
-			return "redirect:postBox.me";
-			
-		}else {//실패
-			model.addAttribute("errorMsg","운송장 등록 실패");
-			return "common/errorPage";
-		}
-	}
-	
-	
+
 	@ResponseBody
 	@RequestMapping(value="post.me", produces="application/json; charset=UTF-8")
 	public String post(String userId, int pPage) {
-		System.out.println(userId);
+//		System.out.println(userId);
 		int currentPage = pPage;
 		int listCount = memberService.selectListCount();
 		
@@ -425,7 +411,7 @@ public class MemberController {
 		int boardLimit = 3;
 		
 		PageInfo pi = Pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		System.out.println(pi);
+//		System.out.println(pi);
 		
 		ArrayList<Postbox> list = memberService.selectListPost(userId,pi);
 		
@@ -434,7 +420,7 @@ public class MemberController {
 		ob.put("pi", pi);
 		ob.put("list", list);
 		
-		System.out.println(list);
+//		System.out.println(list);
 		
 		return new Gson().toJson(ob);
 	}
@@ -442,7 +428,7 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping(value="attend.me", produces="application/json; charset=UTF-8")
 	public String attend(String userId, int sPage) {
-		System.out.println(userId);
+//		System.out.println(userId);
 		int currentPage = sPage;
 		int listCount = memberService.selectListCount();
 		
@@ -450,7 +436,7 @@ public class MemberController {
 		int boardLimit = 3;
 		
 		PageInfo pi = Pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		System.out.println(pi);
+//		System.out.println(pi);
 		
 		ArrayList<Bid> list = memberService.selectListAttend(userId,pi);
 		
@@ -459,7 +445,7 @@ public class MemberController {
 		ob.put("pi", pi);
 		ob.put("list", list);
 		
-		System.out.println(list);
+//		System.out.println(list);
 		
 		return new Gson().toJson(ob);
 	}
@@ -467,7 +453,7 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping(value="bid.me", produces="application/json; charset=UTF-8")
 	public String bid(String userId, int bPage) {
-		System.out.println(userId);
+//		System.out.println(userId);
 		int currentPage = bPage;
 		int listCount = memberService.selectListCount();
 		
@@ -475,7 +461,7 @@ public class MemberController {
 		int boardLimit = 3;
 		
 		PageInfo pi = Pagenation.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		System.out.println(pi);
+//		System.out.println(pi);
 		
 		ArrayList<Bid> list = memberService.selectListBid(userId,pi);
 		
@@ -484,7 +470,7 @@ public class MemberController {
 		ob.put("pi", pi);
 		ob.put("list", list);
 		
-		System.out.println(list);
+//		System.out.println(list);
 		
 		return new Gson().toJson(ob);
 	}
@@ -510,10 +496,19 @@ public class MemberController {
 	
 	
 	
+//	@RequestMapping("pick.me")
+//	   public String pickListView() {
+//	      return "member/pickList";
+//	   }
+	
+	
 	@RequestMapping("pick.me")
 	   public String interestItem() {
-	      return "member/pick";
+	      return "member/pickList";
 	   }
+	
+	
+	
 	
 	@RequestMapping("salePostBox.me")
 		public String salePostBox() {
