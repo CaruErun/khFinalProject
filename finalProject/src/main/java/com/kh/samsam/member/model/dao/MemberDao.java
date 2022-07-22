@@ -32,7 +32,6 @@ public int insertMember(SqlSessionTemplate sqlSession, Member m) {
 	return sqlSession.insert("memberMapper.insertMember",m);
 }
 
-
 public int pwdChange(SqlSessionTemplate sqlSession, Member m) {
 	// TODO Auto-generated method stub
 	return sqlSession.update("memberMapper.pwdChange",m);
@@ -48,8 +47,9 @@ public int deleteMember(SqlSessionTemplate sqlSession, String userId) {
 	return sqlSession.update("memberMapper.deleteMember",userId);
 }
 
-
-
+public int selectBanCount(SqlSessionTemplate sqlSession, String userId) {
+	return 0;
+}
 
 	
 

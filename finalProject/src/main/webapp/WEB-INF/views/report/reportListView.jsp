@@ -68,10 +68,10 @@
 	                        <td class="reportNo">${r.reportNo}</td>
 	                        <td>${r.reportCateNo }</td>
 	                        <td>${r.reportId}</td>
-	                        <td>${r.reportedId}</td>
+	                        <td class="reportedId">${r.reportedId}</td>
 	                        <td>${r.createDate}</td>
 	                        <td>
-            					<button type="button" class="btn btn-secondary detail" data-toggle="modal" data-target="#detailView">상세</button>
+            					<button type="button" class="detail" class="btn btn-secondary detail" data-toggle="modal" data-target="#detailView">상세</button>
             				</td>
 	                    </tr>
                     </c:forEach>
@@ -110,7 +110,7 @@
 					<div class="ReportContent"></div>
 		      		<br> 
 		      		<div class=""><b>판매 게시글로 이동</b></div><br>
-            		<a class="btn btn-secondary" id="ban" style="float:right;" href="ban.me?userId=">정지</a>
+            		<a class="btn btn-secondary" id="ban" style="float:right;" href="">정지</a>
 				</div>
 			</div>
 <!-- 			클릭하면 이벤트 발생 -> attr로 변경 -->
@@ -139,9 +139,21 @@
 	
 	<script>
 		$(function(){
-			$("#ban").click(function(){
-				$("#ban").attr("href", "123");
+			function test(pi){
+				
+			$("#ban").attr("href",'ban.me?userId='+pi);
+			}
+			
+			$(".detail").click(function(){
+				var pi = $(this).parent().siblings().eq(3).text();
+				console.log(pi);
+				test(pi);
 			})
+			
+// 			$("#ban").click(function(){
+// 				console.log($(this).parent().parent().parent());
+// 				$("#ban").attr("href", "ban.me?userId="+$(this).parent(".reportedId").eq(0).text());
+// 			})
 		})
 	</script>
 	
