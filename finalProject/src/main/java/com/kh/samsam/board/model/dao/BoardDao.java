@@ -135,7 +135,6 @@ public class BoardDao {
 		int limit=pi.getBoardLimit();
 		
 		RowBounds rowBounds=new RowBounds(offset,limit);
-		
 				
 		return (ArrayList)sqlSession.selectList("boardMapper.selectQnaList",null,rowBounds);
 	}

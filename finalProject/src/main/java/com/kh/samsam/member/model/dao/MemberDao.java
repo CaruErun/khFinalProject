@@ -124,6 +124,11 @@ public ArrayList<Bid> selectListBid(SqlSessionTemplate sqlSession, PageInfo pi, 
 	return (ArrayList)sqlSession.selectList("memberMapper.selectListBid", userId, rowBounds);
 }
 
+public int selectBanCount(SqlSessionTemplate sqlSession, String userId) {
+	int banCount = sqlSession.selectOne("memberMapper.selectBanCount", userId);
+	return banCount;
+}
+
 //public ArrayList<Product> selectListCount(SqlSessionTemplate sqlSession, PageInfo pi) {
 //	// TODO Auto-generated method stub
 //	

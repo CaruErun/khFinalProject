@@ -8,7 +8,6 @@
     <title>Document</title>
     <c:set var="path" value="${pageContext.request.contextPath}"/>
     
-    
     <!-- jQuery 라이브러리 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -301,21 +300,21 @@
         let userID = $("#user-id").val();
         if (userID =="") {
         	$(".info-error").show();
-        	<!--
-        	$(".id-error").show();
-          $(".error-line").show(); -->
+        	
+//         	$(".id-error").show();
+//           $(".error-line").show();
           $("#user-id").css("border", "2px solid #F4492E");
         } else {
           
         }
       });
-      <!--
-      $("#user-id").focus(function () {
-        $("#user-id").css("border", "");
-        $(".id-error").hide();
-        $(".error-line").hide();
-        $(".info-error").hide();
-      });-->
+      
+//       $("#user-id").focus(function () {
+//         $("#user-id").css("border", "");
+//         $(".id-error").hide();
+//         $(".error-line").hide();
+//         $(".info-error").hide();
+//       });
     </script>
 
 

@@ -67,6 +67,9 @@ public interface MemberService {
 
 	//리스트 조회 해오기
 	ArrayList<Bid> selectListBid(String userId, PageInfo pi);
+
+	// 신고 당한 회원 정지 - banCount 조회
+	int selectBanCount(String userId);
 	
 //	//리스트 조회 해오기
 //	ArrayList<Product> selectList(PageInfo pi);

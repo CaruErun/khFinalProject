@@ -185,4 +185,10 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectListBid(sqlSession,pi,userId);
 	}
 
+	// 신고 당한 회원 정지 - banCount 조회
+	@Override
+	public int selectBanCount(String userId) {
+		return memberDao.selectBanCount(sqlSession, userId);
+	}
+
 }
