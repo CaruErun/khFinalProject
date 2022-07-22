@@ -9,14 +9,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지(판매)</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="resources/css/myPageSale.css">
     <script src="https://kit.fontawesome.com/ee429cabba.js" crossorigin="anonymous"></script>
     
 </head>
+
+
+
 <body>
+<%-- <jsp:include page="../common/header.jsp"/> --%>
+    <link rel="stylesheet" href="resources/css/myPageSale.css">
+
     <div class="wrap">
         <div id="header">
-            <div id="title">마이페이지</div>
+            <div id="title">마이페이지(판매)</div>
         </div>
         <div id="content">
                 <form action="">
@@ -32,7 +37,7 @@
 	                            <label for="top_icon3">판매</label>
 	                        </div>
 	                        <div id="top_icon">
-	                            <i class="fa-regular fa-heart fa-4x" id="top_icon2" onclick="interest()"></i><br><br>
+	                            <i class="fa-regular fa-heart fa-4x" id="top_icon2" onclick="pickListView()"></i><br><br>
 	                            <label for="top_icon2">관심물품</label>
 	                        </div>
 	                        <div id="top_icon">
@@ -48,12 +53,12 @@
                         <table id="tata">
                             <thead>
                                 <tr >
-                                    <th height="30" width="50"><input type="checkbox" name="Chk_list" id="check_all"></th>
-                                    <th height="30" width="150">카테고리</th>
-                                    <th height="30" width="300">판매상품</th>
-                                    <th height="30" width="120">시작가</th>
-                                    <th height="30" width="120">현재가</th>
-                                    <th height="30" width="90">조회수</th>
+                                    <th height="30" width="70"><input type="checkbox" name="Chk_list" id="check_all" style="accent-color: black"></th>
+<!--                                     <th height="30" width="150">카테고리</th> -->
+                                    <th height="30" width="400">판매상품</th>
+                                    <th height="30" width="130">시작가</th>
+                                    <th height="30" width="130">현재가</th>
+                                    <th height="30" width="110">조회수</th>
                                     <th height="30" width="130">상태</th>
                                 </tr>
                             </thead>
@@ -63,10 +68,10 @@
                             </table>
                     </div>
                     <div id="content_5">
-                        <button type="button" id="delBtn" onclick="delRow()" class="btn">삭제</button>
+                        <button type="button" id="delBtn2" onclick="delRow()" class="btn">삭제</button>
                     </div>
                     <div id="content_6">
-                    	<button onclick="sale2()">1</button>
+                    	<button id="one" onclick="sale2()">1</button>
                     </div>
                     <div id="content_7">
                         &nbsp· 운송장 조회 
@@ -75,11 +80,11 @@
                         <table id="tata2">
                             <thead>
                                 <tr>
-                                    <th height="30" width="50"><input type="checkbox" name="Chk_list" id="check_all2"></th>
-                                    <th height="30" width="150">카테고리</th>
-                                    <th height="30" width="300">구매한 물품</th>
-                                    <th height="30" width="120">택배회사</th>
-                                    <th height="30" width="350">운송장 번호</th>
+                                    <th height="30" width="70"><input type="checkbox" name="Chk_list" id="check_all2" style="accent-color: black"></th>
+<!--                                     <th height="30" width="150">카테고리</th> -->
+                                    <th height="30" width="400">구매한 물품</th>
+                                    <th height="30" width="180">택배회사</th>
+                                    <th height="30" width="320">운송장 번호</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,7 +93,7 @@
                             </table>
                     </div>
                     <div id="content_9">
-                        <button type=""button"" class="btn">삭제</button>
+                        <button type="button"  id="delBtn" class="btn">삭제</button>
                     </div>
                     <div id="content_10">
                       <button onclick="post2()">1</button>
@@ -105,7 +110,7 @@
     		location.href="myPageSale.me";
     	}
     	
-    	function interest(){
+    	function pickListView(){
     		location.href="pick.me"
     	}
     	
@@ -121,6 +126,7 @@
     		location.href="salePostBox.me"
     	}
     </script>
+    
     
     <script>
     window.onload = function(){
@@ -155,15 +161,14 @@
 						for(var i=0; i<result.list.length; i++){
 						
 							resultStr += "<tr>" 
-										+"<td style=\"text-align: center;\">"+"<input type=\"checkbox\" class=\"input_check\">"+"</td>"
-										+"<td style=\"text-align: center;\">"+result.list[i].cateNo+"</td>"
+										+"<td style=\"text-align: center; accent-color: black\">"+"<input type=\"checkbox\" class=\"input_check\">"+"</td>"
+// 										+"<td style=\"text-align: center;\">"+result.list[i].cateNo+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].proTitle+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].proPrice+"</td>"
 										+"<td style=\"text-align: center;\">"+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].count+"</td>"
-										+"<td style=\"text-align: center;\">"+ "<a href=\"postBox.me\">" + result.list[i].proStatus+ "</a>" + "</td>"
+										+"<td style=\"text-align: center;\">"+ "<a href=\"postBox.me?proNo="+result.list[i].proNo+"\">" + result.list[i].proStatus+ "</a>" + "</td>"
 									+"</tr>"
-									
 									
 						}
 					$("#tata>tbody").html(resultStr);	
@@ -172,7 +177,7 @@
 					
 					for(var i=result.pi.startPage; i<=result.pi.endPage; i++){
 						
-						resultStr2 += "<button type='button' onclick='sale("+i+")'>"+i+"</button>"
+						resultStr2 += "<button type='button' style=\"background-color: gray; color:white; border-color: white\" onclick='sale("+i+")'>"+i+"</button>"
 						
 					}
 					$("#content_6").html(resultStr2);
@@ -199,7 +204,7 @@
     					
     					
 //				 		console.log(result.list[0].cateNo);
-    					console.log(result.list[0].proTitle);
+//     					console.log(result.list[0].proTitle);
 //      				console.log(result.list[0].proPrice);
 //      				console.log(result.list[0].proTitle);
 //      				console.log(result.list[0].count);
@@ -209,13 +214,12 @@
 						for(var i=0; i<result.list.length; i++){
 						
 							resultStr += "<tr>" 
-										+"<td style=\"text-align: center;\">"+"<input type=\"checkbox\" class=\"input_check2\">"+"</td>"
-										+"<td style=\"text-align: center;\">"+result.list[i].cateNo+"</td>"
+										+"<td style=\"text-align: center; accent-color: black\">"+"<div>"+"<input type=\"checkbox\" class=\"input_check2\" id=\"checkInput\">"+"<div>"+"</td>"
+// 										+"<td style=\"text-align: center;\">"+result.list[i].cateNo+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].proTitle+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].pboxName+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].pboxNo+"</td>"
 									+"</tr>"
-									
 									
 						}
 					$("#tata2>tbody").html(resultStr);
@@ -224,10 +228,16 @@
 					
 					for(var i=result.pi.startPage; i<=result.pi.endPage; i++){
 						
-						resultStr2 += "<button type='button' onclick='post("+i+")'>"+i+"</button>"
+						resultStr2 += "<button type='button' style=\"background-color: gray; color:white; border-color: white\" onclick='post("+i+")'>"+i+"</button>"
 						
 					}
 					$("#content_10 ").html(resultStr2);
+					
+					
+					$("#delBtn").click(function() {
+						var checkRow = $("input[id='checkInput']");
+						checkRow.parent().parent().parent().remove();
+					})
     			},
     			error : function(){
     				console.log("ajax 통신 실패")
@@ -273,15 +283,22 @@
  		</script>
  		
  		<script>
- 			function delRow(){
+//  			function delRow(){
 
-				var checkRows = $("[name='chkbox']:checked");
-				for(var i=checkRows.length-1; i>-1; i--){
+// 				var checkRows = $("[name='chkbox']:checked");
+// 				for(var i=checkRows.length-1; i>-1; i--){
 					
-					checkRows.eq(i).closest('tr').remove();
-				}
+// 					checkRows.eq(i).closest('tr').remove();
+// 				}
  				
- 			}
+//  			}
+
+
+
+// 		$("#delBtn").click(function() {
+// 			var checkRow = $("input[id='checkInput']");
+// 			checkRow.parent().parent().remove();
+// 		})
  		</script>
     
 </body>

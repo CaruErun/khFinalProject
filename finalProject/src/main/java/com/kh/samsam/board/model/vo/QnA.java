@@ -3,9 +3,7 @@ package com.kh.samsam.board.model.vo;
 import java.sql.Date;
 
 import lombok.Data;
-import lombok.Getter;
 
-@Getter
 @Data
 public class QnA {
 

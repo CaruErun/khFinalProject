@@ -106,32 +106,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 <!-- 	====================== QNA ====================== -->
-	<select id="selectQnaListCount" resultType="_int">
-        SELECT COUNT(*)
-		FROM QNA
-		WHERE QNA_STATUS = 'Y'
-		AND QNA_TYPE = 2
-	</select>
+<!-- 	<select id="selectQnaListCount" resultType="_int"> -->
+<!--         SELECT COUNT(*) -->
+<!-- 		FROM QNA -->
+<!-- 		WHERE QNA_STATUS = 'Y' -->
+<!-- 		AND QNA_TYPE = 2 -->
+<!-- 	</select> -->
 	
-	<select id="selectQnaList" resultMap="qnaResultSet">
-        SELECT ROWNUM AS RNUM, A.* FROM(
-        SELECT QNA_NO, QNA_ID, QNA_TITLE, CREATE_DATE, ANS_STATUS, ANSWER_CONTENT, CATE_NAME AS QNA_CATE_NO
-        FROM QNA Q
-        JOIN CATEGORY C
-        ON Q.QNA_CATE_NO = C.CATE_NO
-        WHERE QNA_STATUS = 'Y'
-        AND QNA_TYPE = 2
-        ORDER BY ANS_STATUS DESC, CREATE_DATE) A
-        ORDER BY RNUM DESC
-	</select>
+<!-- 	<select id="selectQnaList" resultMap="qnaResultSet"> -->
+<!--         SELECT ROWNUM AS RNUM, A.* FROM( -->
+<!--         SELECT QNA_NO, QNA_ID, QNA_TITLE, CREATE_DATE, ANS_STATUS, ANSWER_CONTENT, CATE_NAME AS QNA_CATE_NO -->
+<!--         FROM QNA Q -->
+<!--         JOIN CATEGORY C -->
+<!--         ON Q.QNA_CATE_NO = C.CATE_NO -->
+<!--         WHERE QNA_STATUS = 'Y' -->
+<!--         AND QNA_TYPE = 2 -->
+<!--         ORDER BY ANS_STATUS DESC, CREATE_DATE) A -->
+<!--         ORDER BY RNUM DESC -->
+<!-- 	</select> -->
 
-	<select id="selectQna" resultMap="qnaResultSet">
-        SELECT QNA_NO, QNA_TITLE, QNA_ID, CREATE_DATE, QNA_CONTENT, ANSWER_CONTENT, ANSWER_DATE, CATE_NAME AS QNA_CATE_NO
-		FROM QNA Q
-        JOIN CATEGORY C
-        ON Q.QNA_CATE_NO = C.CATE_NO
-		WHERE QNA_NO = #{qNo}
-	</select>
+<!-- 	<select id="selectQna" resultMap="qnaResultSet"> -->
+<!--         SELECT QNA_NO, QNA_TITLE, CREATE_DATE, QNA_CONTENT, ANSWER_CONTENT, ANSWER_DATE, CATE_NAME AS QNA_CATE_NO -->
+<!-- 		FROM QNA Q -->
+<!--         JOIN CATEGORY C -->
+<!--         ON Q.QNA_CATE_NO = C.CATE_NO -->
+<!-- 		WHERE QNA_NO = #{qNo} -->
+<!-- 	</select> -->
 	
 	<update id="insertQnaAns">
 		UPDATE QNA
@@ -146,6 +146,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			SELECT COUNT (*)
 			FROM QNA
 			WHERE QNA_STATUS = 'Y'
+			AND QNA_TYPE = 2
 	</select>
 	
 	<!-- QnA 리스트 조회(페이징) -->
@@ -189,18 +190,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 <!-- QnA 상세조회 -->
-<!-- 	<select id="selectQna" resultMap="qnaResertSet"> -->
-<!-- 			SELECT  QNA_NO,  -->
-<!-- 				  	QNA_TITLE, -->
-<!-- 				  	QNA_CATE_NO, -->
-<!-- 				  	QNA_ID,  -->
-<!-- 				  	QNA_CONTENT,  -->
-<!-- 				  	CREATE_DATE,  -->
-<!-- 				  	ANS_STATUS -->
-<!-- 		  	FROM QNA -->
-<!-- 		  	WHERE QNA_NO = #{qnaNo} -->
-<!-- 		  	AND QNA_STATUS = 'Y' -->
-<!-- 	</select> -->
+	<select id="selectQna" resultMap="qnaResultSet">
+			SELECT  QNA_NO, 
+				  	QNA_TITLE,
+				  	QNA_CATE_NO,
+				  	QNA_ID, 
+				  	QNA_CONTENT, 
+				  	CREATE_DATE, 
+				  	ANS_STATUS
+		  	FROM QNA
+		  	WHERE QNA_NO = #{qnaNo}
+		  	AND QNA_STATUS = 'Y'
+	</select>
 	
 	
 <!-- QnA 삭제 -->

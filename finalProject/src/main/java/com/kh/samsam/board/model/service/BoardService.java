@@ -42,15 +42,18 @@ public interface BoardService {
 
 
 	// ============ QNA ============
-	int selectQnaListCount();
-
-	ArrayList<QnA> selectQnaList(PageInfo pi);
+//	int selectQnaListCount();
+//
+//	ArrayList<QnA> selectQnaList(PageInfo pi);
 
 	//
 	QnA selectQnaa(int qno);
 
 	int insertQnaAns(QnA q);
 
+	
+	
+	
 ////QnA////
 	//큐앤에이 리스트 조회 + 페이징 처리
 	//전체 게시글 개수 구하기

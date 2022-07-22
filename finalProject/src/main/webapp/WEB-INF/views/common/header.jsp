@@ -300,9 +300,6 @@
         let userID = $("#user-id").val();
         if (userID =="") {
         	$(".info-error").show();
-        	
-//         	$(".id-error").show();
-//           $(".error-line").show();
           $("#user-id").css("border", "2px solid #F4492E");
         } else {
           

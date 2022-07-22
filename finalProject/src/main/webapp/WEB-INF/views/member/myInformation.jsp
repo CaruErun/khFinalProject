@@ -9,8 +9,214 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나의 정보</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="resources/css/myInformation.css">
     
+<style>
+div{
+    box-sizing: border-box;
+/* border: 1px solid red */
+}
+.wrap{
+    width: 1000px;
+    height: 400px;
+    margin: auto;
+}
+.wrap>div{ 
+    width: 100%;
+}
+#header,#footer{
+    height: 20%;
+}
+
+#content>div{
+    height: 100%;
+    float: left;
+}
+#title{
+    height: 100%;
+    font-family: "Malgun Gothic";
+    font-size: 25px;
+    font-weight: 700;
+    padding-bottom: 50px;
+    padding-top: 35px;
+}
+#content{
+    height: 60%;
+    
+}
+#content1{
+    float: left;
+    width:12%;
+}
+#content2{
+    float: left;
+    width:88%;
+}
+#content_1_1{
+    height: 42px;
+    padding-top: 8%;
+    text-align: center;
+    background-color: black;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+    font-family: "Malgun Gothic";
+    color : white;
+}
+#content_1_2{
+    height: 42px;
+    padding-top: 8%;
+    text-align: center;
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+    font-family: "Malgun Gothic";
+    color : white;
+    background-color: black;
+}
+#content_1_3{
+    height: 42px;
+    padding-top: 8%;
+    text-align: center;
+    background-color: #efefef;
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+    font-family: "Malgun Gothic";
+    color : white;
+    background-color: black;
+    
+}
+#content_1_4{
+    height: 84px;
+    padding-top: 25%;
+    text-align: center;
+    background-color: #efefef;
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+    font-family: "Malgun Gothic";
+    color : white;
+    background-color: black;
+}
+#content_1_5{
+    height: 50px;
+    padding-top: 10%;
+    text-align: center;
+    background-color: #efefef;
+    border-bottom: 1px solid gray;
+    font-weight: bold;
+    font-family: "Malgun Gothic";
+    color : white;
+    background-color: black;
+}
+#content_2_1{
+    height: 42px;
+    padding-top: 0.8%;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+}
+#content_2_2{
+    height: 42px;
+    padding-top: 1%;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+    
+}
+#content_2_3{
+    height: 42px;
+    padding-top: 0.8%;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+}
+#content_2_4{
+    height: 42px;
+    padding-top: 0.8%;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+}
+#content_2_5{
+    height: 42px;
+    padding-top: 0.8%;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+}
+#content_2_6{
+    height: 50px;
+    padding-top: 1.2%;
+    border-bottom: 1px solid gray;
+    font-family: "Malgun Gothic";
+}
+/* #content_2_7{ */
+/*     height: 42px; */
+/*     padding-top: 0.8%; */
+/*     border-bottom: 1px solid gray; */
+/*     font-family: "Malgun Gothic"; */
+/* } */
+.email_1{
+    width: 80px;
+    height: 26px;
+    border-radius: 4px;
+}
+.email_2{
+    width: 160px;
+    height: 26px;
+     border-radius: 4px;
+}
+.btn{
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    border: 0px;
+    height: 25px;
+}
+.btn2{
+    border-radius: 4px;
+    border: 0px;
+    height: 25px;
+    background-color: rgb(134,134,134);
+    color: white;
+    width: 70px;
+    height: 30px;
+    text-align: center;
+    margin-left: 400px;
+}
+.btn3{
+    border-radius: 4px;
+    border: 0px;
+    height: 25px;
+    background-color: black;
+    color: white;
+    width: 70px;
+    height: 30px;
+}
+.btn4{
+    border-radius: 4px;
+    border: 0px;
+    height: 25px;
+    background-color: #efefef;
+    color: dimgrey;
+    width: 70px;
+    height: 30px;
+}
+#bbttnn{
+	height:25px;
+	width:100px;
+	 border-radius: 4px;
+}
+
+#address_kakaoo{
+	height:25px;
+	width:100px;
+	border-radius: 4px;
+}
+#phone{
+border-radius: 4px;
+}
+
+#emailthis{
+border-radius: 4px;
+}
+
+
+</style>
 </head>
 <body>
 
@@ -21,13 +227,16 @@
 <c:remove var="alertMsg" scope="session"/>
 </c:if>
 
+<jsp:include page="../common/header.jsp"/>
+
+<br><br><br><br>
 
     <div class="wrap">
+                <form action="update.me" method="post">
         <div id="header">
             <div id="title">나의정보</div>
         </div>
         <div id="content">
-                <form action="update.me">
                     <div id="content1">
                         <div id="content_1_1">아이디</div>
                         <div id="content_1_2">이름</div>
@@ -36,49 +245,28 @@
                         <div id="content_1_5">휴대폰 번호</div>
                     </div>
                     <div id="content2">
+                    <input type="hidden" name="userId" value="${loginUser.userId}">
                         <div id="content_2_1">&nbsp&nbsp&nbsp&nbsp ${loginUser.userId}
-                            &nbsp&nbsp<button  type="button" class="btn" onclick="pwdChange()">비밀번호변경</button>
+                            &nbsp&nbsp
+                            <button type="button" class="btn-dark" id="bbttnn" onclick="pwdChange()">비밀번호변경</button>
                         </div>
                         <div id="content_2_2">&nbsp&nbsp&nbsp&nbsp ${loginUser.userName}</div>
                         <div id="content_2_3">
-                            &nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" class="email_1" id="" value="${loginUser.emailFirst}" name="emailFirst"> @ <input type="text" id="emailback" class="email_1" value="${loginUser.emailBack}" name="emailBack"> 
-                            <select style="width: 100px;" id="site">
-                                <option value="0">선택하세요</option>
-                                <option value="naver.com">naver.com</option>
-                                <option value="daum.com">daum.com</option>
-                                <option value="nate.com">nate.com</option>
-                                <option value="gmail.com">gmail.com</option>
-                            </select>
+                            &nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" class="" id="emailthis" value="${loginUser.email}" name="email">  
                         </div>
                         <div id="content_2_4">
                             &nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="address_kakao" name="addressNum" class="email_1" value="${loginUser.addressNum }">
-                            &nbsp&nbsp<button type="button" class="btn" id="address_kakaoo" >우편번호검색</button>
+                            &nbsp&nbsp
+                            <button type="button" class="btn-dark" id="address_kakaoo">우편번호검색</button>
                         </div>
                         <div id="content_2_5">
                             &nbsp&nbsp&nbsp&nbsp <input type="text" class="email_2" id="address_detail" value="${loginUser.address }" name="address">&nbsp&nbsp&nbsp<input type="text"class="email_2" id="" value="${loginUser.addressDetail }" name="addressDetail">
                         </div>
                         <div id="content_2_6">
                         &nbsp&nbsp&nbsp&nbsp&nbsp<input id="phone" type="text" name="phone" value="${loginUser.phone }"title="전화번호 입력" required/>
-                        <button type="button" id="phoneChk" class="btn">인증번호 보내기</button><br>
-<!-- 						<span id="phoneChk" class="btn">인증번호 보내기</span><br/> -->
-						&nbsp&nbsp&nbsp&nbsp&nbsp<input id="phone2" type="text" name="phone2" title="인증번호 입력" disabled required/>
-<!-- 						<span id="phoneChk2" class="btn">본인인증</span> -->
-						<button type="button" id="phoneChk2" class="btn">본인인증</button>
-						<span class="point successPhoneChk">휴대폰 번호 입력후 인증번호 보내기를 해주십시오.</span>
-						<input type="hidden" id="phoneDoubleChk"/><br>
-						&nbsp&nbsp&nbsp&nbsp <span class="tip" style="color:midnightblue">
-						따로 저장되지 않습니다.(번호만 입력해주세요.)
-						</span>
 						</div>
-<!--                        <div id="content_2_6"> -->
-<!--                             &nbsp&nbsp&nbsp&nbsp <input type="text" class="email_2" id="phone" value="" name="phone" title="전화번호 입력" required>  -->
-<!--                             &nbsp&nbsp<button class="btn" id="phoneChk">휴대폰번호변경</button><br> -->
-<!--                         </div> -->
-<!--                         <div id="content_2_7"> -->
-<!--                             &nbsp&nbsp&nbsp&nbsp&nbsp<input id="phone2" type="text" name="phone2" title="인증번호 입력" disabled required/> -->
-<!--                             <span class="point successPhoneChk">휴대폰 번호 입력후 인증번호 보내기를 해주십시오.</span> -->
-<!--                         </div> -->
                     </div>
+                    
         </div>
         <div id="footer">
         	<input type="submit" class="btn2" value="변경">
@@ -87,6 +275,8 @@
         </div>
                 </form>
     </div>
+    
+    <jsp:include page="../common/footer.jsp"/>
     
     <script>
 		$("#site").change(function(){
@@ -122,51 +312,7 @@
 	}
 	</script>
 	
-	<script>
-	//휴대폰 번호 인증
-	var code2 = "";
-	$("#phoneChk").click(function(){
-		alert("인증번호 발송이 완료되었습니다.\n휴대폰에서 인증번호 확인을 해주십시오.");
-		var phone = $("#phone").val();
-		$.ajax({
-	        type:"GET",
-	        url:"phoneCheck?phone=" + phone,
-	        cache : false,
-	        success:function(data){
-	        	if(data == "error"){
-	        		alert("휴대폰 번호가 올바르지 않습니다.")
-					$(".successPhoneChk").text("유효한 번호를 입력해주세요.");
-					$(".successPhoneChk").css("color","red");
-					$("#phone").attr("autofocus",true);
-	        	}else{	        		
-	        		$("#phone2").attr("disabled",false);
-	        		$("#phoneChk2").css("display","inline-block");
-	        		$(".successPhoneChk").text("인증번호를 입력한 뒤 본인인증을 눌러주십시오.");
-	        		$(".successPhoneChk").css("color","green");
-	        		$("#phone").attr("readonly",true);
-	        		code2 = data;
-	        	}
-	        }
-	    });
-	});
-	</script>
 	
-	<script>
-	//휴대폰 인증번호 대조
-	$("#phoneChk2").click(function(){
-		if($("#phone2").val() == code2){
-			$(".successPhoneChk").text("인증번호가 일치합니다.");
-			$(".successPhoneChk").css("color","green");
-			$("#phoneDoubleChk").val("true");
-			$("#phone2").attr("disabled",true);
-		}else{
-			$(".successPhoneChk").text("인증번호가 일치하지 않습니다. 확인해주시기 바랍니다.");
-			$(".successPhoneChk").css("color","red");
-			$("#phoneDoubleChk").val("false");
-			$(this).attr("autofocus",true);
-		}
-	});
-	</script>
     
     
 </body>
