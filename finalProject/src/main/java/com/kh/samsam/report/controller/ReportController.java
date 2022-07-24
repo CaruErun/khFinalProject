@@ -61,12 +61,13 @@ public class ReportController {
 		Report r = reportService.selectReportContent(reportNo);
 		return new Gson().toJson(r);
 	}
+	
 	//report
 	//신고하기 form으로 전달하기
 	@RequestMapping("reportView.mem")
 	public String reportView(Model model) {
 		
-		return "sim/report";
+		return "report/report";
 	}
 	
 	
@@ -80,7 +81,7 @@ public class ReportController {
 				
 				model.addAttribute("r",r);
 				session.setAttribute("alertMsg", "회원 신고가 완료되었습니다.");
-				return "sim/report_done";
+				return "report/report_done";
 				
 			}else { //실패
 				model.addAttribute("errorMsg","신고에 실패하였습니다.");
@@ -92,7 +93,7 @@ public class ReportController {
 	//신고완료
 	@RequestMapping("reportDoneView.mem")
 	public String reportDoneView() {
-		return "sim/report_done";
+		return "report/report_done";
 	}
 	
 

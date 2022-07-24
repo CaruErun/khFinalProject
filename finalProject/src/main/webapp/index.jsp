@@ -10,6 +10,6 @@
 	<div>
 	<jsp:forward page="./WEB-INF/views/main.jsp"></jsp:forward>
 	</div>
-	
+
 </body>
 </html>

@@ -10,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+// 메세지를 브로커
+// 접두어 app이 있어서 이 컨트롤러로 옴
 public class StompChatController {
+	// 메세지를 보내기위한 템플릿 자바/스톰프에서 제공함
     private final SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
 
     @MessageMapping(value = "/chat/enter")

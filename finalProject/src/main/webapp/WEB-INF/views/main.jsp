@@ -7,6 +7,11 @@
 	<!-- swiper -->
 	<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 	<link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+	
+	    <!--icon-->
+    <script src="https://kit.fontawesome.com/e849be2e05.js" crossorigin="anonymous"></script>
+    
+    
 	<title>Insert title here</title>
 </head>
 <style>
@@ -142,10 +147,18 @@
         border: 1px solid white;
         padding: 5px;
     }
+    
+    #h_mark{
+        color: lightgray;
+    }
 </style>
 <body>
 
 	<jsp:include page="common/header.jsp"/>
+
+
+
+
 
 	<!-- swiper -->
 	<div class="swiper-area" >
@@ -188,7 +201,7 @@
 	    </div>
 	    <div id="all">
 	        <span>전체보기</span>
-	        <a href="#">+</a>
+	        <a href="productList.pr">+</a>
 	    </div>
 	</div>
     
@@ -203,7 +216,7 @@
 	            <div class="text-box">
 	                <div class="content-box">
 	                    <p>젠북 초특가 세일~</p>
-	                    <i>하트</i>
+	                    <i class="fa-solid fa-heart" id="h_mark"></i>
 	                </div>
 	            </div>
 	            <div class="price-box">
@@ -229,12 +242,93 @@
 	                    <p>입찰</p>
 	                    <p>10</p>
 	                </div>
+	                
 	                <div class="count-content">
 	                    <p>조회</p>
 	                    <p>150</p>
 	                </div>
 	            </div>
 	    </div>
+	    
+	    
+	    
+	    
+	    
+	    <!-- =======찜하기 버튼을 누를경우 이벤트 발생======= -->
+		<script type="text/javascript">
+		    $(function() {
+		        $('#h_mark').click(function(event) {
+		            event.preventDefault();
+		            // 비로그인 상태시 찜하기 버튼을 누르면
+		            if ("${loginUser.userId}" == "") {
+		                confirm("로그인 한 회원만 이용가능합니다.")
+		                    // 거부하면 해당 페이지 새로고침
+		                    location.reload();
+		                }
+		            // 로그인 상태시 찜하기 버튼을 누르면    
+		             else {
+		                // 해당 멤버ID와 상품ID의 정보를 가져옴
+		                var userId = "${loginUser.userId}";
+		                var proNo = "${p.proNo}";
+		
+		                console.log("userId: " + userId);
+		                console.log("proNo: " + proNo);
+		
+		                var form = {
+		                		userId : userId,
+		                		proNo : proNo,
+		                };
+		                
+		                
+		
+		                $.ajax({
+		                    type : "POST",
+		                    url : "pickProduct.pr",
+		                    cache : false,
+		                    contentType : 'application/json; charset=utf-8',
+		                    data : JSON.stringify(form), //userId, proNo 담은 거!
+		                    success : function(result) {
+		                        console.log(result);
+		                        if (result == "SUCCESS") {
+		                        	 $('#h_mark').css("color","hotpink");
+		                        	 
+		                            console.log("찜 성공!")
+		                            
+		                            if (confirm("해당 상품을 찜하셨습니다. 목록 페이지로 이동하시겠습니까?")) {
+		                                // 승낙하면 마이페이지의 찜하기 리스트로 이동
+		                                location.href = '../member/pickList';
+		                            } else {
+		                                // 거부하면 해당 페이지 새로고침하여 찜한거 반영되게하기(HTTP의 속성 때문...)
+		                                location.reload();
+		                            }
+		                        }
+		                    },
+		                    error : function(e) {
+		                        console.log(e);
+		                        alert('찜할 수 없습니다.');
+		                        location.reload(); // 실패시 새로고침하기
+		                    }
+		                })
+		            }
+		        });
+		    });
+		</script>
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	    
 	    <div class="product-box">
 	        <div class="padding-line">

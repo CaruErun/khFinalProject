@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,13 +19,15 @@
 <c:remove var="alertMsg" scope="session"/>
 </c:if>
 
+
+
     <div class="wrap">
         <div id="header">
             <div id="title">운송장등록</div>
             
         </div>
         <div id="content">
-                <form action="postInsert.me">
+                <form action="postInsert.me" method="post">
                     <div id="content1">
                         <img src="resources/images/중고경매.png" alt="이미지" id="image">
                     </div>
@@ -45,17 +48,24 @@
                         <div id="content_3_2">
                             운송장번호 &nbsp;
                             <input type="text" id="inputbox" name="pboxNo">
-                            <input type="hidden" name="userId">
+
+                            <input type="hidden" name="proNo" value="${ proNo}">
                         </div> 
                     </div>
         </div>
         <div id="footer">
             <div id="footer_1">
                 <input type="submit" id="" class="btn3" value="등록">
-                <button type="button" class="btn4">취소</button>
+                <button type="button" class="btn4" onclick="back()">취소</button>
             </div>
         </div>
                 </form>
-    </div>  
+    </div>
+    
+    <script>
+    function back(){
+			location.href="myPageSale.me"
+		}
+    </script>  
 </body>
 </html>

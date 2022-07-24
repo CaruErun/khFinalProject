@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <div class="container">
             <div class="col-6">
                 <h1>"채팅방"</h1>
