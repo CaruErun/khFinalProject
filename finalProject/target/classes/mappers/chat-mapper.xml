@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="chatMapper">
+<resultMap type="chat" id="chatResultSet">
+		<result column = "BUYER_ID" property="buyerId"/>
+		<result column = "SELL_ID" property="sellId"/>
+		<result column = "PRO_NO" property="proNo"/>
+		<result column = "CHAT_ROOM_NO" property="chatRoomNo"/>
+
+
+</resultMap>
+<select id="chatCheck" resultMap="chatResultSet">
+SELECT CHAT_ROOM_NO, P.BUYER_ID, P.PRO_NO
+FROM CHAT_ROOM C, (SELECT BUYER_ID, PRO_NO FROM BID WHERE BID_NO IN
+(SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO) AND BUYER_ID=#{userId}) P
+WHERE C.PRO_NO = P.PRO_NO AND C.CHAT_STATUS='Y'
+</select>
+
+<select id="sellerCheck" resultMap ="chatResultSet">
+SELECT C.CHAT_ROOM_NO, P.SELL_ID, C.PRO_NO
+FROM CHAT_ROOM C, PRODUCT P
+WHERE C.PRO_NO = P.PRO_NO AND P.PRO_STATUS='N' AND P.SELL_ID = #{userId}
+
+
+</select>
+
+
+</mapper>

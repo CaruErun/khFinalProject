@@ -13,7 +13,7 @@
             <div>
             <c:forEach var="room" items="${list }">
                 <ul>
-                    <li><a href="/chat/room?roomId=${room.roomId}">[[${room.name}]]</a></li>
+                    <li><a href="roome?roomId=${room.roomId}">[[${room.name}]]</a></li>
                 </ul>
                 </c:forEach>
             </div>

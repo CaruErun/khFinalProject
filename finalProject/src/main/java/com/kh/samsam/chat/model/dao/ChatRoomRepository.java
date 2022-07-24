@@ -35,6 +35,7 @@ public class ChatRoomRepository {
 
     public ChatRoomDTO createChatRoomDTO(String name){
         ChatRoomDTO room = ChatRoomDTO.create(name);
+        System.out.println(room.getRoomId());
         chatRoomDTOMap.put(room.getRoomId(), room);
 
         return room;

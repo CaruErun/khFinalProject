@@ -14,16 +14,10 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
-body {
-}
-
 #main-content {
-
 	height:50px;
 	width:50px;
     background-color : rgba(0,0,0,0);
-    
-	        <%--opacity:0;--%>
 }
 #chat-table{
 height:500px;
@@ -39,15 +33,20 @@ background:white;
 	height:500px;
 	width:500px;
 	position:fixed;
-	bottom:30%;
+	bottom:20%;
 	right:10%;
+	z-index:1;
 }
 #connect:hover{
 cursor:pointer;
 }
 .allowM,.sendM{
-padding:3px;
+padding:10px;
 max-width:60%;
+}
+.blankM{
+clear:both;
+width:100%;
 }
 .allowM{
 float:left;
@@ -59,6 +58,9 @@ float:right;
 text-align:right;
 border:1px solid black;
 border-radius:10px;
+}
+.urlM{
+width:50px;
 }
 #main-content #send-table{
 width:100%;
@@ -83,6 +85,7 @@ font-size:15pt;
 	position:fixed;
 	top:80%;
 	right:10%;
+	z-index:1;
 }
 #meHeder{
 height:30px;
@@ -90,14 +93,19 @@ width:500px;
 border-width:3px;
 border-color:black;
 border-style:solid solid none solid;
-	background:skyblue;
+background:skyblue;
+align:right;
+
+}
+#miniImg:hover{
+cursor:pointer;
 }
 </style>
 </head>
 <body>    
 <div id="main-content">
 <div id="message">
-<div id="meHeder">ㅡ</div>
+<div id="meHeder"><img src="resources/image/mini.png" width=20px height=20px style="float:right;margin-right:20px;margin-top:3px;" id="miniImg"></div>
 <div id="chat-table">
 
         <div style="background-color:'white';">
@@ -142,7 +150,7 @@ $(document).ready(function(){
 		    stompClient.connect({}, function (frame) {
 		        console.log('Connected: ' + frame);
 		        stompClient.subscribe('/topic/public', function (message) {
-		            showMessage("<div class='allowM'>" + message.body + "</div><br><br>"); //서버에 메시지 전달 후 리턴받는 메시지
+		            showMessage("<div class='allowM'>" + message.body + "</div>"); //서버에 메시지 전달 후 리턴받는 메시지
 		        });
 		    });
 	    	$("#msg").val("");
@@ -157,13 +165,13 @@ $(document).ready(function(){
 
 		function sendMessage() {
 		    let message = $("#msg").val()
-		    showMessage("<div class='sendM'>" + message + "</div><br><br>");
+		    showMessage("<div class='sendM'>" + message + "</div>");
 
 		    stompClient.send("/app/sendMessage", {}, JSON.stringify(message));//서버에 보낼 메시지
 		}
 
 		function showMessage(message) {
-			message += "<div style='height:30px'></div>";
+			message += "<div style='height:30px' class='blankM'></div>";
 		    $("#communicate").append(message);
 			$messageTextBox.scrollTop($messageTextBox[0].scrollHeight);
 		}
@@ -181,18 +189,26 @@ $(document).ready(function(){
 
 		$(function () {
 		    $( "#connect" ).click(function() { 
-		    	if(stompClient == null) {
 		    		connect();
-		    		document.getElementById("message").style.display='block';
-		    	}
-		    	else {
-		    		disconnect();
-		    		stompClient = null;
-		    		document.getElementById("message").style.display='none';
-		    	}
-
-
+		    		$("#chatDiv").fadeOut(500,function(){
+		    			document.getElementById("chatDiv").style.display="none";
+		    			})
+		    		$("#message").fadeIn(500, function(){
+			    		document.getElementById("message").style.display='block';
+		    			})
 		    });
+
+			$( "#miniImg" ).click(function(){
+	    		disconnect();
+	    		$("#message").fadeOut(500,function(){
+	    			document.getElementById("message").style.display="none";
+	    			})
+	    		$("#chatDiv").fadeIn(500, function(){
+		    		document.getElementById("chatDiv").style.display='block';
+	    			})
+			
+			})
+			
 
 		    $( "#send" ).click(function() { 
 		    	if($("#msg").val()!=""){

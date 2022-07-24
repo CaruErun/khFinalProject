@@ -9,11 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지(판매)</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="resources/css/myPageSale.css">
+
     <script src="https://kit.fontawesome.com/ee429cabba.js" crossorigin="anonymous"></script>
-    
+	<jsp:include page="../common/header.jsp"/>
+    <link rel="stylesheet" href="resources/css/myPageSale.css">
 </head>
 <body>
+
     <div class="wrap">
         <div id="header">
             <div id="title">마이페이지</div>
@@ -125,7 +127,7 @@
     <script>
     window.onload = function(){
     	sale(1);
-    	post(1);
+    	post(1);s
     }
 
 //      $(function(){

@@ -72,7 +72,8 @@ public class naverA {
                 String description = "";
                 description = (String)data.get("description");
                 if((String)data.get("url") != null) {
-                	urlAdd = "<br>"+"<a href='"+(String)data.get("url")+"'>"+(String)data.get("url")+"</a>";
+                	String urlData = (String)data.get("url");
+                	urlAdd = "<br>"+"<a href='"+urlData+"' class='urlM'>"+"<b>"+urlData.substring(urlData.lastIndexOf("/")+1,urlData.length())+"</b>"+"</a>";
                 }else {
                 	urlAdd = "";
                 }

@@ -10,12 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@NoArgsConstructor //기본 생성자
-@AllArgsConstructor //모든 필드를 매개변수로 갖는 생성자
-@Setter //setter
-@Getter //getter
-@ToString //toString
-@EqualsAndHashCode //equals,hashcode
 @Data //위에 있는 모든 메소드를 포함하는 어노테이션
 public class Bid {
 	private int bidNo;	//	BID_NO	NUMBER

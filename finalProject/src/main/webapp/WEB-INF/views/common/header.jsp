@@ -31,7 +31,6 @@
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 
     
-   	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
     <style>
       *{
@@ -120,7 +119,6 @@
     }
 
     </style>
-       	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
 </head>
 <body>
@@ -147,6 +145,57 @@
             </ul>
         </div>
     </div>
+    
+    
+    <!-- chat -->
+<div id="chatAl"></div>
+<div id="sellAl"></div>
+<%-- 채팅 시작 --%>
+<script>
+
+var login = '${loginUser.userId}'
+$(document).ready(function(){
+	bidCheck();
+})
+function bidCheck(){
+	if(login != ""){
+		$.ajax({
+			url : "ajaxBid.ch",
+			data : {userId : login},
+			success : function(list){
+				var listStr="";
+				var listStr2="";
+				if(list.chatList!=null){
+					console.log("1")
+					for(var i=0;i<list.chatList.length;i++){
+						listStr+="<div>경매에 낙찰되셨습니다<br>아래 채팅에 참여하여 판매자와 거래해보세요"+
+						"<a href='chatenter.ch?chatRoomNo="+list.chatList[i].chatRoomNo+"&name="+list.chatList[i].buyerId+"'>이동</a><br></div>";
+					}
+					$("#chatAl").html(listStr);
+				}
+				if(list.sellList!=null){
+					console.log("2")
+					for(var i=0;i<list.sellList.length;i++){
+						
+						listStr2+="<div>물품이 판매 되었습니다<br>아래 채팅에 참여하여 구매자와 거래해보세요"+
+						"<a href='chatenter.ch?chatRoomNo="+list.sellList[i].chatRoomNo+"&name="+list.sellList[i].sellId+"'>이동</a><br></div>"
+					}
+					$("#sellAl").html(listStr2)
+				}
+			},
+			error : function(){
+					
+			}
+		})
+		
+	}
+	
+}
+</script>
+<%-- 채팅 끝 --%>
+
+
+
     <script>
         var clockTarget = document.getElementById("clock");
         function clock() {
@@ -307,7 +356,6 @@
         $(".info-error").hide();
       });-->
     </script>
-
 
 </body>
 

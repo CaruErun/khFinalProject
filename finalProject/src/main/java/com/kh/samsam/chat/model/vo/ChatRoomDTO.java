@@ -15,10 +15,14 @@ public class ChatRoomDTO {
     private Set<WebSocketSession> sessions = new HashSet<>();
     //WebSocketSession은 Spring에서 Websocket Connection이 맺어진 세션
 
+    private String buyerId;
+    private String sellId;
+    private int proNo;
+    private int chatRoomNo;
     public static ChatRoomDTO create(String name){
         ChatRoomDTO room = new ChatRoomDTO();
 
-        room.roomId = UUID.randomUUID().toString();
+        room.roomId = UUID.randomUUID().toString().replaceAll("-", "");
         room.name = name;
         return room;
     }
