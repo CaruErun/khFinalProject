@@ -17,7 +17,6 @@ public interface MemberService {
 
 	//회원가입 서비스 (insert)
 		int insertMember(Member m);
-		
 
 	//비밀번호 변경
 	int pwdChange(Member m);
@@ -33,9 +32,7 @@ public interface MemberService {
 	//마이페이지 탈퇴
 	int deleteMember(String userId);
 
-
-
-
+	// 신고 당한 회원 정지 - banCount 조회
+	int selectBanCount(String userId);
 	
-
 }

@@ -130,5 +130,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE USER_ID = #{userId}
 	</update>
 	
+	<select id="selectBanCount" resultType="_int">	
+        SELECT BAN_COUNT 
+        FROM MEMBER 
+        WHERE USER_ID = #{userId}
+	</select>
 	
  </mapper>
