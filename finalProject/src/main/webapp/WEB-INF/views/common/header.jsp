@@ -30,7 +30,7 @@
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 
     
-<%--    	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
+<link href="${path}/resources/css/reset.css" rel="stylesheet"/>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
     <style>
       *{
@@ -119,7 +119,7 @@
     }
 
     </style>
-<%--        	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
+    <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
 </head>
 <body>
@@ -173,7 +173,7 @@
         <div class="head-inner">
             <div class="h1">
                 <img src="#" alt="">
-                <a href="#">samsam<br>Auction</a>
+                <a href="${pageContext.request.contextPath }">samsam<br>Auction</a>
             </div>
             <div class="h2">
                 <ul class="header-nav">

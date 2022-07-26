@@ -475,10 +475,10 @@
                 justify-content: center;
                 align-items: center;
             }
-            input::-webkit-outer-spin-button,
+            /* input::-webkit-outer-spin-button,
             input::-webkit-inner-spin-button {
                 -webkit-appearance: none;
-            }
+            } */
             .kor-no{
                 padding-left: 20px;
                 font-size: 15px;
@@ -598,7 +598,7 @@
                                     
 		                        </div>
                                 <div class="upload-files">
-                                    <input type="file" name="upfile" id="upfile0" onchange="loadImg(this);" style="display: none;">
+                                    <input type="file" name="upfile" id="upfile0" onchange="loadImg(this);" style="display: none;" required>
                                     <input type="file" name="upfile" id="upfile1" onchange="loadImg(this);" style="display: none;">
                                     <input type="file" name="upfile" id="upfile2" onchange="loadImg(this);" style="display: none;">
                                     <input type="file" name="upfile" id="upfile3" onchange="loadImg(this);" style="display: none;">
@@ -614,6 +614,7 @@
                  
 					 	
 					 <script>
+                        
 		                // //드레그엔드랍
 		                const dragArea = document.querySelector('.drag-area');
 		                const dragText = document.querySelector('.drag-drop');
@@ -760,6 +761,26 @@
                             </div>
                         </div>
                         <script>
+                            var ak = 0;
+
+                            $('.price1').on("focusin",function(){
+                                console.log('시발');
+                               
+                                    if($('#upfile0').val()==""&&ak==0){
+                                        alert('이미지는 1개이상 등록해주세요!');
+                                        ak=1;
+                                        setTimeout(function(){
+                                            ak=0;
+                                            $('.price1').blur();
+                                        })
+                                    }
+                           
+
+                             
+                               
+                                    
+                            });
+                                
                             $('#wp-yes').on("click",function(){
                          
                                 $('.wp-price').css("display","block");
@@ -795,7 +816,7 @@
                             $('.price1').on("focusout",function(){
                                 var price1 = parseInt($('.price1').val().replaceAll(',',''));
                                 var price2 = parseInt($('.price2').val().replaceAll(',',''));
-                                
+                           
                                 if((price1>price2)&&(price2!=0)){
                                     alert('시작가는 즉시구매가보다 높게 설정할 수 없습니다.');
                                     $('.price1').val("");
@@ -869,18 +890,25 @@
                         <button type="button" onclick="location.href='${pageContext.request.contextPath }'">취소</button>
                     </span>
                     <script>
-                        $(':submit').on('click',function(){
-                            console.log("1111");
-                            $('.price1').val($('.price1').val().replaceAll(',',''));
-                            $('.price2').val($('.price2').val().replaceAll(',',''));
-                            $('.price3').val($('.price3').val().replaceAll(',',''));
-                            console.log($('.price1'));
-                            console.log($('.price2'));
-                            console.log($('.price3'));
+                         
+                          
+                          $(':submit').on('click',function(){
+                           
+                    
+                              $('.price1').val($('.price1').val().replaceAll(',',''));
+                              $('.price2').val($('.price2').val().replaceAll(',',''));
+                              $('.price3').val($('.price3').val().replaceAll(',',''));
+                              console.log($('.price1'));
+                              console.log($('.price2'));
+                              console.log($('.price3'));
+
+                             
+                           
                         })
                     </script>
                 
                 <script>
+                   
                     //input[type=number] 글자수 제한
                     function numberMaxLength(e){
                         if(e.value.length > e.maxLength){

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -10,6 +11,9 @@
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- swiper -->
+        <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
         <title>Document</title>
     </head>
     <style>
@@ -47,10 +51,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            
         }
         .big-img{
             width: 80%;
             height: 500px;
+            border: 1px dotted black;
         }
         .small-imgbox{
             width: 100%;
@@ -58,11 +64,36 @@
             display: flex;
             justify-content: center;
             align-items: center;
+         
+        }
+        .swiper{
+            width: 90%;
+            height: 100%;
+          
+        }
+        .swiper-wrapper{
+            width: 100%;
+            height: 100%;
+            padding-left: 4px;
+         
+        }
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        .swiper-button-prev,.swiper-button-next{
+            width : 3%;
+            color:black;
+            border: 1px solid black;
         }
         .small-img{
-            width: 20%;
+            width: 50%;
             height: 150px;
             margin-right: 10px;
+            border: 1px dotted black;
+            cursor: pointer;
         }
         .small-imgbox > span{
             font-size: 50px;
@@ -273,9 +304,13 @@
             color: white;
             text-align: center;
         }
+        #qna-table > thead > tr> th, td{
+            padding-top: 10px;
+        }
         #qna-table > tbody > tr {
             height: 40px;
             text-align: center;
+            border: 1px solid black;
         }
         .btn-qna{
             width: 12%;
@@ -320,7 +355,44 @@
             display: flex;
             align-items: center;
             padding-left: 25px;
-        }   
+        }
+        .modal-footer1{
+            display: flex;
+            justify-content: center;
+            border: 1px solid black;
+            text-align: center;
+            
+            
+        }
+        .modal-header{
+            background-color: black;
+        }
+        /* .modal-body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        } */
+        .modal-body .list-area{
+            font-size: 14px;
+            border-top: 1px solid gray;
+            width: 90%;
+            height: 40px;
+            margin: 0 auto;
+        }
+        #modalTitle{
+            color: white;
+        }
+        #endDate-modal{
+            width: 46%;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            color: white;
+            margin-left: 7px;
+        }
+        
             
     
         
@@ -338,18 +410,57 @@
             </div>
             <div class="detail-info">
                 <div class="detail-img">
-                    <div class="big-imgbox">
-                        <img class="big-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    </div>
-                    <div class="small-imgbox">
-                        <span class="btn-prev">< </span>
-                        <img class="small-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <img class="small-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <img class="small-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <span class="btn-next">></span>
-    
-                    </div>
+
+                        <div class="big-imgbox">
+                            <img class="big-img" src="${p.path}" alt="..." />
+                        </div>
+                        <div class="small-imgbox">
+                            
+
+                            <div class="swiper">
+
+                                <div class="swiper-wrapper">
+                                    <c:forEach var="i" items="${piList }">
+
+                                        <div class="swiper-slide"><img class="small-img" src="${i.path}" alt="..." /></div>
+                                    </c:forEach>
+                                    
+                                </div>
+                                 
+                                   
+                                <!-- <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div> -->
+                                <div class="swiper-pagination"></div>
+                            </div>
+                            
+                            
+                        </div>
+                 
+                        <script>
+                            const swiper = new Swiper( '.swiper', {
+                                autoplay: false,
+                                loop: false,
+                                slidesPerView: 3,
+                                // navigation: {
+                                //     nextEl: '.swiper-button-next',
+                                //     prevEl: '.swiper-button-prev'
+                                // },
+                                pagination: {
+                                    el: '.swiper-pagination',
+                                    type: 'bullets',
+                                    clickable: true
+                                }
+                            });
+                            $('.small-img').on('click',function(){
+                                const path = $(this).attr('src');
+                                console.log(path);
+                                $('.big-img').attr('src',path);
+                            })
+                            
+                        </script>
+                  
                 </div>
+                
                 <div class="detail-text">
                     <div class="cur-price">
                         <div id="cp-1">
@@ -400,7 +511,8 @@
                 
                         timer = setInterval(showRemaining, 1000);
                         }
-                        countDownTimer('cp-2',convertFromStringToDate(endDate)); 
+                        countDownTimer('cp-2',convertFromStringToDate(endDate));
+                        countDownTimer('endDate-modal',convertFromStringToDate(endDate));
                     </script>
                     <div class="renew list-area">
                         <div class="rn-1 black-area">
@@ -520,27 +632,107 @@
                         </div>
                     </div>
                     <div class="btn-area">
-                        <button class="btn-1">입찰하기</button>
+                        <button class="btn-1" data-toggle="modal" data-target="#bidModalForm">입찰하기</button>
                         <button class="btn-2">관심물품</button>
-                        <button class="btn-3">문의하기</button>
+                        <button class="btn-3" style="border: 1px solid black;">문의하기</button>
+                    </div>
+                    <div class="modal fade" id="bidModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitle">입찰하기</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <form action="">
+
+                                    <div class="modal-body">
+                                        <div class="titleInModal">
+                                            ${p.proTitle}
+                                        </div>
+                                        <div class="list-area">
+                                            <div class="black-area">
+                                                판매자
+                                            </div>
+                                            <div class="text-area">
+                                                이예구
+                                            </div>
+                                        </div>
+                                        <div class="list-area">
+                                            <div class="black-area">
+                                                남은기간
+                                            </div>
+                                            <div class="text-area">
+                                                ${p.endDate}까지
+                                                <div id="endDate-modal">
+                                                </div>
+                                            </div>
+                                        </div>
+                                                    
+                                        <div class="list-area">
+                                            <div class="black-area">
+                                                배송방법
+                                            </div>
+                                            <div class="text-area">
+                                                택배, 비용[${p.postPrice}원]
+                                            </div>
+                                        </div>
+                                        <div class="list-area">
+                                            <div class="black-area">
+                                                현재가
+                                            </div>
+                                            <div class="text-area">
+                                                ${p.curPrice} <button type="button" class="btn-1">새로고침</button>
+                                            </div>
+                                        </div>
+                                        <div class="list-area">
+                                            <div class="black-area">
+                                                입찰금액
+                                            </div>
+                                            <div class="text-area">
+                                                 
+                                            </div>
+                                        </div>
+                                        <div class="list-area">
+                                            <div class="black-area">
+                                                즉시구매가
+                                            </div>
+                                            <div class="text-area">
+                                                ${p.wishPrice}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer1">
+                                        
+                                            <button type="button" class="btn btn-dark" >신중하게 입찰하기</button>
+                                            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">닫기</button>
+                                            <button type="button" class="btn btn-secondary">즉시구매하기</button>
+                                        
+
+                                    </div>
+                                </form>
+                            </div>
+                          </div>
+
                     </div>
                 </div>
             </div>
         
             <div class="detail-content">
                 <div class="content-btn">
-                    <button class="btn-white">물품정보</button>
-                    <button class="btn-black">물품문의</button>
-                    <button class="btn-black">배송정보</button>
+                    <button class="btn-white btn1">물품정보</button>
+                    <button class="btn-black btn2">물품문의</button>
+                    <button class="btn-black btn3">배송정보</button>
                     <div class="btn-line"></div>
                 </div>
                 <div class="content-text">
-                    ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+                    ${p.proContent}
                 </div>
                 <div class="content-btn">
-                    <button class="btn-black">물품정보</button>
-                    <button class="btn-white">물품문의</button>
-                    <button class="btn-black">배송정보</button>
+                    <button class="btn-black btn1">물품정보</button>
+                    <button class="btn-white btn2">물품문의</button>
+                    <button class="btn-black btn3">배송정보</button>
                     <div class="btn-line"></div>
                 </div>
                 <div class="content-qna">
@@ -579,9 +771,9 @@
                     <button class="btn-qna">문의하기</button>
                 </div>
                 <div class="content-btn">
-                    <button class="btn-black">물품정보</button>
-                    <button class="btn-black">물품문의</button>
-                    <button class="btn-white">배송정보</button>
+                    <button class="btn-black btn1">물품정보</button>
+                    <button class="btn-black btn2">물품문의</button>
+                    <button class="btn-white btn3">배송정보</button>
                     <div class="btn-line"></div>
                 </div>       
                 <div class="content-ship">
@@ -596,7 +788,24 @@
     
                 </div>
             </div>
-    
+            <script>
+           
+                $(document).ready(function(){
+                    $('.btn1').click(function(){
+                        var offset = $('.content-text').offset();
+                        console.log(offset)
+                        $('html').animate({scrollTop : offset.top-300},400);
+                    });
+                    $('.btn2').click(function(){
+                        var offset = $('.content-qna').offset();
+                        $('html').animate({scrollTop : offset.top-300},400);
+                    });
+                    $('.btn3').click(function(){
+                        var offset = $('.content-ship').offset();
+                        $('html').animate({scrollTop : offset.top-300},400);
+                    });
+                });
+            </script>
     
             
                 

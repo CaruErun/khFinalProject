@@ -212,7 +212,7 @@ public class ProductController {
 				}
 			}
 		
-		System.out.println(list);
+
 		
 		int result =productService.insertProduct(p);
 		if(result>0) {
@@ -244,7 +244,6 @@ public class ProductController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		ArrayList<Product> plist = productService.selectProductList(pi);
-		System.out.println(plist);
 		model.addAttribute("plist",plist);
 		model.addAttribute("pi",pi);
 		return "product/productListView";
@@ -257,7 +256,9 @@ public class ProductController {
 		int result=productService.increaseCount(pNo);
 		if(result > 0) {
 			Product p =productService.selectProduct(pNo);
+			p.setProContent(p.getProContent().replaceAll("\n", "<br>"));
 			ArrayList<ProductImages> piList = productService.selectImgList(pNo);
+			System.out.println(piList);
 			model.addAttribute("p",p);
 			model.addAttribute("piList",piList);
 			return "product/productDetail";
@@ -267,6 +268,8 @@ public class ProductController {
 		}
 		
 	}
+	
+	
 	public String saveFile(MultipartFile upfile, HttpSession session) {
 		
 		String originName = upfile.getOriginalFilename();
