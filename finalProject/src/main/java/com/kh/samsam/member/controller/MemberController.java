@@ -333,5 +333,33 @@ public class MemberController {
 		public String salePostBox() {
 			return "member/salePostBoxDetail";
 	}
+	
+	// 신고 당한 회원 정지
+	@RequestMapping("ban.me")
+	public ModelAndView banMember(ModelAndView mv, String userId, HttpSession session ) {
+		
+		System.out.println(userId);
+		// banCount조회
+		int banCount = memberService.selectBanCount(userId);
+		System.out.println(banCount);
+		int banDate = 0;
+//		switch(banCount) {
+//			case 0: memberService.banMember(userId);
+//					break;
+//			case 1: memberService.banMember(userId);
+//					break;
+//			default: memberService.banMember(userId);
+//					break;
+//		}
+		
+		return mv;
+	}
+	
 
 }
+
+
+
+
+
+

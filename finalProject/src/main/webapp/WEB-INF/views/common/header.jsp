@@ -8,12 +8,11 @@
     <title>Document</title>
     <c:set var="path" value="${pageContext.request.contextPath}"/>
     
-    
     <!-- jQuery 라이브러리 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 
-	<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+ <!-- 부트스트랩에서 제공하고 있는 스타일 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -31,7 +30,7 @@
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 
     
-    <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
+<%--    	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
     <style>
       *{
@@ -121,6 +120,7 @@
 
 	#titleBOx{width:100px;}
     </style>
+<%--        	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
 </head>
 <body>
@@ -130,9 +130,9 @@
         <div id="clock" style="color:black"></div>
         <div>
             <ul class="nav-list">
-             <c:choose>
+             	<c:choose>
 				    <c:when test="${ empty loginUser }">
-  <li><a href="#!">samsam은 처음이신가요?</a></li>
+		                <li><a href="#!">samsam은 처음이신가요?</a></li>
 		                <li><a data-toggle="modal" data-target="#login_modal2">로그인</a></li>
 		                <li><a href="enrollForm.me">회원가입</a></li>
 		                <li><a href="noticeList.no">고객센터</a></li>
@@ -173,14 +173,15 @@
     <div class="header">
         <div class="head-inner">
             <div class="h1">
-<!--                 <img src="#" alt=""> -->
-			<a href="${pageContext.request.contextPath }">samsam<br>Auction</a>            </div>
+                <img src="#" alt="">
+                <a href="#">samsam<br>Auction</a>
+            </div>
             <div class="h2">
                 <ul class="header-nav">
                 
-<!--                     <li><a href="#">신규경매</a></li> -->
-<!--                     <li><a href="#">마감임박경매</a></li> -->
-<!--                     <li><a href="#">카테고리</a></li> -->
+                    <li><a href="#">신규경매</a></li>
+                    <li><a href="#">마감임박경매</a></li>
+                    <li><a href="#">카테고리</a></li>
                     <li><a href="insertProductForm.pr">물품등록</a></li>
                 
                 </ul>
@@ -318,17 +319,19 @@
           
         }
       });
-      <!--
-      $("#user-id").focus(function () {
-        $("#user-id").css("border", "");
-        $(".id-error").hide();
-        $(".error-line").hide();
-        $(".info-error").hide();
-      });-->
+      
+//       $("#user-id").focus(function () {
+//         $("#user-id").css("border", "");
+//         $(".id-error").hide();
+//         $(".error-line").hide();
+//         $(".info-error").hide();
+//       });
     </script>
+
 
 
 
 		
 </body> 
+
 </html>
