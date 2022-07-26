@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</resultMap>
 		<!-- product ResultMap -->
-	<resultMap type="product" id="productResultSet">
+<resultMap type="product" id="productResultSet">
 		<result column="PRO_NO" property="proNo"/>
 		<result column="PRO_TITLE" property="proTitle"/>
 		<result column="PRO_CONTENT" property="proContent"/>
@@ -20,13 +20,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="PRO_PRICE" property="proPrice"/>
 		<result column="WISH_PRICE" property="wishPrice"/>
 		<result column="POST_PRICE" property="postPrice"/>
+		<result column="BID_PRICE" property="curPrice"/>
 		<result column="START_DATE" property="startDate"/>
 		<result column="END_DATE" property="endDate"/>
 		<result column="PRO_CATE_NO" property="proCateNo"/>
 		<result column="TRADE_CATE_NO" property="tradeCateNo"/>
 		<result column="TRADE_LOCATION" property="tradeLocation"/>
 		<result column="COUNT" property="count"/>
+		<result column="BIDCOUNT" property="bidCount"/>
+		<result column="PATH" property="path"/>
 		<result column="PRO_STATUS" property="proStatus"/>
+
 	</resultMap>
 	
 	<resultMap type="postbox" id="PostboxResultSet">
@@ -46,6 +50,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="PRO_CATE_NO" property="proCateNo"/>
 		<result column="PRO_TITLE" property="proTitle"/>
 	</resultMap>
+		<resultMap type="productImages" id="proImgResultSet">
+		<result column="IMAGE_NO" property="imageNo"/>
+		<result column="PRO_NO" property="proNo"/>
+		<result column="ORINAME" property="oriName"/>
+		<result column="SYSNAME" property="sysName"/>
+		<result column="PATH" property="path"/>
+		<result column="IMG_STATUS" property="imgStatus"/>
+	
+	</resultMap>
+		<select id="selectProductList" resultMap="productResultSet">
+		
+		SELECT P.PRO_NO
+			  ,PRO_TITLE
+			  ,PRO_CONTENT
+			  ,SELL_ID
+			  ,PRO_PRICE
+			  ,WISH_PRICE
+			  ,POST_PRICE
+              ,BID_PRICE
+			  ,START_DATE
+			  ,END_DATE
+			  ,PRO_CATE_NO
+			  ,TRADE_CATE_NO
+			  ,TRADE_LOCATION
+			  ,COUNT
+              ,BIDCOUNT
+              ,PATH
+	FROM PRODUCT P
+    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+    , (SELECT D.RNUMS,PRO_NO,PATH FROM (SELECT ROW_NUMBER() OVER(PARTITION BY PI.PRO_NO ORDER BY IMAGE_NO DESC ) AS RNUMS, PI.*
+        FROM PRODUCT_IMAGES PI) D 
+        WHERE D.RNUMS=1)E
+    WHERE P.PRO_NO = B.PRO_NO(+) 
+    AND P.PRO_NO = C.PRO_NO(+)
+    AND P.PRO_NO = E.PRO_NO(+)
+    AND P.PRO_STATUS ='Y'
+    ORDER BY PRO_NO DESC
+	</select>
 	
 	
 	<select id="selectCategoryList" resultMap="categoryResultSet" parameterType="int">
@@ -53,6 +96,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM CATEGORY
 		WHERE TRUNC(CATE_NO,-2) =#{cateNo}
 		AND NOT CATE_NO= #{cateNo}
+	</select>
+	<select id="selectProduct" resultMap="productResultSet">
+		SELECT P.PRO_NO
+			  ,PRO_TITLE
+			  ,PRO_CONTENT
+			  ,SELL_ID
+			  ,PRO_PRICE
+			  ,WISH_PRICE
+			  ,POST_PRICE
+              ,BID_PRICE
+			  ,START_DATE
+			  ,END_DATE
+			  ,PRO_CATE_NO
+			  ,TRADE_CATE_NO
+			  ,TRADE_LOCATION
+			  ,COUNT
+              ,BIDCOUNT
+	FROM PRODUCT P
+    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+
+    WHERE P.PRO_NO = B.PRO_NO(+) 
+    AND P.PRO_NO = C.PRO_NO(+)
+    AND P.PRO_STATUS ='Y'
+	AND P.PRO_NO =#{pNo}
+	</select>
+	<select id="selectImgList" resultMap="proImgResultSet">
+		SELECT IMAGE_NO, PRO_NO, ORINAME, SYSNAME, PATH
+		FROM PRODUCT_IMAGES
+		WHERE PRO_NO =#{pNo}
+				
+	</select>
+	<select id="selectProListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM PRODUCT
+		WHERE PRO_STATUS='Y'
+	
 	</select>
 	<insert id="insertProduct" parameterType="product">
 		
@@ -79,7 +159,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     ,#{wishPrice}
                     ,#{postPrice}
                     ,SYSDATE
-                    ,TO_DATE(SYSDATE+#{bidDate},'YYYY-MM-DD HH24:MI:SS')
+ 					,SYSDATE+#{bidDate}
                     ,#{proCateNo}
                     ,#{tradeCateNo}
                     ,#{tradeLocation}
@@ -87,54 +167,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</insert>
 
-	<insert id="insertProductImages" >
-			INSERT INTO PRODUCT_IMAGES(
-														IMAGE_NO
-														,PRO_NO
-														,ORINAME
-														,SYSNAME
-														,PATH
-														)
-									VALUES
-								
-														(
-														 SEQ_IMGNO.NEXTVAL
-														,SEQ_PRNO.CURVAL
-		<foreach collection="list" item="oriName" index="index" separator="," >
-														,#{oriName[index]}
+	<insert id="insertProductImages">
+		insert into PRODUCT_IMAGES(
+									IMAGE_NO
+									,PRO_NO
+									,ORINAME
+									,SYSNAME
+									,PATH
+									)
+		SELECT SEQ_IMGNO.NEXTVAL,SEQ_PRNO.CURRVAL, A.* from(
+		<foreach item="item" collection="list" separator="UNION ALL ">
+			select #{item.oriName} as ORINAME,
+			#{item.sysName} as SYSNAME,
+			#{item.path} as PATH
+			from dual
 		</foreach>
-		<foreach collection="list" item="sysName" index="index" separator="," >
-														,#{sysName[index]}
-		</foreach>
-		<foreach collection="list" item="path" index="index" separator="," >
-														,#{path[index]}
-		</foreach>
-														)
+		) A
 	</insert>
-
+	<update id="increaseCount">
+		UPDATE PRODUCT
+		SET COUNT = COUNT +1
+		WHERE PRO_STATUS ='Y'
+		AND PRO_NO =#{pNo}
+	</update>
 	
 	
 
-	
-	
-	<!-- product 검색 -->
-	<select id="getSearchList" parameterType="product" resultMap="productResultSet">
-		SELECT *
-		FROM PRODUCT
-		
-		<choose>
-			<when test="searchType !=null and searchType.equals('proTitle')">
-				WHERE PRO_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-			<when test="searchType !=null and searchType.equals('proContent')">
-				WHERE PRO_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-			<when test="searchType !=null and searchType.equals('sellId')">
-				WHERE SELL_ID LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-		</choose>
-	</select>
-	
 	
 	<!--
 	DML 구문일때는 결과값이 항상 int이기때문에 resultType을 적지 않아도 되지만
@@ -248,4 +306,135 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 
+
+	<!-- 검색 조건 (option&keyword) -->
+	<sql id="search">
+		<choose>
+			<when test="searchType !=null and searchType.equals('proTitle')">
+				and PRO_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+			</when>
+			<when test="searchType !=null and searchType.equals('proContent')">
+				and PRO_CONTENT LIKE '%'|| #{searchKeyword} ||'%'
+			</when>
+			<when test="searchType !=null and searchType.equals('sellId')">
+				and SELL_ID LIKE '%'|| #{searchKeyword} ||'%'
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<!-- product 검색 -->
+	<select id="getSearchList" resultMap="productResultSet">
+		SELECT P.PRO_NO
+				  ,PRO_TITLE
+				  ,PRO_CONTENT
+				  ,SELL_ID
+				  ,PRO_PRICE
+				  ,WISH_PRICE
+				  ,POST_PRICE
+	              ,BID_PRICE
+				  ,START_DATE
+				  ,END_DATE
+				  ,PRO_CATE_NO
+				  ,TRADE_CATE_NO
+				  ,TRADE_LOCATION
+				  ,COUNT
+	              ,BIDCOUNT
+		FROM PRODUCT P
+	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    WHERE P.PRO_NO = B.PRO_NO(+) 
+	    AND P.PRO_NO = C.PRO_NO(+)
+	    AND P.PRO_STATUS ='Y'
+		<include refid="search"/>
+		ORDER BY PRO_NO DESC
+	</select>
+	
+	<!-- 게시글 레코드 갯수 -->
+	<select id="searchProListCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM PRODUCT
+		where PRO_STATUS ='Y'
+		<include refid="search"/>
+	</select>
+	
+	
+	<!-- 정렬_필터 조건 -->
+	<sql id="sort">
+		<if test="sort == 'null'"> <!-- 최신순 (값이 없을 때 proNo가 제대로 들어감) -->
+			ORDER BY PRO_NO DESC
+		</if>
+		<if test="sort == 'proNo'"> <!-- 마감임박순 -->
+			ORDER BY PRO_NO ASC
+		</if>
+		
+		<if test="sort == 'hPrice'"> <!-- 높은가격순 -->
+			ORDER BY BID_PRICE DESC
+		</if>
+		<if test="sort == 'rPrice'"> <!-- 낮은가격순 -->
+			ORDER BY BID_PRICE ASC
+		</if>
+		<if test="sort == 'count'"> <!-- 조회수 -->
+			ORDER BY COUNT DESC
+		</if>
+	</sql>
+	
+	
+	
+	<!-- 필터링_정렬 (with 검색) -->
+	<select id="filterList"  resultMap="productResultSet">
+		SELECT P.PRO_NO
+				  ,PRO_TITLE
+				  ,PRO_CONTENT
+				  ,SELL_ID
+				  ,PRO_PRICE
+				  ,WISH_PRICE
+				  ,POST_PRICE
+	              ,BID_PRICE
+				  ,START_DATE
+				  ,END_DATE
+				  ,PRO_CATE_NO
+				  ,TRADE_CATE_NO
+				  ,TRADE_LOCATION
+				  ,COUNT
+	              ,BIDCOUNT
+		FROM PRODUCT P
+	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    WHERE P.PRO_NO = B.PRO_NO(+) 
+	    AND P.PRO_NO = C.PRO_NO(+)
+	    AND P.PRO_STATUS ='Y'
+	    <include refid="search"/>
+		<include refid="sort" />
+	</select>
+    
+    <!-- 필터링_정렬 (without 검색) -->
+	<select id="filterListNoS"  resultMap="productResultSet">
+		SELECT P.PRO_NO
+				  ,PRO_TITLE
+				  ,PRO_CONTENT
+				  ,SELL_ID
+				  ,PRO_PRICE
+				  ,WISH_PRICE
+				  ,POST_PRICE
+	              ,BID_PRICE
+				  ,START_DATE
+				  ,END_DATE
+				  ,PRO_CATE_NO
+				  ,TRADE_CATE_NO
+				  ,TRADE_LOCATION
+				  ,COUNT
+	              ,BIDCOUNT
+		FROM PRODUCT P
+	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    WHERE P.PRO_NO = B.PRO_NO(+) 
+	    AND P.PRO_NO = C.PRO_NO(+)
+	    AND P.PRO_STATUS ='Y'
+		<include refid="sort" />
+	</select>
+    
+	
+
+	
 </mapper>

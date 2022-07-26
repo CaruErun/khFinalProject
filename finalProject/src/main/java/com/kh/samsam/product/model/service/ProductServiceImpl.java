@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService{
 
 
 	@Override
-	public Object insertProductImages(ArrayList<ProductImages> list) {
+	public int insertProductImages(ArrayList<ProductImages> list) {
 		return productDao.insertProductImages(sqlSession,list);
 	}
 	
@@ -78,8 +78,28 @@ public class ProductServiceImpl implements ProductService{
 	public ArrayList<Product> selectProductList(PageInfo pi) {
 		return productDao.selectProductList(sqlSession,pi);
 	}
+	@Override
+	public int increaseCount(int pNo) {
+		// TODO Auto-generated method stub
+		return productDao.increaseCount(sqlSession, pNo);
+	}
 
-	
+
+
+	@Override
+	public Product selectProduct(int pNo) {
+		return productDao.selectProduct(sqlSession, pNo);
+	}
+
+
+
+	@Override
+	public ArrayList<ProductImages> selectImgList(int pNo) {
+		
+		return productDao.selectImgList(sqlSession,pNo);
+	}
+
+	//=======================
 	
 	@Override
 	public ArrayList<Product> selectList(String userId, PageInfo pi) {
@@ -122,15 +142,35 @@ public class ProductServiceImpl implements ProductService{
 		// TODO Auto-generated method stub
 		return productDao.selectListCountt(sqlSession);
 	}
+
 	
 	
 
-	//검색
+	//검색 전체 목록 => 옵션, 키워드
 	@Override
-	public List<Product> getSearchList(Product p) {
+	public List<Product> getSearchList(String searchType, String searchKeyword) {
+		return productDao.getSearchList(sqlSession, searchType, searchKeyword);
+	}
+
+	//검색 레코드 갯수
+	public int searchProListCount(String searchType, String searchKeyword) {
+		return productDao.searchProListCount(sqlSession, searchType, searchKeyword);
 		
-		return productDao.getSearchList(sqlSession,p);
+	}
+		
+		
+	//정렬 (with 검색)
+	@Override
+	public List<Product> filterList(String searchType, String searchKeyword, String sort) {
+		return productDao.filterList(sqlSession, searchType, searchKeyword, sort);
+	}
+
+	//정렬 (without 검색)
+	@Override
+	public List<Product> filterListNoS(String sort) {
+		return productDao.filterListNoS(sqlSession, sort);
 	}
 	
 
+	
 }

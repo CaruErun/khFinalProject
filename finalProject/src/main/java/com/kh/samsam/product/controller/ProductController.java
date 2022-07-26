@@ -11,13 +11,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.RowBounds;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -190,10 +188,10 @@ public class ProductController {
 		
 	}
 	@RequestMapping("insertProduct.pr")
-	public String insertProduct(Product p
+	public ModelAndView insertProduct(Product p
 								,MultipartFile[] upfile
 								,HttpSession session
-								,Model model) {
+								,ModelAndView mv) {
 		
 		System.out.println(p);
 	
@@ -216,10 +214,55 @@ public class ProductController {
 		
 		int result =productService.insertProduct(p);
 		if(result>0) {
-			productService.insertProductImages(list);
+			int result1 =productService.insertProductImages(list);
+			if(result1>0) {
+				session.setAttribute("alertMsg", "상품등록 성공");
+				mv.setViewName("redirect:productList.pr");
+			}else {
+				mv.addObject("errorMsg", "상품등록 실패");
+				mv.setViewName("common/errorPage");
+			}
+		}else {
+			mv.addObject("errorMsg", "상품등록 실패");
+			mv.setViewName("common/errorPage");
 		}
-	
-		return null;
+		return mv;
+	}
+	@RequestMapping("productList.pr")
+	public String selectList(
+						@RequestParam(value="cPage", defaultValue="1") int currentPage,
+						Model model
+					) {
+		
+		int listCount = productService.selectProListCount();
+		System.out.println(listCount);
+		int pageLimit =10;
+		int boardLimit = 20;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
+		ArrayList<Product> plist = productService.selectProductList(pi);
+		System.out.println(plist);
+		model.addAttribute("plist",plist);
+		model.addAttribute("pi",pi);
+		return "product/productListView";
+	}
+	@RequestMapping("productDetail.pr")
+	public String selectProduct(int pNo
+								,Model model) {
+		System.out.println(pNo);
+		
+		int result=productService.increaseCount(pNo);
+		if(result > 0) {
+			Product p =productService.selectProduct(pNo);
+			ArrayList<ProductImages> piList = productService.selectImgList(pNo);
+			model.addAttribute("p",p);
+			model.addAttribute("piList",piList);
+			return "product/productDetail";
+		}else {
+			model.addAttribute("errorMsg", "상품조회 실패");
+			return "common/errorPage";
+		}
 		
 	}
 	public String saveFile(MultipartFile upfile, HttpSession session) {
@@ -245,27 +288,7 @@ public class ProductController {
 		return changeName;
 	}	
 	
-	@RequestMapping("productList.pr")
-	public String selectList(
-						@RequestParam(value="cPage", defaultValue="1") int currentPage,
-						Model model
-					) {
-		
-		int listCount = productService.selectProListCount();
-		System.out.println(listCount);
-		int pageLimit =10;
-		int boardLimit = 20;
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		
-		ArrayList<Product> plist = productService.selectProductList(pi);
-		
-		model.addAttribute("plist",plist);
-		model.addAttribute("pi",pi);
-		return "product/productListView";
-	}
-
-
+	
 
 	@ResponseBody
 	@RequestMapping(value="sale.me", produces="application/json; charset=UTF-8")
@@ -388,22 +411,72 @@ public class ProductController {
 	}
 	
 //	================================================검색================================================
-	@GetMapping("getSearchList.pr")
-	@ResponseBody
-	public String getSearchList(Model model, Product p) {
-		
-		
-		 List<Product> proList =  productService.getSearchList(p);
-		 
-		model.addAttribute("proList",proList);
+	@RequestMapping("searchList.pr")
+	public ModelAndView getSearchList(
+								int cPage,
+								String searchType,
+								String searchKeyword,
+								ModelAndView mv) {
 
-		model.addAttribute("searchType",p.getSearchType());
-		model.addAttribute("searchKeyword",p.getSearchKeyword());
+		//페이징
+		int listCount = productService.searchProListCount(searchType, searchKeyword);
+		int pageLimit =10;
+		int boardLimit = 10;
 		
-		return "product/searchList";
+		PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
 		
+		//리스트 불러오기
+		List<Product> plist = productService.getSearchList(searchType, searchKeyword);
+		
+		
+		mv.addObject("searchType",searchType);
+		mv.addObject("searchKeyword",searchKeyword);
+		mv.addObject("pi",pi);
+		mv.addObject("plist",plist).setViewName("product/productListView");
+		
+		return mv;
 	}
 	
+
+//	================================================정렬================================================
+	@RequestMapping("filterList.pr")
+	public ModelAndView filterList(
+							int cPage,
+							String searchType,
+							String searchKeyword,
+							String sort,
+							ModelAndView mv) {
+		
+
+		System.out.println(searchType);
+		System.out.println(searchKeyword);
+		System.out.println(sort);
+
+		int listCount = productService.selectProListCount();
+		
+		int pageLimit =10;
+		int boardLimit = 10;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
+		
+		if(searchType != null && searchKeyword != null) {
+			List<Product> plist = productService.filterList(searchType, searchKeyword, sort);
+		
+			mv.addObject("searchType",searchType);
+			mv.addObject("searchKeyword",searchKeyword);
+			mv.addObject("pi",pi);
+			mv.addObject("plist",plist).setViewName("product/productListView");
+		}
+		
+			List<Product> plist = productService.filterListNoS(sort);
+			
+			mv.addObject("searchType","");
+			mv.addObject("searchKeyword","");
+			mv.addObject("pi",pi);
+			mv.addObject("plist",plist).setViewName("product/productListView");
+			
+			return mv;
+	}
 	
 	
 //	================================================찜하기================================================
@@ -413,6 +486,8 @@ public class ProductController {
 		
 		return "main";
 	}
+	
+	
 	
 	
 }
