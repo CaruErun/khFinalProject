@@ -199,24 +199,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 
 	
-	
-	<!-- product 검색 -->
-	<select id="getSearchList" parameterType="product" resultMap="productResultSet">
-		SELECT *
-		FROM PRODUCT
-		
-		<choose>
-			<when test="searchType !=null and searchType.equals('proTitle')">
-				WHERE PRO_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-			<when test="searchType !=null and searchType.equals('proContent')">
-				WHERE PRO_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-			<when test="searchType !=null and searchType.equals('sellId')">
-				WHERE SELL_ID LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-		</choose>
-	</select>
 	<!--
 	DML 구문일때는 결과값이 항상 int이기때문에 resultType을 적지 않아도 되지만
 	select구문일때는 타입이 특정되지 않기 때문에 적어야한다.
@@ -329,4 +311,135 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 
+
+	<!-- 검색 조건 (option&keyword) -->
+	<sql id="search">
+		<choose>
+			<when test="searchType !=null and searchType.equals('proTitle')">
+				and PRO_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+			</when>
+			<when test="searchType !=null and searchType.equals('proContent')">
+				and PRO_CONTENT LIKE '%'|| #{searchKeyword} ||'%'
+			</when>
+			<when test="searchType !=null and searchType.equals('sellId')">
+				and SELL_ID LIKE '%'|| #{searchKeyword} ||'%'
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<!-- product 검색 -->
+	<select id="getSearchList" resultMap="productResultSet">
+		SELECT P.PRO_NO
+				  ,PRO_TITLE
+				  ,PRO_CONTENT
+				  ,SELL_ID
+				  ,PRO_PRICE
+				  ,WISH_PRICE
+				  ,POST_PRICE
+	              ,BID_PRICE
+				  ,START_DATE
+				  ,END_DATE
+				  ,PRO_CATE_NO
+				  ,TRADE_CATE_NO
+				  ,TRADE_LOCATION
+				  ,COUNT
+	              ,BIDCOUNT
+		FROM PRODUCT P
+	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    WHERE P.PRO_NO = B.PRO_NO(+) 
+	    AND P.PRO_NO = C.PRO_NO(+)
+	    AND P.PRO_STATUS ='Y'
+		<include refid="search"/>
+		ORDER BY PRO_NO DESC
+	</select>
+	
+	<!-- 게시글 레코드 갯수 -->
+	<select id="searchProListCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM PRODUCT
+		where PRO_STATUS ='Y'
+		<include refid="search"/>
+	</select>
+	
+	
+	<!-- 정렬_필터 조건 -->
+	<sql id="sort">
+		<if test="sort == 'null'"> <!-- 최신순 (값이 없을 때 proNo가 제대로 들어감) -->
+			ORDER BY PRO_NO DESC
+		</if>
+		<if test="sort == 'proNo'"> <!-- 마감임박순 -->
+			ORDER BY PRO_NO ASC
+		</if>
+		
+		<if test="sort == 'hPrice'"> <!-- 높은가격순 -->
+			ORDER BY BID_PRICE DESC
+		</if>
+		<if test="sort == 'rPrice'"> <!-- 낮은가격순 -->
+			ORDER BY BID_PRICE ASC
+		</if>
+		<if test="sort == 'count'"> <!-- 조회수 -->
+			ORDER BY COUNT DESC
+		</if>
+	</sql>
+	
+	
+	
+	<!-- 필터링_정렬 (with 검색) -->
+	<select id="filterList"  resultMap="productResultSet">
+		SELECT P.PRO_NO
+				  ,PRO_TITLE
+				  ,PRO_CONTENT
+				  ,SELL_ID
+				  ,PRO_PRICE
+				  ,WISH_PRICE
+				  ,POST_PRICE
+	              ,BID_PRICE
+				  ,START_DATE
+				  ,END_DATE
+				  ,PRO_CATE_NO
+				  ,TRADE_CATE_NO
+				  ,TRADE_LOCATION
+				  ,COUNT
+	              ,BIDCOUNT
+		FROM PRODUCT P
+	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    WHERE P.PRO_NO = B.PRO_NO(+) 
+	    AND P.PRO_NO = C.PRO_NO(+)
+	    AND P.PRO_STATUS ='Y'
+	    <include refid="search"/>
+		<include refid="sort" />
+	</select>
+    
+    <!-- 필터링_정렬 (without 검색) -->
+	<select id="filterListNoS"  resultMap="productResultSet">
+		SELECT P.PRO_NO
+				  ,PRO_TITLE
+				  ,PRO_CONTENT
+				  ,SELL_ID
+				  ,PRO_PRICE
+				  ,WISH_PRICE
+				  ,POST_PRICE
+	              ,BID_PRICE
+				  ,START_DATE
+				  ,END_DATE
+				  ,PRO_CATE_NO
+				  ,TRADE_CATE_NO
+				  ,TRADE_LOCATION
+				  ,COUNT
+	              ,BIDCOUNT
+		FROM PRODUCT P
+	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    WHERE P.PRO_NO = B.PRO_NO(+) 
+	    AND P.PRO_NO = C.PRO_NO(+)
+	    AND P.PRO_STATUS ='Y'
+		<include refid="sort" />
+	</select>
+    
+	
+
+	
 </mapper>

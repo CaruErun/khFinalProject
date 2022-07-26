@@ -8,7 +8,6 @@
         <meta charset="UTF-8">
 
         <jsp:include page="../common/header.jsp"/>
-
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- swiper -->
@@ -405,7 +404,7 @@
         <div class="detail-area">
             <div class="detail-title">
                 <div>
-                    <h2>${p.proTitle}</h3>
+                    <h2>${p.proTitle}</h2>
                 </div>
             </div>
             <div class="detail-info">
