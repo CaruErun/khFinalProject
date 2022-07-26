@@ -11,13 +11,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.RowBounds;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -413,22 +411,72 @@ public class ProductController {
 	}
 	
 //	================================================검색================================================
-	@GetMapping("getSearchList.pr")
-	@ResponseBody
-	public String getSearchList(Model model, Product p) {
-		
-		
-		 List<Product> proList =  productService.getSearchList(p);
-		 
-		model.addAttribute("proList",proList);
+	@RequestMapping("searchList.pr")
+	public ModelAndView getSearchList(
+								int cPage,
+								String searchType,
+								String searchKeyword,
+								ModelAndView mv) {
 
-		model.addAttribute("searchType",p.getSearchType());
-		model.addAttribute("searchKeyword",p.getSearchKeyword());
+		//페이징
+		int listCount = productService.searchProListCount(searchType, searchKeyword);
+		int pageLimit =10;
+		int boardLimit = 10;
 		
-		return "product/searchList";
+		PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
 		
+		//리스트 불러오기
+		List<Product> plist = productService.getSearchList(searchType, searchKeyword);
+		
+		
+		mv.addObject("searchType",searchType);
+		mv.addObject("searchKeyword",searchKeyword);
+		mv.addObject("pi",pi);
+		mv.addObject("plist",plist).setViewName("product/productListView");
+		
+		return mv;
 	}
 	
+
+//	================================================정렬================================================
+	@RequestMapping("filterList.pr")
+	public ModelAndView filterList(
+							int cPage,
+							String searchType,
+							String searchKeyword,
+							String sort,
+							ModelAndView mv) {
+		
+
+		System.out.println(searchType);
+		System.out.println(searchKeyword);
+		System.out.println(sort);
+
+		int listCount = productService.selectProListCount();
+		
+		int pageLimit =10;
+		int boardLimit = 10;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
+		
+		if(searchType != null && searchKeyword != null) {
+			List<Product> plist = productService.filterList(searchType, searchKeyword, sort);
+		
+			mv.addObject("searchType",searchType);
+			mv.addObject("searchKeyword",searchKeyword);
+			mv.addObject("pi",pi);
+			mv.addObject("plist",plist).setViewName("product/productListView");
+		}
+		
+			List<Product> plist = productService.filterListNoS(sort);
+			
+			mv.addObject("searchType","");
+			mv.addObject("searchKeyword","");
+			mv.addObject("pi",pi);
+			mv.addObject("plist",plist).setViewName("product/productListView");
+			
+			return mv;
+	}
 	
 	
 //	================================================찜하기================================================
@@ -438,6 +486,8 @@ public class ProductController {
 		
 		return "main";
 	}
+	
+	
 	
 	
 }

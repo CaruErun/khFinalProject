@@ -52,7 +52,7 @@
 <body>
 	<c:if test="${not empty alertMsg }">
 		<script>
-			alertify.alert("${alertMsg}");
+			alertify.alert("서비스 요청 성공", "${alertMsg}");
 		</script>
 		<c:remove var="alertMsg" scope="session"/>
 	</c:if>
@@ -60,19 +60,33 @@
 	
    
   	 <!-- header.jsp include -->
-		<jsp:include page="../customerInfoMenubar.jsp"/>
+	 	<jsp:include page="../common/header.jsp"/>
+	
 			
 		<br><br><br><br><br><br>
 		
         
         <div class="outer position-relative" >
-        <h2>Q&A</h2>
+        <br><br>
+        <h2 align="center" >QnA 상세보기</h2>
+        
+        
         
             <div class="position-absolute top-50 start-50 translate-middle">
 
                 <!--카테고리-->
-
-                <div><b>${q.qnaCateNo }</b></div>
+		 		        <c:if test="${q.qnaCateNo ==1101}">
+						<input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="회원문의" />
+                        </c:if>
+                        <c:if test="${q.qnaCateNo ==1102 }">
+                        <input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="기타문의" />
+                        </c:if>
+                        <c:if test="${q.qnaCateNo ==1103 }">
+                        <input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="공지/이벤트문의" />
+                        </c:if>
+                        <c:if test="${q.qnaCateNo ==1104 }">
+                        <input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="경매문의" />
+                        </c:if>
                 <br>
 
                 <!--제목-->
@@ -85,43 +99,21 @@
                     <label for="exampleFormControlTextarea1" class="form-label" id="content" ><b>내용</b></label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" style="resize:none" name="qnaContent" readonly>${q.qnaContent}</textarea>
                 </div>
-                
-                <c:choose>
-                	<c:when test="${q.answerContent ne null }">
-                		<div class="mb-3">
-                    		<label for="exampleFormControlTextarea1" class="form-label" id="anscontent" ><b>답변</b></label>
-                    		<textarea class="form-control" id="exampleFormControlTextarea2" rows="10" style="resize:none" name="qnaansContent" readonly>${q.answerContent }</textarea>
-                		</div>
-                	</c:when>
-                	<c:otherwise>
-                			등록된 답변이 없습니다.
-                	</c:otherwise>
-                </c:choose>
+
                 
                 <c:if test="${loginUser.userId eq q.qnaId}">
-	            	<div align="center">
-			            <form method="post" name="form">
-				            	<input type="hidden" name="qNo" value="${q.qnaNo }">
-						    <button type="submit" class="btn btn-dark" value="update" onclick="javascript: form.action='qnaModiView.qu';">수정하기</button>
-						    <button type="submit" class="btn btn-light" value="delete" onclick="javascript: form.action='delete.qu';">삭제하기</button>
-						</form>
-	                </div>
-            	</c:if>
-            	
-            	<c:if test="${loginUser.userId eq 'admin' and q.answerContent eq null }">
-		            <form id=enrollForm method="post" action="insert.ans?qnaNo=${q.qnaNo }">
-			            <div align="center">
-			                <textarea id="content" class="form-control" rows="10" style="resize:none;" name="answerContent" required></textarea>
-			            </div>
-		            	<br>
-		            	<div align="center">
-		                    <button type="submit" class="btn btn-secondary">등록하기</button>
-		                </div>
-		        	</form>
+                <div align="center">
+            <form method="post" name="form">
+	            	<input type="hidden" name="qNo" value="${q.qnaNo }">
+			    <button type="submit" class="btn btn-dark" value="update" onclick="javascript: form.action='qnaModiView.qu';">수정하기</button>
+			    <button type="submit" class="btn btn-light" value="delete" onclick="javascript: form.action='delete.qu';">삭제하기</button>
+			</form>
+                </div>
             	</c:if>
             	
             	
 			        <a class="btn btn-secondary" href="qnaList.qu" style="float:right;">목록으로</a>
+            	
             	
             </div>
         </div>

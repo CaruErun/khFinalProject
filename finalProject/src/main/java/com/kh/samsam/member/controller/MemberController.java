@@ -326,7 +326,7 @@ public class MemberController {
 	
 	@RequestMapping("pick.me")
 	   public String interestItem() {
-	      return "member/pick";
+	      return "member/pickList";
 	   }
 	
 	@RequestMapping("salePostBox.me")

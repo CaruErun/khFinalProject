@@ -28,8 +28,15 @@ public class Product {
 	private String proStatus;
 
 
+	
+	
+	//======필터 및 검색용 객체 생성======
+	//정렬용 객체
+	private String sort; 
+	
 	//검색용 객체
 	private String searchType;	//검색 타입
 	private String searchKeyword;	//검색 키워드
+	
 
 }

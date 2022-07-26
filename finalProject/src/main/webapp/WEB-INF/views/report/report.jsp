@@ -55,6 +55,12 @@
 		
 
 <!-- Button to Open the Modal -->
+
+
+<script>
+$(".modal-content").load("/loginModal");
+</script>
+
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
     신고하기
   </button>
@@ -73,19 +79,20 @@
 
           <hr>
           
-<%-- 			<input type="hidden" value="${loginUser.userId }" name="reportId"> --%>
+			<input type="hidden" value="${loginUser.userId }" name="reportId">
+<!-- 			<input type="hidden" value="user02" name="reportId"> -->
 
-			<input type="hidden" value="user02" name="reportId">
-			<input type="hidden" value="1" name="proNo">
+			<input type="hidden" value="${p.proNo }" name="proNo">
+<!-- 			<input type="hidden" value="1" name="proNo"> -->
 			
           <p><b>피신고자</b></p>
-<%--             <input type="text" value="${p.sellId }" name="reportedId" id="reason1">  --%>
-            <input type="text" value="user01" name="reportedId" id="reason1"> 
+            <input type="text" value="${p.sellId }" name="reportedId" id="reason1"> 
+<!--             <input type="text" value="user01" name="reportedId" id="reason1">  -->
             
             <br><br><br>
             
           <p><b>신고사유</b></p>
-          <select name="reportCategoryNo" id="reason2">
+          <select name="reportCateNo" id="reason2">
               <option value="">사유 선택하기</option>
               <option value="1201" >허위매물</option>
               <option value="1202">전자상거래 금지물품 거래</option>
