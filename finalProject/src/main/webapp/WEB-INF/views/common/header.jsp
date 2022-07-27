@@ -145,8 +145,9 @@
 	.suBid, .suProduct, .faProduct, .topBid{
 		border:1px solid black;
 	}
-	<%--2022.07.25 alarm css--%>
+
 	
+	#titleBOx{width:100px;}
     </style>
        	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> 
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
@@ -168,20 +169,19 @@
                   	<c:otherwise>
 	                    <c:choose>
 	                    	<c:when test="${loginUser.userId eq 'admin' }">
-	                    		<lable>${ loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
+	                    		<b>${ loginUser.userName }님 환영합니다</b> &nbsp;&nbsp;
 	                   	 		<a href="logout.me">로그아웃</a>
 	                    		<a href="noticeList.no">고객센터</a>
 	                    		<a href="new.me">차트</a>
 	                    	</c:when>
 	                    	<c:otherwise>
-	                    		<lable>${ loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
+	                    		<b>${ loginUser.userName }님 환영합니다</b> &nbsp;&nbsp;
 	                    		
 	                    		
 	                    		<%-- 2022.07.24 알림 시작 --%>
     	                    	<b id="alarmB" onclick="clickk(document.getElementById('alarmNo'));" >알림</b>
 	                   			<span id="alarmNo"></span> 
 	                    		<%-- 2022.07.24 알림 끝 --%>
-	                    		
 	                    		
 	                    		<a href="myPageSale.me">마이페이지</a>
 	                   	 		<a href="logout.me">로그아웃</a>
@@ -346,13 +346,26 @@ function alarm(userId){
                 
                 </ul>
             </div>
-            <div class="h3">
-                <select name="" class="search-bar">
-                    <option value="">물품명</option>
-                </select>
-                <input type="text" class="search-bar"placeholder="검색어를 입력하세요.">
-                <button class="search-bar">검색</button>
-            </div>
+
+
+		<!-- 검색폼 -->
+		<form name="searchForm" action="searchList.pr">
+			<div class="search-wrap">
+				<select class="form-control search-select" name="searchType" id="titleBOx">
+					<option value="proTitle">제목</option>
+					<option value="proContent">내용</option>
+					<option value="sellId">판매자</option>
+				</select>
+				<input type="hidden" value="1" name="cPage">
+				<input type="text" class="form-control search-input" name="searchKeyword" value="${searchKeyword}">
+				<button type="submit" class="btn btn-info search-btn">검색</button>
+			</div>
+		</form>
+		
+
+		
+		
+		
         </div>
     </div>
 </div>
@@ -477,48 +490,5 @@ function alarm(userId){
 
 </body>
 
-    <!-- Header-->
-    <div class="header">
-        <div class="head-inner">
 
-            <div class="h1">
-                <img src="#" alt="">
-                <a href="${pageContext.request.contextPath }">samsam<br>Auction</a>
-            </div>
-            <div class="h2">
-                <ul class="header-nav">
-                    
-                    <li><a href="#">신규경매</a></li>
-                    <li><a href="#">마감임박경매</a></li>
-                    <li><a href="#">카테고리</a></li>
-                    <li><a href="insertProductForm.pr">물품등록</a></li>
-                </ul>
-            </div>
-
-
-				<!-- 검색폼 -->
-				<div class="h3">
-					<form id="searchForm" action="" method="get" align="center">
-						<div class="select">
-							<select class="custom-select" name="searchType">
-								<option value="sellId">작성자</option>
-								<option value="proTitle">제목</option>
-								<option value="proContent">내용</option>
-							</select>
-						</div>
-						<div class="text">
-							<input type="text" class="form-control" name="searchKeyword">
-						</div>
-						<button type="submit" class="searchBtn btn btn-secondary">검색</button>
-					</form>
-				</div>
-				
-				
-        </div>
-
-    </div>
-</div>
-
-
-</body>
 </html>

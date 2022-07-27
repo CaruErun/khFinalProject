@@ -16,6 +16,11 @@ crossorigin="anonymous"
 referrerpolicy="no-referrer"
 />
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
 <title>Insert title here</title>
 </head>
@@ -145,6 +150,10 @@ referrerpolicy="no-referrer"
         align-items: center;
     }
  
+  #h_mark{
+        color: lightgray;
+    }
+    
 </style>
 <body>
 	 
@@ -154,29 +163,21 @@ referrerpolicy="no-referrer"
                 <i class="fa-solid fa-circle-check"></i>
                 <span>모두 ${pi.listCount}개의 게시물이 검색되었습니다.</span>
             </div>
-            <div class="selectList">
-                <ul class="selectType">
-                    <li><a href="">인기경매순</a></li>
-                    <li><a href="">마감임박순</a></li>
-                    <li><a href="">신규경매순</a></li>
-                    <li><a href="">높은가격순</a></li>
-                    <li><a href="">낮은가격순</a></li>
-                    <li><a href="">조회많은순</a></li>
-                    <li><a href="">조회적은순</a></li>
-                  
-                </ul>
-                <select name="" id="">
-                    <option value="10">10개씩 보기</option>
-                    <option value="20">20개씩 보기</option>
-                    <option value="30">30개씩 보기</option>
-                    <option value="40">40개씩 보기</option>
-                    <option value="50">50개씩 보기</option>
-                </select>
+
+            <div class="btn-group"> <!-- get방식 -->
+                <button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=null&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right " >최신순</button>
+				<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=count&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right">마감임박순</button>
+				<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=hPrice&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right ">높은가격순</button>
+                <button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=rPrice&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right ">낮은가격순</button>
+                <button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=count&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right ">조회많은순</button>
             </div>
 	    </div>
     
+   
+    
+    
         <div class="item-preview">
-
+        
 	        <c:forEach var="i" items="${plist }" varStatus="status">
 
                 <div class="product-box">
@@ -196,7 +197,7 @@ referrerpolicy="no-referrer"
                         <div class="text-box">
                             <div class="content-box">
                                 <p>${i.proTitle }</p>
-                                <i>하트</i>
+                                <i class="fa-solid fa-heart" id="h_mark"></i>
                             </div>
                         </div>
 
@@ -232,9 +233,13 @@ referrerpolicy="no-referrer"
                             <p>${i.count}</p>
                         </div>
                     </div>
+                    
                 </div>
         </c:forEach>
     </div>
+        
+        
+        
     <script>
         const endDate =new Array();
         <c:forEach var="i" items="${plist }">
@@ -299,6 +304,10 @@ referrerpolicy="no-referrer"
             }
         }
    
+        
+        
+        
+       
     </script>
               
 	    

@@ -1,7 +1,9 @@
 package com.kh.samsam.product.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -143,9 +145,44 @@ public class ProductDao {
 
 
 	
-	//검색
-	public List<Product> getSearchList(SqlSessionTemplate sqlSession,Product p) {
-		return sqlSession.selectList("productMapper.getSearchList",p);
+	//검색 전체 목록 => 옵션, 키워드
+	public List<Product> getSearchList(SqlSessionTemplate sqlSession, String searchType, String searchKeyword) {
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("searchType", searchType);
+		map.put("searchKeyword", searchKeyword);
+		
+		return sqlSession.selectList("productMapper.getSearchList",map);
+	}
+
+	
+	//검색 레코드 갯수
+	public int searchProListCount(SqlSessionTemplate sqlSession, String searchType, String searchKeyword) {
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("searchType", searchType);
+		map.put("searchKeyword", searchKeyword);
+		
+		return sqlSession.selectOne("productMapper.searchProListCount",map);
+	}
+	
+	
+	
+	//정렬 (with 검색)
+	public List<Product> filterList(SqlSessionTemplate sqlSession, String searchType, String searchKeyword, String sort) {
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("searchType", searchType);
+		map.put("searchKeyword", searchKeyword);
+		map.put("sort", sort);
+		
+		return sqlSession.selectList("productMapper.filterList", map);
+	}
+
+	//정렬 (without 검색)
+	public List<Product> filterListNoS(SqlSessionTemplate sqlSession, String sort) {
+		
+		return sqlSession.selectList("productMapper.filterListNoS", sort);
 	}
 
 	
