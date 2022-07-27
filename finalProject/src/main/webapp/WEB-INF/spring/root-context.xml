@@ -29,7 +29,6 @@
 					<property name="password" value="*" />
 					<property name="defaultEncoding" value="utf-8" />
 					<property name="javaMailProperties">
-					
 		<props>
 			<prop key="mail.debug">true</prop>
 			<prop key="mail.smtp.starttls.enable">true</prop>

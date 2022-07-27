@@ -29,7 +29,7 @@
 	<!-- Semantic UI theme -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 
-<%--    	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
+  	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> 
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
     <style>
       *{
@@ -53,12 +53,13 @@
         border: solid 1px black;
         background-color: white;
     }
-    .navbar div{
+    .navbar div:not(.alarmList, #alarmListDiv){
         width: 35%;
         height: 100%;
         font-size: 14px;
         display: flex;
         align-items: center;
+      
     }
     #clock{
         margin-left: 100px;
@@ -116,9 +117,38 @@
         height: 30px;
         font-size: 15px;
     }
+    
+    <%--2022.07.25 alarm css--%>
+	#alarmB, .alarmList{
+		cursor:pointer;
+	}
+	#alarmNo{
+	}
+	#alarmListDiv{
+	margin-top:10px;	
+	width:300px;
+	background-color:white;
+	flex-direction:column;
+	position:fixed;
+	right:13%;
+	z-index:1;
+	border: 1px solid black;
+	}
+	#alarmListDiv div{
+	width:100%;
+	flex-direction:column;
+	text-align:center;
+	}
+	.alarmList{
 
+	}
+	.suBid, .suProduct, .faProduct, .topBid{
+		border:1px solid black;
+	}
+	<%--2022.07.25 alarm css--%>
+	
     </style>
-<%--        	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> --%>
+       	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> 
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
 </head>
 <body>
@@ -145,6 +175,14 @@
 	                    	</c:when>
 	                    	<c:otherwise>
 	                    		<lable>${ loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
+	                    		
+	                    		
+	                    		<%-- 2022.07.24 알림 시작 --%>
+    	                    	<b id="alarmB" onclick="clickk(document.getElementById('alarmNo'));" >알림</b>
+	                   			<span id="alarmNo"></span> 
+	                    		<%-- 2022.07.24 알림 끝 --%>
+	                    		
+	                    		
 	                    		<a href="myPageSale.me">마이페이지</a>
 	                   	 		<a href="logout.me">로그아웃</a>
 	                    		<a href="noticeList.no">고객센터</a>
@@ -160,49 +198,122 @@
     <!-- chat -->
 <div id="chatAl"></div>
 <div id="sellAl"></div>
-<%-- 채팅 시작 --%>
-<script>
 
+<%-- 채팅, 알람 시작 ver 2022.07.25 --%>
+
+<script>
 var login = '${loginUser.userId}'
 $(document).ready(function(){
-	bidCheck();
-})
-function bidCheck(){
-	if(login != ""){
-		$.ajax({
-			url : "ajaxBid.ch",
-			data : {userId : login},
-			success : function(list){
-				var listStr="";
-				var listStr2="";
-				if(list.chatList!=null){
-					console.log("1")
-					for(var i=0;i<list.chatList.length;i++){
-						listStr+="<div>경매에 낙찰되셨습니다<br>아래 채팅에 참여하여 판매자와 거래해보세요"+
-						"<a href='chatenter.ch?chatRoomNo="+list.chatList[i].chatRoomNo+"&name="+list.chatList[i].buyerId+"'>이동</a><br></div>";
-					}
-					$("#chatAl").html(listStr);
-				}
-				if(list.sellList!=null){
-					console.log("2")
-					for(var i=0;i<list.sellList.length;i++){
-						
-						listStr2+="<div>물품이 판매 되었습니다<br>아래 채팅에 참여하여 구매자와 거래해보세요"+
-						"<a href='chatenter.ch?chatRoomNo="+list.sellList[i].chatRoomNo+"&name="+list.sellList[i].sellId+"'>이동</a><br></div>"
-					}
-					$("#sellAl").html(listStr2)
-				}
-			},
-			error : function(){
-					
-			}
-		})
-		
+// 	bidCheck();
+	if(login!=null && login!=""){
+		alarm(login);
 	}
+})
+// function bidCheck(){
+// 	if(login != ""){
+// 		$.ajax({
+// 			url : "ajaxBid.ch",
+// 			data : {userId : login},
+// 			success : function(list){
+// 				var listStr="";
+// 				var listStr2="";
+// 				if(list.chatList!=null){
+// 					console.log("1")
+// 					for(var i=0;i<list.chatList.length;i++){
+// 						listStr+="<div>경매에 낙찰되셨습니다<br>아래 채팅에 참여하여 판매자와 거래해보세요"+
+// 						"<a href='chatenter.ch?chatRoomNo="+list.chatList[i].chatRoomNo+"&name="+list.chatList[i].buyerId+"'>이동</a><br></div>";
+// 					}
+// 					$("#chatAl").html(listStr);
+// 				}
+// 				if(list.sellList!=null){
+// 					console.log("2")
+// 					for(var i=0;i<list.sellList.length;i++){
+						
+// 						listStr2+="<div>물품이 판매 되었습니다<br>아래 채팅에 참여하여 구매자와 거래해보세요"+
+// 						"<a href='chatenter.ch?chatRoomNo="+list.sellList[i].chatRoomNo+"&name="+list.sellList[i].sellId+"'>이동</a><br></div>"
+// 					}
+// 					$("#sellAl").html(listStr2)
+// 				}
+// 			},
+// 			error : function(){
+					
+// 			}
+// 		})
+		
+// 	}
+	
+// }
+function clickk(a){
+	console.log("123");
+	console.log(a.children[0].style.display)
+	console.log(a.children);
+	if(a.children[0].style.display=='none') {
+		for(var i = 0 ; i<a.children.length;i++){
+			a.children[i].style.display="";
+		}
+	}else{
+		for(var i = 0 ; i<a.children.length;i++){
+			a.children[i].style.display='none';
+		}	
+	}
+// 	if(a.children.style.display == "none")
+// 	else a.children.style.display="none";
+}
+function alarm(userId){
+	$.ajax({
+		url : 'ajaxAlarm.ax',
+		data : {
+			userId : userId
+		},
+		success : function(alarmList){
+			if(alarmList.suBid == "") console.log("123");
+			var str ="<div id='alarmListDiv' style='display:none'>";
+			if(alarmList.suBid == "" &&
+					alarmList.suProduct == "" &&
+					alarmList.faProduct == "" &&
+					alarmList.topBid == ""){
+				str="<div class='noAlarm alarmList'>알람이 없습니다.</div>"
+			}else{
+				if(alarmList.suBid != ""){
+					str+="<div class='suBid alarmList' onclick='clickk(this);'>낙찰 상품이 있습니다.";
+					for(var i in alarmList.suBid) {
+						str+="<div class='alarmList' style='display:none;'><a href='chatenter.ch?chatRoomNo="+alarmList.suBid[i].proNo+"&name=${loginUser.userId}' class='suBidChil'> 경매 "+alarmList.suBid[i].proTitle+"이(가) 낙찰 되었습니다.</a></div>";
+					}
+					str+="</div>";
+				}
+				if(alarmList.suProduct != ""){
+					str+="<div class='suProduct alarmList' onclick='clickk(this);'>판매 상품이 있습니다.";
+					for(var i in alarmList.suProduct) {
+						str+="<div class='alarmList' style='display:none;'><a href='chatenter.ch?chatRoomNo="+alarmList.suProduct[i].proNo+"&name=${loginUser.userId}' class='suProChil'> 경매 "+alarmList.suProduct[i].proTitle+"이(가) 판매 되었습니다.</a></div>";
+					}
+					str+="</div>";
+				}
+				if(alarmList.faProduct != ""){
+					str+="<div class='faProduct alarmList'>유찰 상품이 있습니다.";
+					for(var i in alarmList.faProduct) {
+						str+="<div class='alarmList' style='display:none;'><a href='#' class='faProChil'> 경매 "+alarmList.faProduct[i].proTitle+"이(가) 유찰 되었습니다.</a></div>";
+					}
+					str+="</div>";
+				}
+				if(alarmList.topBid != ""){
+					str+="<div class='topBid alarmList'>입찰하신 상품에 상위 입찰자가 있습니다.";
+					for(var i in alarmList.topBid) {
+						str+="<div class='alarmList' style='display:none;'><a href='#' class='topBidChil'> 경매 "+alarmList.topBid[i].proTitle+"에 상위 입찰자가 있습니다.</a></div>";
+					}
+					str+="</div></div>";
+				}
+				$("#alarmNo").html(str);
+			}
+		},
+		error : function(){
+			
+			
+		}
+	})
 	
 }
 </script>
-<%-- 채팅 끝 --%>
+<%-- 채팅, 알람 끝 --%>
 
 
 
@@ -223,7 +334,7 @@ function bidCheck(){
         <div class="head-inner">
             <div class="h1">
                 <img src="#" alt="">
-                <a href="#">samsam<br>Auction</a>
+                <a href=${path }>samsam<br>Auction</a>
             </div>
             <div class="h2">
                 <ul class="header-nav">

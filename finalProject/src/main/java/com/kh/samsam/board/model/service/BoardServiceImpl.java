@@ -179,7 +179,22 @@ public class BoardServiceImpl implements BoardService{
 		
 		return dao.selectCategoryList(sqlSession);
 	}
+
+
+	//2022.07.25 상품문의 시작
+	@Override
+	public ArrayList<QnA> ajaxInquiry(int proNo, PageInfo pi) {
+		
+		return boardDao.ajaxInquiry(sqlSession,proNo, pi);
+	}
 	
+	@Override
+	public int selectInquiry(int proNo) {
+		return boardDao.selectInquiry(sqlSession, proNo);
+	}
+	//2022.07.25 상품문의 끝 
+
+
 	
 	
 

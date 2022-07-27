@@ -1,12 +1,5 @@
 package com.kh.samsam.member.model.service;
 
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.kh.samsam.member.model.dao.MemberDao;
-import com.kh.samsam.member.model.vo.MemberChart;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,9 +8,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.dao.MemberDao;
 import com.kh.samsam.member.model.vo.Member;
+import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.product.model.vo.Product;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -114,5 +108,30 @@ public class MemberServiceImpl implements MemberService {
 	public int selectBanCount(String userId) {
 		return memberDao.selectBanCount(sqlSession, userId);
 	}
+
+	//2022.07.24 알람 시작
+	@Override
+	public ArrayList<Product> successBid(String userId) {
+		return memberDao.successBid(sqlSession, userId);
+	}
+	@Override
+	public ArrayList<Product> successProduct(String userId) {
+		return memberDao.successProduct(sqlSession, userId);
+	}
+	@Override
+	public ArrayList<Product> failProduct(String userId) {
+		return memberDao.failProduct(sqlSession, userId);
+	}
+	@Override
+	public ArrayList<Product> topBid(String userId) {
+		return memberDao.topBid(sqlSession, userId);
+	}
+	//2022.07.24 알람 끝
+
+
+
+
+
+
 
 }

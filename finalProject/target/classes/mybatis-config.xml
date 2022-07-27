@@ -17,15 +17,10 @@
 		<typeAlias type="com.kh.samsam.product.model.vo.ProductChart" alias="productChart"/>
 		<typeAlias type="com.kh.samsam.product.model.vo.ProductImages" alias="productImages"/>
 		<typeAlias type="com.kh.samsam.member.model.vo.ProLike" alias="proLike"/>
-		<typeAlias type="com.kh.samsam.product.model.vo.Product" alias="product"/>
-<<<<<<< HEAD
-		<typeAlias type="com.kh.samsam.member.model.vo.Postbox" alias="postbox"/>
-		<typeAlias type="com.kh.samsam.member.model.vo.Bid" alias="bid"/>		
+		<typeAlias type="com.kh.samsam.product.model.vo.Product" alias="product"/>	
 		<typeAlias type="com.kh.samsam.chat.model.vo.ChatRoomDTO" alias="chat"/>
-=======
 		<typeAlias type="com.kh.samsam.product.model.vo.Postbox" alias="postbox"/>
 		<typeAlias type="com.kh.samsam.product.model.vo.Bid" alias="bid"/>		
->>>>>>> refs/remotes/origin/main
 	</typeAliases>
 
 	<mappers>
@@ -33,14 +28,8 @@
 		<mapper resource="mappers/board-mapper.xml"/>
 		<mapper resource="mappers/report-mapper.xml"/>
 		<mapper resource="mappers/product-mapper.xml"/>
-<<<<<<< HEAD
-		<mapper resource="mappers/qna-mapper.xml"/>
-		<mapper resource="/mappers/common-mapper.xml"/>
-		<mapper resource="/mappers/chat-mapper.xml"/>
-
-=======
 		<mapper resource="mappers/common-mapper.xml"/>
->>>>>>> refs/remotes/origin/main
+		<mapper resource="mappers/chat-mapper.xml"/>
 	</mappers>
 
 </configuration>

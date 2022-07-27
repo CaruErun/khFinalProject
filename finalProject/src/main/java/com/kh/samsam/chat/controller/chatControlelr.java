@@ -31,6 +31,7 @@ public class chatControlelr {
 	}
 	@RequestMapping("chatenter.ch")
 	public String chatEnter(ChatRoomDTO chat,Model model) {
+		chat.setRoomId("123");
 		model.addAttribute("chat", chat);
 		
 		return "chat/room";

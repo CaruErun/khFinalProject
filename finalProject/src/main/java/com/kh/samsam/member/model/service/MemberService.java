@@ -2,9 +2,9 @@ package com.kh.samsam.member.model.service;
 
 import java.util.ArrayList;
 
-import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.product.model.vo.Product;
 
 public interface MemberService {
 
@@ -34,5 +34,12 @@ public interface MemberService {
 
 	// 신고 당한 회원 정지 - banCount 조회
 	int selectBanCount(String userId);
+	
+	//2022.07.24 알람시작
+	ArrayList<Product> successBid(String userId);
+	ArrayList<Product> successProduct(String userId);
+	ArrayList<Product> failProduct(String userId);
+	ArrayList<Product> topBid(String userId);
+	//2022.07.24 알람끝
 	
 }

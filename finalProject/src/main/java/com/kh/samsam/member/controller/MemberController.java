@@ -1,6 +1,9 @@
 package com.kh.samsam.member.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.samsam.member.model.service.MailSendService;
 import com.kh.samsam.member.model.service.MemberService;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.product.model.vo.Product;
 
 @Controller
 public class MemberController {
@@ -355,6 +358,26 @@ public class MemberController {
 		return mv;
 	}
 	
+	// 2022.07.24 알람 시작
+	@RequestMapping(value = "ajaxAlarm.ax", produces = "application/json; charset=UTF-8" )
+	@ResponseBody
+	public String alarm(String userId) {
+		ArrayList<Product> successBid = memberService.successBid(userId); // 낙찰
+		ArrayList<Product> successProduct = memberService.successProduct(userId); // 판매 
+		
+		ArrayList<Product> failProduct = memberService.failProduct(userId); // 유찰
+		ArrayList<Product> topBid = memberService.topBid(userId); // 상위 입찰자 있을 때 
+		Map<String,Object> alarmList = new HashMap<>();
+		alarmList.put("suBid", successBid);
+		alarmList.put("suProduct", successProduct);
+		alarmList.put("faProduct", failProduct);
+		alarmList.put("topBid", topBid);
+		
+		
+		return new Gson().toJson(alarmList);
+	}
+	
+	// 2022.07.24 알람 끝
 
 }
 

@@ -9,10 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지(판매)</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/main
     <script src="https://kit.fontawesome.com/ee429cabba.js" crossorigin="anonymous"></script>
 	<jsp:include page="../common/header.jsp"/>
     <link rel="stylesheet" href="resources/css/myPageSale.css">
@@ -21,11 +17,8 @@
 
 
 <body>
-<<<<<<< HEAD
-=======
 <%-- <jsp:include page="../common/header.jsp"/> --%>
     <link rel="stylesheet" href="resources/css/myPageSale.css">
->>>>>>> refs/remotes/origin/main
 
     <div class="wrap">
         <div id="header">

@@ -2,13 +2,12 @@ package com.kh.samsam.member.model.dao;
 
 import java.util.ArrayList;
 
-import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.product.model.vo.Product;
 
 @Repository
 public class MemberDao {
@@ -50,6 +49,26 @@ public int deleteMember(SqlSessionTemplate sqlSession, String userId) {
 public int selectBanCount(SqlSessionTemplate sqlSession, String userId) {
 	return 0;
 }
+
+
+//2022.07.24 알람 시작
+public ArrayList<Product> successBid(SqlSessionTemplate sqlSession, String userId) {
+	return (ArrayList)sqlSession.selectList("productMapper.successBid",userId);
+}
+public ArrayList<Product> successProduct(SqlSessionTemplate sqlSession, String userId) {
+	return (ArrayList)sqlSession.selectList("productMapper.successProduct",userId);
+}
+
+public ArrayList<Product> failProduct(SqlSessionTemplate sqlSession, String userId) {
+	return (ArrayList)sqlSession.selectList("productMapper.failProduct",userId);
+}
+
+public ArrayList<Product> topBid(SqlSessionTemplate sqlSession, String userId) {
+	return (ArrayList)sqlSession.selectList("productMapper.topBid",userId);
+}
+
+//2022.07.24 알람 끝
+
 
 	
 

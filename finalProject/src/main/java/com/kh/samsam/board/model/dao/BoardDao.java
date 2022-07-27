@@ -173,6 +173,25 @@ public class BoardDao {
 	public List<Category> selectCategoryList(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectList("commonMapper.selectCategoryList");
 	}
+
+	//2022.07.25 상품문의 시작
+	public ArrayList<QnA> ajaxInquiry(SqlSessionTemplate sqlSession, int proNo, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.ajaxInquiry",proNo,rowBounds);
+		
+	}
+	public int selectInquiry(SqlSessionTemplate sqlSession, int proNo) {
+		return sqlSession.selectOne("boardMapper.selectInquiry",proNo);
+	}
+	//2022.07.25 상품문의 끝 
+
+
+
 }
 
 

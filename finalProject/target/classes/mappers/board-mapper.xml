@@ -221,7 +221,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   			WHERE QNA_NO = #{qnaNo}
 	</update>
 
+<!-- 2022.07.25 상품문의 시작 -->
 
+	<select id="ajaxInquiry" resultMap = "qnaResultSet">
+				SELECT  QNA_NO, 
+				  	QNA_TITLE,
+				  	QNA_ID, 
+				  	QNA_CONTENT,
+				  	QNA_CATE_NO,
+				  	CREATE_DATE,
+				  	ANSWER_CONTENT,
+				  	ANSWER_DATE
+		  	FROM QNA Q
+			WHERE QNA_TYPE = 1 AND PRO_NO = #{proNo}
+		  	ORDER BY QNA_NO DESC
+	</select>
+	
+	
+	<select id="selectInquiry" resultType="int">
+		SELECT COUNT(*)
+		FROM QNA
+		WHERE QNA_TYPE = 1 AND PRO_NO = #{proNo}
+	</select>
+
+
+
+
+<!--  2022.07.25 상품문의 끝 -->
 </mapper>
 
 

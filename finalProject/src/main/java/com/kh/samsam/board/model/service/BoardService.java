@@ -78,7 +78,11 @@ public interface BoardService {
 	public List<Category> selectCategoryList();
 	
 	
-
+	//2022.07.25 상품문의 시작
+	
+	ArrayList<QnA> ajaxInquiry(int proNo, PageInfo pi);
+	int selectInquiry(int proNo);
+	//2022.07.25 상품문의 끝 
 }
 
 

@@ -547,33 +547,14 @@
                     <table id="qna-table" border="1">
                         <thead>
                             <tr>
-                                <th width="10%">번호</th>
                                 <th width="15%">질문구분</th>
                                 <th width="45%">제목</th>
-                                <th width="15%">등록자</th>
-                                <th width="15%">등록일</th>
+                                <th width="20%">등록자</th>
+                                <th width="20%">등록일</th>
                             </tr>
                         </thead>
     
-                        <tbody>
-                            <tr>
-                                <td colspan="5" align="center">검색된 내용이 없습니다.</td>
-                            </tr>
-                            <tr>
-                                <td>s</td>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>s</td>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
-                            </tr>
-                         
+                        <tbody id="qna-tbody">        
                         </tbody>
                     </table>
                     <button class="btn-qna">문의하기</button>
@@ -602,8 +583,63 @@
                 
               
         </div>
-
-    
+		<%-- 2022.07.25 물품문의 ver 2022.07.25  --%>
+    	<script>
+    	$(document).ready(function(){
+    		ProductInquiry(1);
+    	})
+    	function ProductInquiry(cPage){
+    		console.log(cPage);
+    		$.ajax({
+    			url:"ajaxInquiry.pr",
+    			data:{
+    				cPage : cPage,
+    				proNo : '${p.proNo}'
+    			},
+    			success : function(inquiry){
+    				var str="";
+    				console.log(inquiry.proIn);
+    				if(inquiry.proIn == "") {str="<tr><td colspan='4' align='center'>검색된 내용이 없습니다.</td></tr>";}
+    				else{
+        				console.log(inquiry.proIn);
+        				for(var i in inquiry.proIn){
+        					str+="<tr onclick='openInquiry($(this))'>"+"<td>"+inquiry.proIn[i].qnaNo+"</td>"+
+        					"<td>"+inquiry.proIn[i].qnaTitle+"</td>"+
+        					"<td>"+inquiry.proIn[i].qnaId+"</td>"+
+        					"<td>"+inquiry.proIn[i].createDate+"</td>"+"</tr>"+
+        					"<tr style='display:none;'>"+"<td>ㄴ</td>"+"<td colspan='3'>"+inquiry.proIn[i].qnaContent+"</td>"+"</tr>";
+        					
+        				if(inquiry.proIn[i].answerContent != null){
+        					str+="<tr onclick='openInquiry($(this))'>"+"<td>답변</td>"+"<td>답변입니다.</td>"+
+        					"<td>판매자</td>"+"<td>"+inquiry.proIn[i].answerDate+"</td>"+"</tr>"+
+        					"<tr style='display:none;'>"+"<td>ㄴ</td>"+"<td colspan='3'>"+inquiry.proIn[i].answerContent+"</td>"+"</tr>";;
+        					
+        				}
+        					
+        				}
+    				}
+					$("#qna-tbody").html(str);
+					
+    			},
+    			error: function(){
+    				
+    				
+    			}
+    		})
+    		
+    	}
+		function openInquiry(inquiry){
+			var ro = inquiry.closest('tr').prevAll().length;
+			var inquiryTr = document.getElementById("qna-tbody");
+			if(inquiryTr.children[ro+1].style.display=='none') {inquiryTr.children[ro+1].style.display="";}
+			else {inquiryTr.children[ro+1].style.display='none'}
+			
+			
+		}
+    	
+    	
+    	</script>
+    	<%--물품문의 끝  --%>
         
         <jsp:include page="../common/footer.jsp" />
 
