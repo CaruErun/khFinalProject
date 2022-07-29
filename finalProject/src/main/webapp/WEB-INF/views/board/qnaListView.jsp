@@ -55,9 +55,11 @@
 		<jsp:include page="../customerInfoMenubar.jsp"/>
                 
 		<div id="content">
-            <h2>Q&A</h2>
-            <h4>삼삼옥션 서비스 관리자와의 질의응답 게시판입니다.</h4>
-
+			<div id="content_1">
+				<h2>Q&A</h2>
+            	<h4>삼삼옥션 서비스 관리자와의 질의응답 게시판입니다.</h4>
+			</div>
+            
                        <!-- 로그인한 회원만 보일 수 있도록 -->
                 <c:if test="${!empty loginUser}">
                 	<div class="btn" style="background-color:#576480; float: right; margin-right:30%;">
@@ -69,7 +71,6 @@
             <div id="content_2">
            	<form action="list.qo?kpage=1" method="post">
                 <div id="content_2_3">
-                <div class="container">
                     <table style="width: 1050px; text-align:center"  class="table table-hover" id="qList">
                         <thead>
                             <tr>
@@ -115,7 +116,6 @@
                          
                         </tbody>
                     </table>
-               	</div>
                 </div><br>
             
             <!-- 게시글 보기 -->  
@@ -129,7 +129,7 @@
                 
          <!-- 검색 -->
          <div id="searchFrom">
-            <input class="form-control" id="myInput" type="text" placeholder="검색어를 입력하세요.">
+            <input class="form-control" id="myInput" type="text" placeholder="검색어를 입력하세요..">
             <script>
 				$(function(){
 				  $("#myInput").on("keyup", function() {
@@ -154,7 +154,7 @@
 	            </div>
            </form>
              </div>
-             </div>
+             </div>	<!-- 전체 -->
              
          	<jsp:include page="../common/footer.jsp"/>
 	

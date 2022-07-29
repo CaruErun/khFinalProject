@@ -314,7 +314,35 @@
 //       });
     </script>
 
+<!-- PRO_NO를 USER_ID와 같이 room.jsp에 넘겨야 함 -->
 
+
+	<!-- 채팅 넘어가기 -->
+	<script>
+	
+		$(function(){
+			selectTrade();
+		})	
+	
+		function selectTrade(){
+			$.ajax({
+				url: "selectTraded.pr",
+				data: {
+					userId: ${ loginUser.userId }
+					},
+				success: function(result){
+					console.log("통신성공")
+					console.log(result)
+					
+				},
+				error: function(){
+					console.log("통신실패")
+				}
+			})
+		}
+	</script>
+	
+	
 </body>
 
     <!-- Header-->
@@ -334,7 +362,6 @@
                     <li><a href="insertProductForm.pr">물품등록</a></li>
                 </ul>
             </div>
-
 
 				<!-- 검색폼 -->
 				<div class="h3">

@@ -323,5 +323,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND USER_STATUS = 'N'
 	</select>
 	
+	<select id="selectTradedBuy">
+		SELECT DISTINCT P.PRO_NO
+        FROM PRODUCT P
+        JOIN BID B
+        ON P.PRO_NO = B.PRO_NO
+        WHERE PRO_STATUS = 'N'
+        AND BID_STATUS = 'Y'
+        AND BUYER_ID = #{userId}
+	</select>
+	
 
 </mapper>

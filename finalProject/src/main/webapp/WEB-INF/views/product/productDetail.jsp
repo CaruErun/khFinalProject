@@ -157,7 +157,6 @@
             height: 100%;
             display: flex;
             border: 1px solid gray;
-            
         }
         .seller-black{
             width: 46%;

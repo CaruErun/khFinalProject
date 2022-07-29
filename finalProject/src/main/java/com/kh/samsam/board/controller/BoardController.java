@@ -99,7 +99,11 @@ public class BoardController {
 	
 	// 공지사항 등록 폼
 	@RequestMapping("enrollForm.no")
-	public String noticeEnrollForm() {
+	public String noticeEnrollForm(Model model) {
+		
+		List<Category> category = service.selectCategoryList();
+		
+		model.addAttribute("category", category);
 		
 		return "board/noticeEnrollForm";
 	}
@@ -212,7 +216,11 @@ public class BoardController {
 		
 		// FAQ 등록 폼
 		@RequestMapping("enrollForm.fq")
-		public String faqEnrollForm() {
+		public String faqEnrollForm(Model model) {
+
+			List<Category> category = service.selectCategoryList();
+			
+			model.addAttribute("category", category);
 			
 			return "board/faqEnrollForm";
 		}
@@ -285,7 +293,7 @@ public class BoardController {
 			int listCount = service.selectListCount();
 			
 			int pageLimit = 10;
-			int boardLimit = 5;
+			int boardLimit = 10;
 			
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 			
@@ -294,7 +302,7 @@ public class BoardController {
 			model.addAttribute("list", list);
 			model.addAttribute("pi",pi);
 			
-			return "qna/qnaListView";
+			return "board/qnaListView";
 			
 		}
 		
@@ -307,7 +315,7 @@ public class BoardController {
 			
 			model.addAttribute("category", category); //<c:forEach var="c" items="${category }"> 여기 items에 키값(category)가 들어가야함!
 			
-			return "qna/qnaInsert";
+			return "board/qnaInsert";
 		}
 		
 		
@@ -336,7 +344,7 @@ public class BoardController {
 				//상세보기할 정보를 select로 조회 해오기
 				QnA q = service.selectQna(qNo);
 				
-				mv.addObject("q",q).setViewName("qna/qnaDetail");
+				mv.addObject("q",q).setViewName("board/qnaDetail");
 
 				return mv;
 		}
@@ -371,11 +379,10 @@ public class BoardController {
 			
 //			System.out.println(qNo); //잘 되는지 체크
 			
-		
 			QnA q = service.selectQna(qNo);
 			
 			mv.addObject("q",q);
-			mv.setViewName("qna/qnaModi");
+			mv.setViewName("board/qnaModi");
 			return mv;
 		}
 		

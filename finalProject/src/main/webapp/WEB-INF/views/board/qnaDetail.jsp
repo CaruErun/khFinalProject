@@ -57,14 +57,11 @@
 		<c:remove var="alertMsg" scope="session"/>
 	</c:if>
 	
-	
-   
   	 <!-- header.jsp include -->
 		<jsp:include page="../customerInfoMenubar.jsp"/>
 			
 		<br><br><br><br><br><br>
 		
-        
         <div class="outer position-relative" >
         <h2>Q&A</h2>
         
@@ -96,18 +93,20 @@
                 	<c:otherwise>
                 			등록된 답변이 없습니다.
                 	</c:otherwise>
-                </c:choose>
-                
-                <c:if test="${loginUser.userId eq q.qnaId}">
+                </c:choose><br>
+				
+                <c:if test="${loginUser.userId eq q.qnaId and q.ansStatus eq 'N'}">
 	            	<div align="center">
 			            <form method="post" name="form">
 				            	<input type="hidden" name="qNo" value="${q.qnaNo }">
+				            	
 						    <button type="submit" class="btn btn-dark" value="update" onclick="javascript: form.action='qnaModiView.qu';">수정하기</button>
-						    <button type="submit" class="btn btn-light" value="delete" onclick="javascript: form.action='delete.qu';">삭제하기</button>
+						    <button type="submit" class="btn btn-dark" value="delete" onclick="javascript: form.action='delete.qu';">삭제하기</button>
+						
 						</form>
 	                </div>
             	</c:if>
-            	
+            	<br>
             	<c:if test="${loginUser.userId eq 'admin' and q.answerContent eq null }">
 		            <form id=enrollForm method="post" action="insert.ans?qnaNo=${q.qnaNo }">
 			            <div align="center">

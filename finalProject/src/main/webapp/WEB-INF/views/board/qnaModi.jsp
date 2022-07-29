@@ -96,7 +96,7 @@
                 
                 <div align="center">
                     <button type="submit"  class="btn btn-dark">수정하기</button>
-                    <button type="button"  class="btn btn-light" onclick="javascript:history.go(-1);">뒤로</button>
+                    <button type="button"  class="btn btn-dark" onclick="javascript:history.go(-1);">뒤로</button>
                 </div> 
             
         

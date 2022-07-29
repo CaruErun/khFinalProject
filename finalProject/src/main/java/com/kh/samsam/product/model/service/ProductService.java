@@ -65,6 +65,8 @@ public interface ProductService {
 	//검색
 	List<Product> getSearchList(Product p);
 
+	int[] selectTradedBuy(String userId);
+
 	
 	
 }

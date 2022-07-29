@@ -151,6 +151,11 @@ public class ProductServiceImpl implements ProductService{
 		
 		return productDao.getSearchList(sqlSession,p);
 	}
+
+	@Override
+	public int[] selectTradedBuy(String userId) {
+		return productDao.selectTradedBuy(sqlSession, userId);
+	}
 	
 
 }
