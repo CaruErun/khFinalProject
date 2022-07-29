@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,12 +64,12 @@ public class ReportController {
 	}
 	
 	//report
-	//신고하기 form으로 전달하기
-	@RequestMapping("reportView.mem")
-	public String reportView(Model model) {
-		
-		return "report/report";
-	}
+//	//신고하기 form으로 전달하기
+//	@RequestMapping("reportView.mem")
+//	public String reportView(Model model) {
+//		
+//		return "report/report";
+//	}
 	
 	
 	//신고하기
@@ -95,6 +96,10 @@ public class ReportController {
 	public String reportDoneView() {
 		return "report/report_done";
 	}
+	
+	
+
+	
 	
 
 }

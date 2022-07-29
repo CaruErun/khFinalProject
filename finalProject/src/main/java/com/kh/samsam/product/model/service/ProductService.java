@@ -62,8 +62,19 @@ public interface ProductService {
 	
 	
 
-	//검색
-	List<Product> getSearchList(Product p);
+	//검색 전체 목록 => 옵션, 키워드
+	List<Product> getSearchList(String searchType, String searchKeyword);
+
+	//검색 레코드 갯수
+	int searchProListCount(String searchType, String searchKeyword);
+	
+	//정렬 (with 검색)
+	List<Product> filterList(String searchType, String searchKeyword, String sort);
+
+	//정렬 (without 검색)
+	List<Product> filterListNoS(String sort);
+
+
 
 	int[] selectTradedBuy(String userId);
 

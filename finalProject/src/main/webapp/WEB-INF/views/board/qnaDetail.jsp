@@ -52,24 +52,38 @@
 <body>
 	<c:if test="${not empty alertMsg }">
 		<script>
-			alertify.alert("${alertMsg}");
+			alertify.alert("서비스 요청 성공", "${alertMsg}");
 		</script>
 		<c:remove var="alertMsg" scope="session"/>
 	</c:if>
 	
   	 <!-- header.jsp include -->
-		<jsp:include page="../customerInfoMenubar.jsp"/>
+	 	<jsp:include page="../common/header.jsp"/>
+	
 			
 		<br><br><br><br><br><br>
 		
         <div class="outer position-relative" >
-        <h2>Q&A</h2>
+        <br><br>
+        <h2 align="center" >QnA 상세보기</h2>
+        
+        
         
             <div class="position-absolute top-50 start-50 translate-middle">
 
                 <!--카테고리-->
-
-                <div><b>${q.qnaCateNo }</b></div>
+		 		        <c:if test="${q.qnaCateNo ==1101}">
+						<input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="회원문의" />
+                        </c:if>
+                        <c:if test="${q.qnaCateNo ==1102 }">
+                        <input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="기타문의" />
+                        </c:if>
+                        <c:if test="${q.qnaCateNo ==1103 }">
+                        <input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="공지/이벤트문의" />
+                        </c:if>
+                        <c:if test="${q.qnaCateNo ==1104 }">
+                        <input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="경매문의" />
+                        </c:if>
                 <br>
 
                 <!--제목-->
@@ -121,6 +135,7 @@
             	
             	
 			        <a class="btn btn-secondary" href="qnaList.qu" style="float:right;">목록으로</a>
+            	
             	
             </div>
         </div>

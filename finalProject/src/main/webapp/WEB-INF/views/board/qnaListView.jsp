@@ -2,10 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
 <!DOCTYPE html>
 <html>
@@ -13,32 +9,22 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-	<style> 		
-		#boardList {text-align:center;}
-        #boardList>tbody>td:hover {cursor:pointer;}
-        #pagingArea {
-        	width:fit-content; margin:auto;
- 			margin-top:50px; 
-		}
-		#content{
-            padding-top:50px; 
-		    width: 1500px;
-		    height: 840px;
- 		    margin-left: 20%;
-		}
-		table{
-		    border-top: 1px solid gray;
-		    border-bottom: 1px solid gray;
-		}
-		#content_2{
-		    width: 70%;
-		    height: 100%;
-		}
-
-        #searchFrom{
-			margin-left:3%;
+	<style>
+        .content {
+            background-color:rgb(247, 245, 245);
+            width:80%;
+            text-align:center;
         }
-        
+        .innerOuter {
+            border:1px solid lightgray;
+            width:80%;
+            margin:auto;
+            padding:5% 10%;
+            background-color:white;
+        }
+ 		#boardList {text-align:center;}
+        #boardList>tbody>td:hover {cursor:pointer;}
+        #pagingArea {width:fit-content; margin:auto; }
         #searchForm {
             width:80%;
             margin:auto;
@@ -47,29 +33,66 @@
             float:left;
             margin:5px;
         }
+        .select {width:20%;}
+        .text {width:53%;}
+		#content{
+            padding-top:100px;
+		}
+		#content_2_2{
+		    line-height: 36px;
+		    font-family: "Malgun Gothic";
+		    font-size: 20px;
+		    font-weight: 700;
+		    padding-top: 10px;
+		    border-top: 2px solid gray;
+		}
+		#content{
+		    width: 1500px;
+		    height: 840px;
+ 		    margin-left: 20%;
+		}
+		#content_2{
+		    width: 70%;
+		    height: 100%;
+		}
+		table{
+		    border-top: 1px solid gray;
+		    border-bottom: 1px solid gray;
+		}
+		#pagingArea{
+			margin-top:50px;
+		}
+        #searchFrom{
+			margin-left:3%;
+        }
+        
 	</style>
 
 </head>
 
 <body>
-		<jsp:include page="../customerInfoMenubar.jsp"/>
+			<jsp:include page="../common/header.jsp"/>	
+				
+		<br><br><br><br><br><br>
                 
 		<div id="content">
 			<div id="content_1">
 				<h2>Q&A</h2>
             	<h4>삼삼옥션 서비스 관리자와의 질의응답 게시판입니다.</h4>
 			</div>
-            
+		<h3>상담문의</h3>
+
                        <!-- 로그인한 회원만 보일 수 있도록 -->
-                <c:if test="${!empty loginUser}">
+<%--                 <c:if test="${!empty loginUser}"> --%>
                 	<div class="btn" style="background-color:#576480; float: right; margin-right:30%;">
                 		<a href="insertView.qu" style="color:white !important;  text-decoration: none; ">문의하기</a>
                 	</div>
-                </c:if>
-				<br><br><br><br>
+<%--                 </c:if> --%>
+<br><br>
 
             <div id="content_2">
-           	<form action="list.qo?kpage=1" method="post">
+                <div id="content_2_2"></div>
+           <form action="list.qo?kpage=1" method="post">
                 <div id="content_2_3">
                     <table style="width: 1050px; text-align:center"  class="table table-hover" id="qList">
                         <thead>
@@ -83,8 +106,6 @@
                             </tr>
                         </thead>
                         <tbody id="myTable">
-                        
-                        
                         <c:choose>
                         <c:when test="${empty list}">
                         	<tr>
@@ -95,7 +116,20 @@
                         	<c:forEach var="q" items="${list}">
                     <tr>
                         <td>${q.qnaNo}</td>
-                        <td>${q.qnaCateNo }</td>
+                        
+                        <c:if test="${q.qnaCateNo ==1101}">
+                        	<td>회원문의</td>
+                        </c:if>
+                        <c:if test="${q.qnaCateNo ==1102 }">
+                        	<td>기타문의</td>
+                        </c:if>
+                        <c:if test="${q.qnaCateNo ==1103 }">
+                        	<td>공지/이벤트문의</td>
+                        </c:if>
+                        <c:if test="${q.qnaCateNo ==1104 }">
+                        	<td>경매문의</td>
+                        </c:if>
+                        
                         <td>${q.qnaTitle}</td>
                         <td>${q.qnaId}</td>
                         <td>${q.createDate}</td>
@@ -103,7 +137,7 @@
                         	<!-- 답변여부 표시 -->
                         	<c:choose>
                         		<c:when test="${q.ansStatus=='N'}">
-                        		<td><b>답변대기</b></td>
+                        		<td>답변대기</td>
                         		</c:when>
                         		<c:otherwise>
                         		<td>답변완료</td>
@@ -113,7 +147,6 @@
                     </c:forEach>
                          </c:otherwise>
                          </c:choose>
-                         
                         </tbody>
                     </table>
                 </div><br>
@@ -126,6 +159,8 @@
             		});
             	});
             </script>
+            
+            
                 
          <!-- 검색 -->
          <div id="searchFrom">
@@ -141,21 +176,50 @@
 				});
 			</script>
         </div>
-        <br>
+        
+
+
+
                 <!-- 페이징 -->
 				<div id="pagingArea" align="center">
                 	<ul class="pagination">
+                
+                	<c:choose>
+	                	<c:when test="${pi.currentPage eq 1 }">
+	                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+	                    </c:when>
+	                    <c:otherwise>
+	                    <li class="page-item"><a class="page-link" href="qnaList.qu?cpage=${pi.currentPage-1}">Previous</a></li>
+	                    </c:otherwise>
+                    </c:choose>
                     
                     <c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
                     	<li class="page-item"><a class="page-link" href="qnaList.qu?cpage=${p}">${p }</a></li>
                     </c:forEach>
-
+                    
+                    <c:choose>
+	                    <c:when test="${pi.currentPage eq pi.maxPage }">
+	                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+	                    </c:when>
+	                    <c:otherwise>
+	                    <li class="page-item"><a class="page-link" href="qnaList.qu?cpage=${pi.currentPage+1 }">Next</a></li>
+	                    </c:otherwise>
+                    </c:choose>
 	                </ul>
 	            </div>
            </form>
              </div>
              </div>	<!-- 전체 -->
              
+
+            
+             
+             
+             
+
+        
+        
+        
          	<jsp:include page="../common/footer.jsp"/>
 	
 </body>
