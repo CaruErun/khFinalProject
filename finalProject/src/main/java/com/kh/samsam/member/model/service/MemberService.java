@@ -33,6 +33,15 @@ public interface MemberService {
 	int deleteMember(String userId);
 
 	// 신고 당한 회원 정지 - banCount 조회
-	int selectBanCount(String userId);
+	int selectBanCount(String reportedId);
+	
+	// 신고 당한 회원 정지
+	int banMember(Member m);
+
+	// 신고 status N으로
+	int deleteReport(int reportNo);
+
+	int nobanMember(int reportNo);
+
 	
 }

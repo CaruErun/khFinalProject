@@ -76,6 +76,8 @@ public interface ProductService {
 
 
 
+	int[] selectTradedBuy(String userId);
+
 	
 	
 }

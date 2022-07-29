@@ -316,7 +316,7 @@
         	$(".info-error").show();
           $("#user-id").css("border", "2px solid #F4492E");
         } else {
-          
+        
         }
       });
       
@@ -328,10 +328,7 @@
 //       });
     </script>
 
-
-
-
-		
-</body> 
+<!-- PRO_NO를 USER_ID와 같이 room.jsp에 넘겨야 함 -->
+</body>
 
 </html>

@@ -170,6 +170,11 @@ public class ProductServiceImpl implements ProductService{
 	public List<Product> filterListNoS(String sort) {
 		return productDao.filterListNoS(sqlSession, sort);
 	}
+
+	@Override
+	public int[] selectTradedBuy(String userId) {
+		return productDao.selectTradedBuy(sqlSession, userId);
+	}
 	
 
 	

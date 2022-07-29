@@ -487,6 +487,16 @@ public class ProductController {
 		return "main";
 	}
 	
+	// 채팅 넘어가기
+	@ResponseBody
+	@RequestMapping(value="selectTraded.pr", produces="application/json; charset=UTF-8")
+	public String selectTraded(String userId) {
+		
+		int[] arrBuy = productService.selectTradedBuy(userId);
+		
+		return new Gson().toJson(arrBuy);
+	}
+	
 	
 	
 	

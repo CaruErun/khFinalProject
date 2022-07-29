@@ -39,7 +39,8 @@ public class ReportController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		ArrayList<Report> list = reportService.selectReportList(pi);
-		
+		System.out.println(pi);
+		System.out.println(listCount);
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
 		
