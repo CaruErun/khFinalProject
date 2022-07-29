@@ -76,35 +76,8 @@
             <div class="position-absolute top-50 start-50 translate-middle">
 
         <!--카테고리 : 변경할 수 없음(처음 설정 그대로 하기) -->
-		<select class="form-select form-select-sm" aria-label=".form-select-sm example" name="qnaCateNo">
-		               
-		               <c:if test="${q.qnaCateNo ==1101}">
-		                    <option value="${q.qnaCateNo}">회원문의</option>
-                        </c:if>
-                        <c:if test="${q.qnaCateNo ==1102 }">
-                        	<option value="${q.qnaCateNo}">기타문의</option>
-                        </c:if>
-                        	<c:if test="${q.qnaCateNo ==1103 }">
-                        <option value="${q.qnaCateNo}">공지/이벤트문의</option>
-                        </c:if>
-                        <c:if test="${q.qnaCateNo ==1104 }">
-                        	<option value="${q.qnaCateNo}">경매문의</option>
-                        </c:if>
-		 </select>
-		 
-		 
-                        <script>
-                             $(function(){
-                                 $("option").each(function(){
-                                    if($(this).text()=="${q.qnaCateNo}"){
-                                         $(this).attr("selected",true); 
-                                     }
-                                 })
-
-                             })
-                        </script>
-                        
-                        
+                <div name="qnaCateNo">${q.qnaCateNo }</div><br>
+	                
                 <br>
 
                 <!--제목-->

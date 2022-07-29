@@ -58,39 +58,26 @@
 	</c:if>
 	
   	 <!-- header.jsp include -->
-	 	<jsp:include page="../common/header.jsp"/>
+<%-- 	 	<jsp:include page="../common/header.jsp"/> --%>
 	
+		<jsp:include page="../customerInfoMenubar.jsp"/>
 			
 		<br><br><br><br><br><br>
 		
         <div class="outer position-relative" >
-        <br><br>
-        <h2 align="center" >QnA 상세보기</h2>
-        
         
         
             <div class="position-absolute top-50 start-50 translate-middle">
-
+				<h2>QnA 상세보기</h2>
                 <!--카테고리-->
-		 		        <c:if test="${q.qnaCateNo ==1101}">
-						<input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="회원문의" />
-                        </c:if>
-                        <c:if test="${q.qnaCateNo ==1102 }">
-                        <input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="기타문의" />
-                        </c:if>
-                        <c:if test="${q.qnaCateNo ==1103 }">
-                        <input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="공지/이벤트문의" />
-                        </c:if>
-                        <c:if test="${q.qnaCateNo ==1104 }">
-                        <input class="form-select form-select-sm" aria-label=".form-select-sm example" name=qnaCateNo readonly value="경매문의" />
-                        </c:if>
+                <div><b>${q.qnaCateNo }</b></div>
                 <br>
 
                 <!--제목-->
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" id="title" aria-label="Text input with dropdown button" name="qnaTitle" readonly value="${q.qnaTitle}" >
                 </div>
-
+				<br>
                 <!--내용-->
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label" id="content" ><b>내용</b></label>

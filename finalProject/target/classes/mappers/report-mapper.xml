@@ -19,7 +19,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectReportListCount" resultType="_int">
         SELECT COUNT(*)
         FROM REPORT
-        WHERE REPORT_STATUS = 'Y'
 	</select>
 	
 	<select id="selectReportList" resultMap="reportResultSet">

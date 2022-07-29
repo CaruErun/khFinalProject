@@ -71,8 +71,15 @@
 </head>
 
 <body>
-			<jsp:include page="../common/header.jsp"/>	
+	<c:if test="${not empty alertMsg }">
+		<script>
+			alertify.alert("서비스 요청 성공", "${alertMsg}");
+		</script>
+		<c:remove var="alertMsg" scope="session"/>
+	</c:if>
+<%-- 			<jsp:include page="../common/header.jsp"/>	 --%>
 				
+		<jsp:include page="../customerInfoMenubar.jsp"/>
 		<br><br><br><br><br><br>
                 
 		<div id="content">
@@ -116,20 +123,7 @@
                         	<c:forEach var="q" items="${list}">
                     <tr>
                         <td>${q.qnaNo}</td>
-                        
-                        <c:if test="${q.qnaCateNo ==1101}">
-                        	<td>회원문의</td>
-                        </c:if>
-                        <c:if test="${q.qnaCateNo ==1102 }">
-                        	<td>기타문의</td>
-                        </c:if>
-                        <c:if test="${q.qnaCateNo ==1103 }">
-                        	<td>공지/이벤트문의</td>
-                        </c:if>
-                        <c:if test="${q.qnaCateNo ==1104 }">
-                        	<td>경매문의</td>
-                        </c:if>
-                        
+                        <td>${q.qnaCateNo }</td>                        
                         <td>${q.qnaTitle}</td>
                         <td>${q.qnaId}</td>
                         <td>${q.createDate}</td>
@@ -137,7 +131,7 @@
                         	<!-- 답변여부 표시 -->
                         	<c:choose>
                         		<c:when test="${q.ansStatus=='N'}">
-                        		<td>답변대기</td>
+                        		<td><b>답변대기</b></td>
                         		</c:when>
                         		<c:otherwise>
                         		<td>답변완료</td>
