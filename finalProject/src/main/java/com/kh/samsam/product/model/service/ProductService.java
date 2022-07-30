@@ -88,7 +88,7 @@ public interface ProductService {
 
 
 
-		int[] selectTradedBuy(String userId);
+
 
 		
 		//찜 추가

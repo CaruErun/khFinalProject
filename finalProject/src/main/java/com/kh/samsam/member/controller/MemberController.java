@@ -425,9 +425,5 @@ public class MemberController {
 		
 		
 		
-		//찜리스트 보여주기
-		@RequestMapping("pick.me")
-		public String goPickList() {
-			return "member/pickList";
-		}
+
 }

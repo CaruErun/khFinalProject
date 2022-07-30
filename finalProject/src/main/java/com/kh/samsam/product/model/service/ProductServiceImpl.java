@@ -209,7 +209,7 @@ public class ProductServiceImpl implements ProductService{
 		public int removeWishlist(ProLike l) {
 			// TODO Auto-generated method stub
 			return productDao.removeWishlist(sqlSession, l);
-	
+		}
 			//찜 목록 보내기
 			@Override
 			public int prolike(int pNo, String userId) {

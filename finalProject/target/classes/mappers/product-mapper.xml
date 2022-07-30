@@ -196,22 +196,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<!-- product 검색 -->
-	<select id="getSearchList" parameterType="product" resultMap="productResultSet">
-		SELECT *
-		FROM PRODUCT
-		
-		<choose>
-			<when test="searchType !=null and searchType.equals('proTitle')">
-				WHERE PRO_TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-			<when test="searchType !=null and searchType.equals('proContent')">
-				WHERE PRO_CONTENT LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-			<when test="searchType !=null and searchType.equals('sellId')">
-				WHERE SELL_ID LIKE CONCAT('%', #{searchKeyword}, '%')
-			</when>
-		</choose>
-	</select>
+
 	<!--
 	DML 구문일때는 결과값이 항상 int이기때문에 resultType을 적지 않아도 되지만
 	select구문일때는 타입이 특정되지 않기 때문에 적어야한다.
@@ -362,17 +347,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND TO_DATE(#{date2},'YY-MM-DD')
 		AND USER_STATUS = 'N'
 	</select>
-	
-	<select id="selectTradedBuy">
-		SELECT DISTINCT P.PRO_NO
-        FROM PRODUCT P
-        JOIN BID B
-        ON P.PRO_NO = B.PRO_NO
-        WHERE PRO_STATUS = 'N'
-        AND BID_STATUS = 'Y'
-        AND BUYER_ID = #{userId}
-	</select>
-	
 	<!-- 검색 조건 (option&keyword) -->
 	<sql id="search">
 		<choose>

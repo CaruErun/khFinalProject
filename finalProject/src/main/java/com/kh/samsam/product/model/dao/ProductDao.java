@@ -186,17 +186,6 @@ public class ProductDao {
 		return (ArrayList)sqlSession.selectList("productMapper.getSearchList",map, rowBounds);
 	}
 	
-	//찜 추가
-	public int addWishlist(SqlSessionTemplate sqlSession, ProLike l) {
-		// TODO Auto-generated method stub
-		return sqlSession.insert("productMapper.addWishlist", l);
-	}
-
-	//찜 삭제
-	public int removeWishlist(SqlSessionTemplate sqlSession, ProLike l) {
-		// TODO Auto-generated method stub
-		return sqlSession.delete("productMapper.removeWishlist", l);
-	}
 	
 	
 	//판매현황 삭제
@@ -293,13 +282,6 @@ public class ProductDao {
 		return sqlSession.selectList("productMapper.filterListNoS", sort, rowBounds);
 	}
 
-	public int[] selectTradedBuy(SqlSessionTemplate sqlSession, String userId) {
-//		sqlSession.selectList("productMapper.selectTradedBuy", userId);
-		int[] arrBuy = {1,2,5};
-		return arrBuy;
-	}
-
-	
 	
 	
 	
