@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.common.model.vo.PageInfo;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.dao.ProductDao;
 import com.kh.samsam.product.model.vo.Bid;
 import com.kh.samsam.product.model.vo.Postbox;
@@ -148,8 +149,8 @@ public class ProductServiceImpl implements ProductService{
 
 	//검색 전체 목록 => 옵션, 키워드
 	@Override
-	public List<Product> getSearchList(String searchType, String searchKeyword) {
-		return productDao.getSearchList(sqlSession, searchType, searchKeyword);
+	public List<Product> getSearchList(String searchType, String searchKeyword, PageInfo pi) {
+		return productDao.getSearchList(sqlSession, searchType, searchKeyword, pi);
 	}
 
 	//검색 레코드 갯수
@@ -161,16 +162,38 @@ public class ProductServiceImpl implements ProductService{
 		
 	//정렬 (with 검색)
 	@Override
-	public List<Product> filterList(String searchType, String searchKeyword, String sort) {
-		return productDao.filterList(sqlSession, searchType, searchKeyword, sort);
+	public List<Product> filterList(String searchType, String searchKeyword, String sort, PageInfo pi) {
+		return productDao.filterList(sqlSession, searchType, searchKeyword, sort, pi);
 	}
 
 	//정렬 (without 검색)
 	@Override
-	public List<Product> filterListNoS(String sort) {
-		return productDao.filterListNoS(sqlSession, sort);
+	public List<Product> filterListNoS(String sort, PageInfo pi) {
+		return productDao.filterListNoS(sqlSession, sort, pi);
+	}
+
+
+	
+	
+	@Override
+	public int addWishlist(ProLike l) {
+		// TODO Auto-generated method stub
+		return productDao.addWishlist(sqlSession,l);
+	}
+
+	@Override
+	public int removeWishlist(ProLike l) {
+		// TODO Auto-generated method stub
+		return productDao.removeWishlist(sqlSession, l);
+	}
+
+	
+	//찜 목록 보내기
+	@Override
+	public int prolike(int pNo, String userId) {
+		return productDao.prolike(sqlSession, pNo, userId);
 	}
 	
-
+	
 	
 }

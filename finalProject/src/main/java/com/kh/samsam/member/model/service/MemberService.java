@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.product.model.vo.Product;
 
 public interface MemberService {
 
@@ -32,6 +33,13 @@ public interface MemberService {
 
 	//마이페이지 탈퇴
 	int deleteMember(String userId);
+
+	
+	//페이징 처리 게시글 count
+	int selectPListCount(String userId);
+
+	//찜리스트 출력
+	ArrayList<Product> pickList(String userId, PageInfo pi);
 
 
 

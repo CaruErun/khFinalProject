@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.samsam.member.model.dao.MemberDao;
 import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.product.model.vo.Product;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,6 +105,24 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+
+	
+	
+	
+	//======찜리스트======
+	//페이징 처리 게시글 count
+	@Override
+	public int selectPListCount(String userId) {
+		
+		return memberDao.selectPListCount(sqlSession,userId);
+	}
+
+	//찜리스트 출력
+	@Override
+	public ArrayList<Product> pickList(String userId, PageInfo pi) {
+		return memberDao.pickList(sqlSession,userId, pi);
+	}
+	
 
 
 

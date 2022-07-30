@@ -16,6 +16,5 @@
 <%-- 	<jsp:forward page="WEB-INF/views/product/productDetail.jsp"/> --%>
 	
 	
-
 </body>
 </html>

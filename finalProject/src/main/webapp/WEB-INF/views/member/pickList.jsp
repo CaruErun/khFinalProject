@@ -11,14 +11,152 @@
     <title>관심물품</title>
     <link rel="stylesheet" href="resources/css/pick.css">
     <script src="https://kit.fontawesome.com/ee429cabba.js" crossorigin="anonymous"></script>
-    
 
 
+<style>
+div{
+    box-sizing: border-box;
+    border: 1px solid red;
+}
+.wrap{
+    width: 1000px;
+    height: 700px;
+    margin: auto;
+}
+.wrap>div{ 
+    width: 100%;
+}
+#header{
+    height: 20%;
+}
+#content{
+    height: 80%; 
+}
+#footer{
+    height: 10%;
+}
+#title{
+    height: 100%;
+    font-family: "Malgun Gothic";
+    font-size: 25px;
+    font-weight: 700;
+    padding-bottom: 50px;
+    padding-top: 70px;
+}
+#content_1{
+    height: 130px;
+}
+#content_1_1{
+    float: left;
+    width:20%;
+    height: 130px;
+    background-color: gray;
+    color : white;
+    font-family: "Malgun Gothic";
+    font-size: 15px;
+    font-weight: 550;
+    border-bottom: 1px solid gray;
+    border-top: 1px solid gray;
+    padding-top:15px;
+}
+#content_1_2{
+    float: left;
+    width:80%;
+    height: 130px;
+    border-bottom: 1px solid gray;
+    border-top: 1px solid gray;
+}
+#content_2{
+   height: 30px;
+}
+#content_3{
+    font-family: "Malgun Gothic";
+    font-size: 20px;
+    font-weight: 550;
+    height: 40px;
+}
+#td{
+    text-align: center;
+}
+#content_5{
+    height: 40px;
+    padding-top: 9px;
+}
+.btn{
+    border-radius: 4px;
+    border: 0px;
+    height: 25px;
+    background-color: rgb(134,134,134);
+    color: white;
+    width: 70px;
+    height: 30px;
+    text-align: center;
+    margin-left: 925px;
+}
+#content_6{
+    height: 25px;
+    text-align: center;
+}
+#content_7{
+    font-family: "Malgun Gothic";
+    font-size: 20px;
+    font-weight: 550;
+    height: 40px;
+}
+#content_8{
+/*     height: 88px; */
+}
+#content_9{
+    height: 40px;
+    padding-top: 10px;
+}
+#content_10{
+    height: 25px;
+    text-align: center;
+}
+/* #tata{
+    background-color: black;
+    color: white;
+} */
+thead{
+    background-color: gray;
+    color: white;
+    text-align: center;
+}
+
+
+#top_icon{
+    display: inline-block;
+    text-align: center;
+    padding: 20px;
+    padding-left: 70px;
+    font-size: smaller;
+}
+#top_icon1, #top_icon2, #top_icon3, #top_icon4, #top_icon5{
+    margin-bottom: -5px;
+}
+table {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+#icon{
+    float: right;
+    color: black;
+    padding-right: 20px;
+    font-size: larger;
+}
+
+#check_all:checked~div{
+	background-color: black;
+	
+}
+td{height:30px}
+</style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
-	
 			
+
 		<br><br><br><br><br><br>
 		
 	
@@ -27,17 +165,17 @@
             <div id="title">관심물품</div>
         </div>
         <div id="content">
-                <form action="">
-                    <div id="content_1">
-                        <div id="content_1_1"><p>&nbsp; ((싸욥)) 님</p></div>
+            <form action="">
+                <div id="content_1">
+                        <div id="content_1_1" style= "background-color: gray;"><p>&nbsp; ${loginUser.userName} 님</p></div>
                         <div id="content_1_2">
-                            <div id="top_icon">
+	                        <div id="top_icon">
 	                            <i class="fa-regular fa-circle-check fa-4x" id="top_icon4" onclick="success()"></i><br><br>
 	                            <label for="top_icon4">낙찰</label>
 	                        </div>
 	                        <div id="top_icon">
 	                            <i class="fa-regular fa-newspaper fa-4x" id="top_icon3" onclick="sale()"></i><br><br>
-	                            <label for="top_icon3">판매</label>
+	                            <b><label for="top_icon3">판매</label></b>
 	                        </div>
 	                        <div id="top_icon">
 	                            <i class="fa-regular fa-heart fa-4x" id="top_icon2" onclick="pickListView()"></i><br><br>
@@ -47,71 +185,87 @@
 	                            <i class="fa-regular fa-user fa-4x" id="top_icon1" onclick="myInfo()"></i><br><br>
 	                            <label for="top_icon1">나의 정보</label>
 	                        </div>
-                        </div>
-                    </div> <br><br><br>
+	                        <div id="top_icon">
+	                            <i class="fa-regular fa-circle-question fa-4x" id="top_icon5" onclick="location.href='list.bo?userId=${loginUser.userId}';"></i><br><br>
+	                            <label for="top_icon5">문의 내역</label>
+	                        </div>
+                    	</div>
+                    </div><br><br>
 
 
 
 
                     <!-- 찜 목록 -->
                     <hr>
-                    <p style="font-weight: 600; color: darkgray;">2022.07 (00)</p>
+                    <p style="font-weight: 600; color: darkgray; text-align:center;">2022.07</p>
                     <hr>
 
                     <!--반복-->
-                        <table>
-                                <tr>
-                                    <th width="200" rowspan="3"><img src="resources/중고경매.png" alt="이미지" id="image"></th>
-                                    <th width="700" colspan="3"><h3>(((경매상태))  [((카테고리))]  ((제목))</h3></th>
-                                    <th width="140" rowspan="2">((판매자))</th>
-                                    <th width="100" rowspan="3">
-                                        <!--if 경매중= 버튼 생성 / 아니면 버튼 없음-->
-                                        
-                                        <button class="tBtn" id="tBtn1">응찰하기</button>
-                                        <button type="submit" class="tBtn" id="tBtn2">삭제하기</button>
-                                    </th>
+                        <table id="tata">
+	                        <thead>
+	                              	<tr> <!-- 구분선 -->
+	                              	<!-- 체크박스 스타일 지정 -->
+                                    <th height="30" width="150" style="text-align: center;">경매상태</th>
+                                    <th height="30" width="150" style="text-align: center;">카테고리</th>
+                                    <th height="30" width="400" style="text-align:center">제목</th>
+                                    <th height="30" width="150" style="text-align: center;">시작가</th>
+                                    <th height="30" width="150" style="text-align: center;">판매자</th>
                                 </tr>
-                                <tr>
-                                    <td>찜한 날짜 : 2022.07.03
-                                    </td>
-                                    <td>
-                                        시작가 : ((시작가))원 
-                                        <br>
-                                        현재가 : ((현재가))원</p>
-                                        <br>
-                                        <p id="nokoriBid">남은 경매 시간 : 00000</p>
-                                    </td>
-                                </tr> 
+                            </thead>
+	                        <tbody>
+	                        </tbody>
                         </table>
-                        <hr>
-                        <!--/반복-->
 
 
-                        <script>
-				function getSearchList(){
-					$.ajax({
-						type: 'GET',
-						url : "/pickList",
-						data : $("#searchFrom").serialize(),
-						success : function(result){
-							//테이블 초기화
-// 							$('#boardtable > tbody').empty();
-							if(result.length>=1){
-								result.forEach(function(item){
-									str='<tr>'
-									str += "<td>"+item.idx+"</td>";
-									str+="<td>"+item.writer+"</td>";
-									str+="<td><a href = '/board/detail?idx=" + item.idx + "'>" + item.title + "</a></td>";
-									str+="<td>"+item.date+"</td>";
-									str+="<td>"+item.hit+"</td>";
-									str+="</tr>"
-									$('#boardtable').append(str);
-				        		})				 
-							}
+ <script>
+    window.onload = function(){
+    	pick(1);
+    }
+
+    	function pick(cPage){
+    		$.ajax({
+    			url : "getPick.me",
+    			data : { 
+    			userId : "${loginUser.userId}"
+    			,cPage : cPage
+    			},
+    			success : function(result){
+    				console.log(result.list.length);
+    				console.log(result);
+    			
+    					var resultStr = "";
+    					for(var i=0; i<result.list.length; i++){
+    						
+							resultStr += "<tr>" 
+										+"<td style=\"text-align: center;\">"+((result.list[i].proStatus == 'Y') ? '경매 중' : '경매 완료')+"</td>"
+										+"<td style=\"text-align: center;\">"+result.list[i].proCateNo+"</td>"
+										+"<td style=\"text-align: center;\">"+result.list[i].proTitle+"</td>"
+										+"<td style=\"text-align: center;\">"+result.list[i].proPrice+"</td>"
+										+"<td style=\"text-align: center;\">"+result.list[i].sellId+"</td>"
+									+"</tr>"
+									
 						}
-					})
-				}  
-			</script>
+					$("#tata>tbody").html(resultStr);
+					
+					var resultStr2 = ""; 
+					
+					for(var i=result.pi.startPage; i<=result.pi.endPage; i++){
+						
+						resultStr2 += "<button type='button' style=\"background-color: gray; color:white; border-color: white\" onclick='sale("+i+")'>"+i+"</button>"
+						
+					}
+					$("#content_6").html(resultStr2);
+    			},
+    			error : function(){
+    				console.log("ajax 통신 실패")
+    			}
+    		})
+    	}
+
+    	
+ 
+    	
+    	</script>
 
 
 
@@ -124,7 +278,7 @@
     
     
     
-        <script>
+ <script>
     	function success(){
         	location.href="myPageSuccess.me";
         }
@@ -139,6 +293,18 @@
     	
     	function myInfo(){
     		location.href="myInfo.me"
+    	}
+    	
+    	function detail(){
+    		location.href="saleDetail.me"
+    	}
+    	
+    	function post(){
+    		location.href="salePostBox.me"
+    	}
+    	
+    	function mumu(){
+    		location.href="mumu.me";
     	}
     </script>
     

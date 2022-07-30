@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +24,8 @@ import com.google.gson.Gson;
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.common.template.Pagination;
+import com.kh.samsam.member.model.vo.Member;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.service.ProductService;
 import com.kh.samsam.product.model.vo.Bid;
 import com.kh.samsam.product.model.vo.Postbox;
@@ -249,8 +250,14 @@ public class ProductController {
 	}
 	@RequestMapping("productDetail.pr")
 	public String selectProduct(int pNo
-								,Model model) {
+								,Model model, HttpSession session) {
 		System.out.println(pNo);
+		
+		
+		String userId="";
+		if(((Member)session.getAttribute("loginUser")) != null) {
+			userId = ((Member)session.getAttribute("loginUser")).getUserId();
+		}
 		
 		int result=productService.increaseCount(pNo);
 		if(result > 0) {
@@ -258,6 +265,13 @@ public class ProductController {
 			ArrayList<ProductImages> piList = productService.selectImgList(pNo);
 			model.addAttribute("p",p);
 			model.addAttribute("piList",piList);
+			
+			if(userId != "") {
+			int proL = productService.prolike(pNo, userId);
+			model.addAttribute("proL",proL);
+			}
+			
+			
 			return "product/productDetail";
 		}else {
 			model.addAttribute("errorMsg", "상품조회 실패");
@@ -265,6 +279,7 @@ public class ProductController {
 		}
 		
 	}
+	
 	public String saveFile(MultipartFile upfile, HttpSession session) {
 		
 		String originName = upfile.getOriginalFilename();
@@ -426,7 +441,7 @@ public class ProductController {
 		PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
 		
 		//리스트 불러오기
-		List<Product> plist = productService.getSearchList(searchType, searchKeyword);
+		List<Product> plist = productService.getSearchList(searchType, searchKeyword,pi);
 		
 		
 		mv.addObject("searchType",searchType);
@@ -448,11 +463,9 @@ public class ProductController {
 							ModelAndView mv) {
 		
 
-		System.out.println(searchType);
-		System.out.println(searchKeyword);
-		System.out.println(sort);
 
-		int listCount = productService.selectProListCount();
+		int listCount = productService.searchProListCount(searchType,searchKeyword); //처리필
+//		int listCount = productService.selectProListCount(); //처리필
 		
 		int pageLimit =10;
 		int boardLimit = 10;
@@ -460,34 +473,80 @@ public class ProductController {
 		PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
 		
 		if(searchType != null && searchKeyword != null) {
-			List<Product> plist = productService.filterList(searchType, searchKeyword, sort);
+			List<Product> plist = productService.filterList(searchType, searchKeyword, sort,pi);
 		
 			mv.addObject("searchType",searchType);
 			mv.addObject("searchKeyword",searchKeyword);
 			mv.addObject("pi",pi);
 			mv.addObject("plist",plist).setViewName("product/productListView");
-		}
+			
+		}else {
 		
-			List<Product> plist = productService.filterListNoS(sort);
+			List<Product> plist = productService.filterListNoS(sort,pi);
 			
 			mv.addObject("searchType","");
 			mv.addObject("searchKeyword","");
 			mv.addObject("pi",pi);
 			mv.addObject("plist",plist).setViewName("product/productListView");
 			
+		}
 			return mv;
 	}
 	
 	
 //	================================================찜하기================================================
-	@RequestMapping("pickProduct.pr")
-	public String pickProduct(Product p) {
+	//찜 추가
+	@ResponseBody	
+	@RequestMapping(value="addWishlist.my", produces="application/json; charset=UTF-8")
+		public String addWishlist(String userId, int proNo, HttpSession session, Model model) {
+			
+			System.out.println(proNo);
+			
+			ProLike l = new ProLike();
+			l.setProNo(proNo);
+			l.setUserId(userId);
+			
+			int result = productService.addWishlist(l);
+			return new Gson().toJson(result);
+			
+//			if(result > 0) {
+//				
+//				model.addAttribute("userId", userId);
+//				model.addAttribute("l", l);
+//				session.setAttribute("alertMsg","관심 목록에 추가되었습니다."); //test
+//				return "redirect:productDetail.pr?pNo=" + proNo;
+//			}
+//			else {
+//				model.addAttribute("errorMsg", "관심 목록 추가 실패");
+//				return "common/errorPage";
+//			}
+		}
+
+		
+		//찜 삭제
+		@ResponseBody
+		@RequestMapping(value="removeWishlist.my", produces="application/json; charset=UTF-8")
+		public String removeWishlist(String userId, int proNo, HttpSession session, Model model) {
+			
+			ProLike l = new ProLike();
+			l.setProNo(proNo);
+			l.setUserId(userId);
+			
+			int result = productService.removeWishlist(l);
+			
+			return new Gson().toJson(result);
+		}
 		
 		
-		return "main";
-	}
+		
+		
+		@RequestMapping("productDetail.pro")
+		public String productDetail() {
+			return "product/productDetail";
+		}
 	
 	
-	
+
+		
 	
 }

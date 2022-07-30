@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.samsam.common.model.vo.PageInfo;
@@ -72,10 +73,20 @@ public class ReportController {
 //	}
 	
 	
+	@RequestMapping("reportForm.mem")
+	public ModelAndView reportForm(Report r, ModelAndView mv,
+							String sellId  ) {
+		
+		mv.addObject("sellId",sellId);
+		mv.addObject("r",r).setViewName("report/report");
+		return mv;
+	}
+
+	
 	//신고하기
 	@RequestMapping("report.mem")
 	public String reportMember(Report r, HttpSession session, Model model) {
-			System.out.println("hh");
+			System.out.println(r);
 			int result = service.reportMember(r);
 			
 			if(result>0) { //성공

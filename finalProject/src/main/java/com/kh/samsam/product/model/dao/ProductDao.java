@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.common.model.vo.PageInfo;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.vo.Bid;
 import com.kh.samsam.product.model.vo.Postbox;
 import com.kh.samsam.product.model.vo.Product;
@@ -19,6 +20,8 @@ import com.kh.samsam.product.model.vo.ProductImages;
 
 @Repository
 public class ProductDao {
+
+	
 
 	public int productEnrollAmount(SqlSessionTemplate sqlSession, ProductChart c) {
 		int count = sqlSession.selectOne("productMapper.productEnrollAmount", c);
@@ -146,13 +149,18 @@ public class ProductDao {
 
 	
 	//검색 전체 목록 => 옵션, 키워드
-	public List<Product> getSearchList(SqlSessionTemplate sqlSession, String searchType, String searchKeyword) {
+	public List<Product> getSearchList(SqlSessionTemplate sqlSession, String searchType, String searchKeyword, PageInfo pi) {
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("searchType", searchType);
 		map.put("searchKeyword", searchKeyword);
 		
-		return sqlSession.selectList("productMapper.getSearchList",map);
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		return (ArrayList)sqlSession.selectList("productMapper.getSearchList",map, rowBounds);
 	}
 
 	
@@ -169,23 +177,58 @@ public class ProductDao {
 	
 	
 	//정렬 (with 검색)
-	public List<Product> filterList(SqlSessionTemplate sqlSession, String searchType, String searchKeyword, String sort) {
+	public List<Product> filterList(SqlSessionTemplate sqlSession, String searchType, String searchKeyword, String sort, PageInfo pi) {
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("searchType", searchType);
 		map.put("searchKeyword", searchKeyword);
 		map.put("sort", sort);
 		
-		return sqlSession.selectList("productMapper.filterList", map);
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		return sqlSession.selectList("productMapper.filterList", map, rowBounds);
 	}
 
 	//정렬 (without 검색)
-	public List<Product> filterListNoS(SqlSessionTemplate sqlSession, String sort) {
+	public List<Product> filterListNoS(SqlSessionTemplate sqlSession, String sort, PageInfo pi) {
 		
-		return sqlSession.selectList("productMapper.filterListNoS", sort);
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		return sqlSession.selectList("productMapper.filterListNoS", sort, rowBounds);
 	}
 
 	
+	
+	
+	
+	//찜 추가
+	public int addWishlist(SqlSessionTemplate sqlSession, ProLike l) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("productMapper.addWishlist", l);
+	}
+
+	//찜 삭제
+	public int removeWishlist(SqlSessionTemplate sqlSession, ProLike l) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("productMapper.removeWishlist", l);
+	}
+	
+	
+	//찜 목록 보내기
+	public int prolike(SqlSessionTemplate sqlSession, int pNo, String userId) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("pNo", pNo);
+		map.put("userId", userId);
+		
+		return sqlSession.selectOne("productMapper.prolike",map);
+		
+	}
 	
 	
 }

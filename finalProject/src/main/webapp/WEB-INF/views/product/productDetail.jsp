@@ -1,18 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <!DOCTYPE html>
     <html lang="en">
     <head>
         
         <meta charset="UTF-8">
 
-        <jsp:include page="../common/header.jsp"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- swiper -->
+        <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+	<!--icon-->
+    <script src="https://kit.fontawesome.com/e849be2e05.js" crossorigin="anonymous"></script>
+    
+    
         <title>Document</title>
     </head>
     <style>
-       
+     #h_mark i{
+	        color: lightgray;
+	    }
+	 #h_mark{
+	 		background-color:white;
+	 }
         .detail-area{
             position: relative;
             width: 70%;
@@ -46,10 +59,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            
         }
         .big-img{
             width: 80%;
             height: 500px;
+            border: 1px dotted black;
         }
         .small-imgbox{
             width: 100%;
@@ -57,11 +72,36 @@
             display: flex;
             justify-content: center;
             align-items: center;
+         
+        }
+        .swiper{
+            width: 90%;
+            height: 100%;
+          
+        }
+        .swiper-wrapper{
+            width: 100%;
+            height: 100%;
+            padding-left: 4px;
+         
+        }
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        .swiper-button-prev,.swiper-button-next{
+            width : 3%;
+            color:black;
+            border: 1px solid black;
         }
         .small-img{
-            width: 20%;
+            width: 50%;
             height: 150px;
             margin-right: 10px;
+            border: 1px dotted black;
+            cursor: pointer;
         }
         .small-imgbox > span{
             font-size: 50px;
@@ -138,60 +178,48 @@
         .renew{
             border-top: 2px solid gray;
         }
-        .bid-count, .shipping-price{
+        .bid-count, .seller-id{
             border-bottom: 2px solid gray;
         }
-        .seller-info{
+        .delete-area{
             width: 100%;
-            height: 120px;
-            margin-top: 50px;
-        }
-        .seller-area{
-            width: 100%;
-            height: 50px;
-            display: flex;
-        }
-        .seller-area > div {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            border: 1px solid gray;
+            margin-top: 40px;
             
         }
-        .seller-black{
-            width: 46%;
-            height: 100%;
+        .da-1{
             display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: black;
-            color: white;
-        }
-        .seller-text{
-            width: 54%;
-            height: 100%;
-            display: flex;
-            align-items: center;
             justify-content: space-between;
-            color: black;
-            padding-left: 15px;
-            padding-right: 5px;
+            align-items: center;
         }
-        .seller-text > a{
-            width: 50%;
-            height: 30px;
+        .deleteBtn{
+            width: 24.5%;
+            height: 35px;
+            border-radius: 3px;
+           
+        }
+        #delete-dday{
+            width: 35%;
+            height: 35px;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-decoration: none;
-            color: white;
             background-color: black;
+            color: white;
         }
+        .da-2{
+            padding: 30px 20px 0px 20px;
+            font-weight: bold;
+        }
+        
+   
+    
+    
         .btn-area{
             width: 100%;
             height: 40px;
             display: flex;
             justify-content:start;
+            margin-top: 30px;
         }
         .btn-area > button{
             width: 25%;
@@ -272,9 +300,13 @@
             color: white;
             text-align: center;
         }
+        #qna-table > thead > tr> th, td{
+            padding-top: 10px;
+        }
         #qna-table > tbody > tr {
             height: 40px;
             text-align: center;
+            border: 1px solid black;
         }
         .btn-qna{
             width: 12%;
@@ -319,15 +351,110 @@
             display: flex;
             align-items: center;
             padding-left: 25px;
+        }
+        .modal-header{
+            background-color: black;
+            height: 40px;
+            
+        }
+        .modal-body{
+            margin-top: 10px;
+        }
+        .modal-body .list-area{
+            font-size: 14px;
+            border-top: 1px solid gray;
+            width: 90%;
+            height: 40px;
+            margin: 0 auto;
+        }
+        .modal-header > button, #modalTitle{
+            color: white;
+            line-height: 7px;
+        }
+        .modal-footer1{
+            display: flex;
+            justify-content: space-evenly;
+            text-align: center;
+            margin-top: 30px;
+            
+        }
+        .curBtn{
+            margin-left: 77px;
+            width: 75px;
+            height: 25px;
+        }
+            
+        #endDate-modal{
+            width: 46%;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            color: white;
+            margin-left: 7px;
+        }
+        .titleInModal{
+            padding-left: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .modalContent{
+            margin-top: 10px;
+        }
+        .wishInModal{
+            border-bottom: 1px solid gray;
+        }
+        .infoMsg{
+            width: 84%;
+            border-top: 2px solid gray;
+            border-bottom: 2px solid gray;
+            margin:0 auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            padding: 15px 0 15px 0;
+        }
+        .curPrice{
+            width: 80px;
+            margin-right: 5px;
+        }
+        .upPrice, .downPrice{
+            width: 20px;
+            margin-left: 30px;
         }   
             
     
         
-    
+      #gray{
+        color: gray;
+        font-size: 13px;
+    }
+    #reason1, #reason2, #reason3{
+        border-radius: 5px;
+        border: solid 1px lightgray;
+        text-align: center;
+        color: cornflowerblue;
+    }
+    #reason1{
+        width: 150px;
+    }
+    #reason2{
+        width: 300px;
+        height: 30px;
+    }
+    #reason3{
+        width: 400px;
+        height: 100px;
+    }
+    p{
+        color: gray;
+    }
             
     </style>
     
     <body>
+        <jsp:include page="../common/header.jsp"/>
+
         
         <div class="detail-area">
             <div class="detail-title">
@@ -337,18 +464,57 @@
             </div>
             <div class="detail-info">
                 <div class="detail-img">
-                    <div class="big-imgbox">
-                        <img class="big-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    </div>
-                    <div class="small-imgbox">
-                        <span class="btn-prev">< </span>
-                        <img class="small-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <img class="small-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <img class="small-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <span class="btn-next">></span>
-    
-                    </div>
+
+                        <div class="big-imgbox">
+                            <img class="big-img" src="${p.path}" alt="..." />
+                        </div>
+                        <div class="small-imgbox">
+                            
+
+                            <div class="swiper">
+
+                                <div class="swiper-wrapper">
+                                    <c:forEach var="i" items="${piList }">
+
+                                        <div class="swiper-slide"><img class="small-img" src="${i.path}" alt="..." /></div>
+                                    </c:forEach>
+                                    
+                                </div>
+                                 
+                                   
+                                <!-- <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div> -->
+                                <div class="swiper-pagination"></div>
+                            </div>
+                            
+                            
+                        </div>
+                 
+                        <script>
+                            const swiper = new Swiper( '.swiper', {
+                                autoplay: false,
+                                loop: false,
+                                slidesPerView: 3,
+                                // navigation: {
+                                //     nextEl: '.swiper-button-next',
+                                //     prevEl: '.swiper-button-prev'
+                                // },
+                                pagination: {
+                                    el: '.swiper-pagination',
+                                    type: 'bullets',
+                                    clickable: true
+                                }
+                            });
+                            $('.small-img').on('click',function(){
+                                const path = $(this).attr('src');
+                                console.log(path);
+                                $('.big-img').attr('src',path);
+                            })
+                            
+                        </script>
+                  
                 </div>
+                
                 <div class="detail-text">
                     <div class="cur-price">
                         <div id="cp-1">
@@ -359,6 +525,7 @@
                     </div>
                     <script>
                         const endDate = "${p.endDate}"
+                        
                         function convertFromStringToDate(endDate) {
                             let dateComponents = endDate.split(' ');
                             let datePieces = dateComponents[0].split("-");
@@ -368,28 +535,37 @@
                                                 timePieces[0], timePieces[1], timePieces[2]));
                 
                         }
+                        var stop = 1;
                         const countDownTimer = function (id, date) {
-                          
+                    
                         var _Date = new Date(date);
                         var _second = 1000;
                         var _minute = _second * 60;
                         var _hour = _minute * 60;
                         var _day = _hour * 24;
                         var timer;
-                
+                        
+                            
                         function showRemaining() {
                             var now = new Date();
                             var dDay = _Date - now;
-                
-                            if (dDay < 0) {
-                                clearInterval(timer);
-                                
-                            }
-                
                             var days = Math.floor(dDay / _day);
                             var hours = Math.floor((dDay % _day) / _hour);
                             var minutes = Math.floor((dDay % _hour) / _minute);
                             var seconds = Math.floor((dDay % _minute) / _second);
+                            var remains = days+hours+minutes+seconds;
+
+                            if (remains < 0) {
+                                clearInterval(timer);
+                                if(stop==1){
+                                    alert("경매가 종료되어 리스트 페이지로 이동됩니다.");
+                                    location.href="productList.pr";
+                                    stop=0;
+                                }
+                                
+                            }
+                
+                        
                 
                             document.getElementById(id).textContent = days + '일 ';
                             document.getElementById(id).textContent += hours + '시간 ';
@@ -399,7 +575,8 @@
                 
                         timer = setInterval(showRemaining, 1000);
                         }
-                        countDownTimer('cp-2',convertFromStringToDate(endDate)); 
+                        countDownTimer('cp-2',convertFromStringToDate(endDate));
+                        countDownTimer('endDate-modal',convertFromStringToDate(endDate));
                     </script>
                     <div class="renew list-area">
                         <div class="rn-1 black-area">
@@ -473,73 +650,594 @@
                             3500원
                         </div>
                     </div>
-                    <div class="seller-info">
-                        
-                        <div class="seller-area">
-                            <div>
-                                <div class="seller-black">
-                                    판매자 ID
-                                </div>
-                                <div class="seller-text">
-                                    alsrbwlws
-                                </div>
-                            </div>
-    
-                            <div>
-                                <div class="seller-black">
-                                    거래등급
-                                </div>
-                                <div class="seller-text">
-                                    등급(미정)                                
-                                </div>
-                            </div>
+                    <div class="list-area seller-id">
+                        <div class="si-1 black-area">
+                            판매자 ID
                         </div>
+                        <div class="si-2 text-area">
+                            ${p.sellId}
+                        </div>
+                    </div>
+
+
+                    <div class="delete-area">
+                        <div>
+                            
+                            <form class="da-1" action="deleteProduct.pr" method="post">
+                                <input type="hidden" value="${p.proNo}" name="proNo">
+                                <c:if test="${loginUser.userId eq p.sellId}">
+                                    <button type="submit" class="deleteBtn btn-1">삭제하기</button>
+                                    <span id="delete-dday"></span>
+                                </c:if>
+                                </form>
+
+                        </div>
+                        <div class="da-2">
+                            ※물품등록 후 5분 동안만 삭제가 가능하며, 그 이후에는 삭제가 불가합니다. <br>
+                            다시한번 등록한 상품을 확인해주세요!
+                        </div>
+
+                    </div>
+                    <script>
+                         const startDate="${p.startDate}"
+                        function convert(startDate){
+                            let dateComponents = startDate.split(' ');
+                            let datePieces = dateComponents[0].split("-");
+                            let timePieces = dateComponents[1].split(":");
                         
-                        <div class="seller-area">
-                            <div>
-                                <div class="seller-black">
-                                    판매자 다른물품
-                                </div>
-                                <div class="seller-text">
-                                    <p>0건</p> 
-                                    <a href="#">더보기 ></a>
-                                </div>
-    
-                            </div>
-    
-                            <div>
-                                <div class="seller-black">
-                                    판매자 구매후기
-                                </div>
-                                <div class="seller-text">
-                                    <p>4건</p> 
-                                    <a href="#">더보기 ></a>                               
-                                </div>
+                            return(new Date(datePieces[0], (datePieces[1] - 1), datePieces[2],
+                                                timePieces[0], parseInt(timePieces[1])+5, timePieces[2]));
+                            }
+                                                
+                                                
+                                             
+                                                
+                            
+                
+                        const countDown5 = function(id, minutes){
+                            var _Date = new Date(minutes);
+                            var _second = 1000;
+                            var _minute = _second * 60;
+                            var _hour = _minute * 60;
+                            var _day = _hour * 24;
+                            var timer =null;
+                            
+                            show();
+                          
+                            function show(){      
+                                var now = new Date();
+                                var dDay= _Date -now;
+                                var minutes = Math.floor((dDay % _hour) / _minute);
+                                var seconds = Math.floor((dDay % _minute) / _second);
+                                var remain = minutes + seconds;
+                             
+                                console.log(remain)
+                                document.getElementById(id).textContent = minutes + '분 ';
+                                document.getElementById(id).textContent += seconds + '초';
+                                if(remain <=0){
+                                    clearInterval(timer);
+                                    $('#delete-dday').html("판매취소가 불가능합니다.");
+                                    $('.deleteBtn').attr('disabled',true);
+                                    $('.deleteBtn').css("background","gray");
+                                }
+                                
+                            }
+                          
+                            timer =setInterval(show,1000);
+                        }
+
+                        
+                           
+                       
+                            
+                          
+                           
+                                
+                                
+                        countDown5('delete-dday',convert(startDate));
+                   
+                    </script>
+
+
+
+                 
+                    <div class="btn-area">
+                        <c:choose>
+                            <c:when test="${loginUser==null}">
+                                <button class="btn-1 logBid" data-toggle="modal"  onclick="loginCheck();">입찰하기</button>
+                            </c:when>
+                            <c:otherwise>
+                                <button class="btn-1" data-toggle="modal" data-target="#bidModalForm">입찰하기</button>
+                            </c:otherwise>
+                        </c:choose>
+                        <script>
+                            function loginCheck(){
+                            var check = confirm("로그인 후 이용 가능합니다. 로그인 하시겠습니까?")
+                                if(check){
+                                    $('.logBid').attr('data-target','#login_modal2');
+                                }else{
+                                    $('.logBid').removeAttr('data-target');
+                                }
+                                }
+                        </script>
+                        
+                        
+             <c:choose>
+            <%-- proLike 테이블을 가져와 비교후 예전에 찜하기를 했었다면 찜취소다 --%>
+            <c:when test="${proL>0}">
+                        <button class="btn-2" id="h_mark" data-toggle="modal"><i class="fa-solid fa-heart" style="color:hotpink;"></i></button>
+            </c:when>
+            <%-- proLike 테이블을 가져와 비교후 예전에 찜하기를 안했다면(혹은 찜취소를 했었다면) 찜하기 --%>
+            <c:otherwise>
+                        <button class="btn-2" id="h_mark" data-toggle="modal"><i class="fa-solid fa-heart"></i></button>
+            </c:otherwise>
+        </c:choose>
+        
+   <!-- =======찜하기 버튼을 누를경우 이벤트 발생======= -->
+		<script>
+		    $(function() {
+		    	
+		    	var proL = 0;
+		    	if("${proL}"!=""){
+		    		proL=${proL};
+		    	}
+		    	
+		        $('#h_mark').on('click',function(event) { 
+		            event.preventDefault();
+		            // 비로그인 상태시 찜하기 버튼을 누르면
+		            if ("${loginUser.userId}" == "") {
+		                var check1 = confirm("로그인 한 회원만 이용가능합니다.")
+                        if(check1){
+                            $('#h_mark').attr('data-target','#login_modal2');
+                        }else{
+                            $('#h_mark').removeAttr('data-target');
+		                    // 거부하면 해당 페이지 새로고침
+		                    location.reload();
+                        }
+		                }
+		            // 로그인 상태시 찜하기 버튼을 누르면    
+		             else {
+		                // 해당 멤버ID와 상품ID의 정보를 가져옴
+		                var userId = "${loginUser.userId}";
+		                var proNo = "${p.proNo}";
+		
+		                console.log("userId: " + userId);
+		                console.log("proNo: " + proNo);
+
+		                
+		                
+		                if(proL==0){
+		                $.ajax({
+		                    url : "addWishlist.my",
+		                    type : "POST",
+		                    data : {
+		                    	userId : userId,
+		                		proNo : proNo
+		                    	
+		                    }, //userId, proNo 담은 거!
+		                    
+		                    success : function(result) {
+		                        console.log(result);
+		                        if (result >0) {
+		                        	 $('#h_mark>i').css("color","hotpink");
+		                        	 
+		                            console.log("찜 성공!")
+		                            
+		                            if (confirm("해당 상품을 찜하셨습니다. 목록 페이지로 이동하시겠습니까?")) {
+		                                // 승낙하면 마이페이지의 찜하기 리스트로 이동
+		                                location.href = 'pick.me';
+		                            } else {
+		                                // 거부하면 해당 페이지 새로고침하여 찜한거 반영되게하기(HTTP의 속성 때문...)
+// 		                                location.reload();
+		                            }
+		                        }
+		                        proL=1;
+		                    },
+		                    error : function() {
+		                        alert('찜할 수 없습니다.');
+		                        location.reload(); // 실패시 새로고침하기
+		                    }
+		                })
+		       
+		      
+		        }else{
+		        	
+		    
+		    //찜 해제
+		    $.ajax({
+                url : "removeWishlist.my",
+                contentType : 'application/json; charset=utf-8',
+                data : {
+                	userId : userId,
+                	proNo : proNo
+                	 
+                },
+                
+                success : function(result) {
+                    console.log(result);
+                    if (result >0) {
+                    	 $('#h_mark').css("color","lightgray");
+                    	 
+                        console.log("찜 해제 성공!")
+                        
+                        if (confirm("찜이 해제되었습니다.")) {
+                            location.reload();
+                        } else {
+                            location.reload();
+                        }
+                    }
+                    proL=0;
+                },
+                error : function(e) {
+                    console.log(e);
+                    alert('찜 해제 할 수 없습니다.');
+                    location.reload(); 
+                }
+    });
+		    
+		    
+		    }
+		        }
+		            
+		    });
+		      
+		    });
+		</script>
+		
+		
+                        <button class="btn-3 btn btn-danger" data-toggle="modal" data-target="#myModal" style="border: none;">신고하기</button>
+                    </div>
+                    <div class="modal" id="myModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="report.mem"  method="post" >
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body">          
+                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      <h4 class="modal-title">신고하기</h4>
+                                      <p id="gray"><br>&nbsp;&nbsp;사유가 인정될 경우 해당 사용자의 이용이 제한됩니다.</p>
+                            
+                                      <hr>
+                                      
+                                        <input type="hidden" value="${loginUser.userId }" name="reportId">
+                            
+                                        <input type="hidden" value="${p.proNo }" name="proNo">
+                                        
+                                      <p><b>피신고자</b></p>
+                                        <input type="text" value="${p.sellId }" name="reportedId" id="reason1"> 
+                                        
+                                        <br><br><br>
+                                        
+                                      <p><b>신고사유</b></p>
+                                      <select name="reportCateNo" id="reason2">
+                                          <option value="">사유 선택하기</option>
+                                          <option value="1201" >허위매물</option>
+                                          <option value="1202">전자상거래 금지물품 거래</option>
+                                          <option value="1203">욕설 및 비방</option>
+                                          <option value="1204">담합</option>
+                                          <option value="1205">기타</option>
+                                        </select>
+                                        
+                                        
+                                        <BR><BR>
+                                        <input type="text" id="reason3" name="reportContent" placeholder="상세 사유를 입력해주세요">
+                                    
+                                    
+                                    <script>
+                                    //상단의 select box에서 신고사유를 선택하면 나타날 인풋박스
+                                    $(function(){
+                                    $("#reason3").hide(); //입력박스 숨어있다가
+                                    $("#reason2").change(function() { //신고사유 선택시 등장
+                                            if($("#reason2").val() ) {
+                                                $("#reason3").show();
+                                            }  else {
+                                                $("#reason3").hide();
+                                            }
+                                        }) 
+                                    });
+                                    
+                                    </script>
+                            
+                                    </div>
+                            
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                      <button type="submit" class="btn btn-danger btn-block">완료</button>
+                                      <!--  data-dismiss="modal" : 모달창을 닫아준다 -->
+                                    </div>
+                              
+                                      </form>
                             </div>
                         </div>
                     </div>
-                    <div class="btn-area">
-                        <button class="btn-1">입찰하기</button>
-                        <button class="btn-2">관심물품</button>
-                        <button class="btn-3">문의하기</button>
+                   
+
+
+
+                    <div class="modal fade" id="bidModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h6 class="modal-title" id="modalTitle">입찰하기</h6>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <form action="insertBid.pr" method="post">
+                                    <input type="hidden" name="buyerId" value="${loginUser.userId}">
+                                    <input type="hidden" name="proNo" value="${p.proNo}">
+                                    <div class="modal-body">
+                                        <div class="titleInModal">
+                                            ${p.proTitle}
+                                        </div>
+                                        <div class="modalContent">
+
+                                            <div class="list-area ">
+                                                <div class="black-area">
+                                                    판매자
+                                                </div>
+                                                <div class="text-area">
+                                                    이예구
+                                                </div>
+                                            </div>
+                                            <div class="list-area">
+                                                <div class="black-area">
+                                                    남은기간
+                                                </div>
+                                                <div class="text-area">
+                                                    ${p.endDate}까지
+                                                    <div id="endDate-modal">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="list-area">
+                                                <div class="black-area">
+                                                    배송방법
+                                                </div>
+                                                <div class="text-area">
+                                                택배, 비용[${p.postPrice}원]
+                                            </div>
+                                        </div>
+                                        <div class="list-area">
+                                            <div class="black-area">
+                                                시작가
+                                            </div>
+                                            <div class="text-area">
+                                                ${p.proPrice} 원
+                                            </div>
+                                        </div>
+                                        <div class="list-area">
+                                            <div class="black-area">
+                                                현재입찰가
+                                            </div>
+                                            <div class="text-area">
+                                                <div class="curPrice1">${p.curPrice}</div> 원<button type="button" class="btn-1 curBtn">새로고침</button>
+                                            </div>
+                                        </div>
+                                        <div class="list-area">
+                                            <div class="black-area">
+                                                입찰금액
+                                            </div>
+                                            <div class="text-area">
+                                                <input type="text" class="curPrice" readonly name="bidPrice" maxlength="8"> 원 
+                                                <button type="button" class="btn-1 upPrice">▲</button>
+                                                <button type="button" class="btn-1 downPrice">▼</button>
+                                                
+                                            </div>
+                                        </div>
+                                      
+                                        <div class="list-area wishInModal">
+                                            <div class="black-area">
+                                                즉시구매가
+                                            </div>
+                                            <div class="text-area">
+                                                <c:choose>
+
+                                                    <c:when test="${p.wishPrice == 0 }">
+                                                        없음
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        ${p.wishPrice}
+                                                    </c:otherwise>
+                                                </c:choose>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="modal-footer1">
+                                        
+                                            <button type="submit" id="enterBid" class="btn btn-dark" >신중하게 입찰하기</button>
+                                            <button type="button" id="rsPrice"class="btn btn-outline-dark" data-dismiss="modal">닫기</button>
+                                            <c:choose>
+                                                <c:when test="${p.wishPrice==0}">
+                                                    <button type="button" id="enterNow" class="btn btn-secondary" disabled>즉시구매하기</button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button type="button" id="enterNow" class="btn btn-secondary">즉시구매하기</button>
+                                                </c:otherwise>    
+
+                                            </c:choose>
+
+                                    </div>
+                                    <script>
+
+                                        if("${p.curPrice}"==0){
+                                            $('.curPrice').val("${p.proPrice}");
+                                        }else{
+                                            $('.curPrice').val("${p.curPrice}");
+                                        }
+                                        var cPrice = $('.curPrice').val();
+                                        var bidI;
+                                        var c1 = cPrice.substr(0,1);
+                                        console.log(c1);
+                                        if(c1<5){
+                                            bidI = Math.pow(10,cPrice.length-1)*0.05;
+                                        }else{
+                                            bidI = Math.pow(10,cPrice.length-1)*0.1;
+                                        }
+                                        $('.upPrice').on('click',function(){
+                                            if("${p.wishPrice}"!=0){
+                                                if(parseInt(cPrice)+bidI<="${p.wishPrice}"){
+
+                                                    $('.curPrice').val( parseInt(cPrice)+bidI);
+                                                    cPrice = $('.curPrice').val();
+                                                    c1=cPrice.substr(0,1);
+                                                    if(c1<5){
+                                                        bidI = Math.pow(10,cPrice.length-1)*0.05;
+                                                    }else{
+                                                        bidI = (Math.pow(10,cPrice.length-1))*0.1;
+                                                    }
+                                                    }
+                                            }else{
+                                                
+
+                                                $('.curPrice').val( parseInt(cPrice)+bidI);
+                                                cPrice = $('.curPrice').val();
+                                                c1=cPrice.substr(0,1);
+                                                if(c1<5){
+                                                    bidI = Math.pow(10,cPrice.length-1)*0.05;
+                                                }else{
+                                                    bidI = (Math.pow(10,cPrice.length-1))*0.1;
+                                                }
+                                                
+                                            }
+                                           
+                                        });
+                                        $('.downPrice').on('click',function(){
+                                            if("${p.curPrice}"!=0){
+                                                if(parseInt(cPrice)-bidI>="${p.curPrice}"){
+
+                                                    $('.curPrice').val( parseInt(cPrice)-bidI);
+                                                    cPrice = $('.curPrice').val();
+                                                    c1=cPrice.substr(0,1);
+                                                    if(c1<5){
+                                                        bidI = Math.pow(10,cPrice.length-1)*0.05;
+                                                    }else{
+                                                        bidI = (Math.pow(10,cPrice.length-1))*0.1;
+                                                    }
+                                                    }
+                                            }else{
+                                                if(parseInt(cPrice)-bidI>="${p.proPrice}"){
+
+                                                    $('.curPrice').val( parseInt(cPrice)-bidI);
+                                                    cPrice = $('.curPrice').val();
+                                                    c1=cPrice.substr(0,1);
+                                                    if(c1<5){
+                                                        bidI = Math.pow(10,cPrice.length-1)*0.05;
+                                                    }else{
+                                                        bidI = (Math.pow(10,cPrice.length-1))*0.1;
+                                                    }
+                                                    }
+                                            }
+                                            
+                                         });
+                                         $('#rsPrice,.close').on('click',function(){
+                                                if("${p.curPrice}"==0){
+                                                    $('.curPrice').val("${p.proPrice}");
+                                                }else{
+                                                    $('.curPrice').val("${p.curPrice}");
+                                                }
+                                                cPrice = $('.curPrice').val();
+                                                    c1=cPrice.substr(0,1);
+                                                    if(c1<5){
+                                                        bidI = Math.pow(10,cPrice.length-1)*0.05;
+                                                    }else{
+                                                        bidI = (Math.pow(10,cPrice.length-1))*0.1;
+                                                    }
+                                        });
+
+                                            $('.curBtn').on('click',function(){
+
+                                                $.ajax({
+                                                    url : "selectBidPrice.pr",
+                                                    data : {
+                                                        proNo: "${p.proNo}"
+                                                    },
+                                                    success : function(bidPrice){
+                                                        console.log(bidPrice);
+                                                        $('.curPrice1').html(bidPrice);
+                                                    },
+                                                    error : function(){
+                                                        console.log("11");
+                                                    }
+
+                                                });
+                                            });
+                                            function buyIm(){
+                                                $.ajax({
+                                                    url : "buyImmediately.pr",
+                                                    data : {
+                                                        proNo: "${p.proNo}"
+                                                    },
+                                                    success : function(result){
+                                                        if(result>0){
+                                                            console.log("ok");
+                                                            alert("즉시구매에 성공하셨습니다.");
+                                                            location.href="productList.pr"
+                                                        }
+                                                    },
+                                                    error : function(){
+                                                            alert("즉시구매에 실패하셨습니다.")
+                                                    }
+
+                                                     });
+                                            }
+                                            $('#enterNow').on('click',function(){
+                                                var check = confirm("이 상품을 즉시 구매하시겠습니까?");
+                                                if(check){
+                                                   buyIm();
+                                                   
+                                                }
+                                            });
+                                            $('#enterBid').on('click',function(){
+                                                if(parseInt(cPrice)=="${p.wishPrice}"){
+                                                    var check = confirm("입찰하신 금액이 즉시구매가와 같아 즉시구매로 진행됩니다. 진행 하시겠습니까?");
+                                                    if(check){
+                                                        buyIm();
+                                                    }
+                                                }
+                                            })
+                                        
+
+
+                                    </script>
+                                 
+                                    <div class="infoMsg">
+                                        *알려드립니다.
+                                        <br><br>
+                                        입찰 실수 및 허위입찰은 경매사고로 이어질 수 있으며, 미정산(미입금, 구매거부, 등)
+                                        2건이상 누적시 삼삼 이용이 제한이 발생됩니다. 신중한 입찰을 부탁드립니다.
+                                        <br><br>삼삼에 등록된 판매물품의 내용 및 판매진행은 판매자의 전적인 책임으로 이루어지며,
+                                        거래 및 결제와 관련된 모든 책임은 판매자와 구매자에게 있습니다.
+
+                                    </div>
+                                        
+
+                                </form>
+                            </div>
+                          </div>
+
                     </div>
                 </div>
             </div>
         
             <div class="detail-content">
                 <div class="content-btn">
-                    <button class="btn-white">물품정보</button>
-                    <button class="btn-black">물품문의</button>
-                    <button class="btn-black">배송정보</button>
+                    <button class="btn-white btn1">물품정보</button>
+                    <button class="btn-black btn2">물품문의</button>
+                    <button class="btn-black btn3">배송정보</button>
                     <div class="btn-line"></div>
                 </div>
                 <div class="content-text">
-                    ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+                    ${p.proContent}
                 </div>
                 <div class="content-btn">
-                    <button class="btn-black">물품정보</button>
-                    <button class="btn-white">물품문의</button>
-                    <button class="btn-black">배송정보</button>
+                    <button class="btn-black btn1">물품정보</button>
+                    <button class="btn-white btn2">물품문의</button>
+                    <button class="btn-black btn3">배송정보</button>
                     <div class="btn-line"></div>
                 </div>
                 <div class="content-qna">
@@ -578,9 +1276,9 @@
                     <button class="btn-qna">문의하기</button>
                 </div>
                 <div class="content-btn">
-                    <button class="btn-black">물품정보</button>
-                    <button class="btn-black">물품문의</button>
-                    <button class="btn-white">배송정보</button>
+                    <button class="btn-black btn1">물품정보</button>
+                    <button class="btn-black btn2">물품문의</button>
+                    <button class="btn-white btn3">배송정보</button>
                     <div class="btn-line"></div>
                 </div>       
                 <div class="content-ship">
@@ -595,7 +1293,24 @@
     
                 </div>
             </div>
-    
+            <script>
+           
+                $(document).ready(function(){
+                    $('.btn1').click(function(){
+                        var offset = $('.content-text').offset();
+                        console.log(offset)
+                        $('html').animate({scrollTop : offset.top-300},400);
+                    });
+                    $('.btn2').click(function(){
+                        var offset = $('.content-qna').offset();
+                        $('html').animate({scrollTop : offset.top-300},400);
+                    });
+                    $('.btn3').click(function(){
+                        var offset = $('.content-ship').offset();
+                        $('html').animate({scrollTop : offset.top-300},400);
+                    });
+                });
+            </script>
     
             
                 

@@ -1,6 +1,8 @@
 package com.kh.samsam.member.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.product.model.vo.Product;
 
 @Repository
 public class MemberDao {
@@ -46,6 +49,27 @@ public int updateMember(SqlSessionTemplate sqlSession, Member m) {
 public int deleteMember(SqlSessionTemplate sqlSession, String userId) {
 	// TODO Auto-generated method stub
 	return sqlSession.update("memberMapper.deleteMember",userId);
+}
+
+
+//====찜리스트====
+//페이징 처리 게시글 count
+public int selectPListCount(SqlSessionTemplate sqlSession, String userId) {
+	
+	return sqlSession.update("productMapper.selectPListCount",userId);
+}
+
+//찜리스트 출력
+public ArrayList<Product> pickList(SqlSessionTemplate sqlSession, String userId, PageInfo pi) {
+	
+	int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+	int limit = pi.getBoardLimit();
+	
+	RowBounds rowBounds = new RowBounds(offset,limit);
+	
+
+	
+	return (ArrayList)sqlSession.selectList("productMapper.pickList",userId,rowBounds);
 }
 
 
