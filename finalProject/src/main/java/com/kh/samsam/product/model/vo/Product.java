@@ -1,6 +1,7 @@
 package com.kh.samsam.product.model.vo;
 
-import java.sql.Date;
+
+
 
 import lombok.Data;
 
@@ -14,13 +15,16 @@ public class Product {
 	private int proPrice;
 	private int wishPrice;
 	private int postPrice;
-	private Date startDate;
+	private int curPrice;
+	private String startDate;
 	private String bidDate;
-	private Date endDate;
+	private String endDate;
 	private String proCateNo;
 	private String tradeCateNo;
 	private String tradeLocation;
 	private int count;
+	private int bidCount;
+	private String path;
 	private String proStatus;
 
 

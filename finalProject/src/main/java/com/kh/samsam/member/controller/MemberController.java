@@ -1,6 +1,9 @@
 package com.kh.samsam.member.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +12,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.kh.samsam.common.model.vo.PageInfo;
+import com.kh.samsam.common.template.Pagination;
 import com.kh.samsam.member.model.service.MailSendService;
 import com.kh.samsam.member.model.service.MemberService;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.member.model.vo.ProLike;
+import com.kh.samsam.product.model.vo.Product;
 
 @Controller
 public class MemberController {
@@ -317,12 +323,48 @@ public class MemberController {
 	
 	@RequestMapping("pick.me")
 	   public String interestItem() {
-	      return "member/pick";
+	      return "member/pickList";
 	   }
 	
 	@RequestMapping("salePostBox.me")
 		public String salePostBox() {
 			return "member/salePostBoxDetail";
 	}
+	
 
+	
+	
+	//===============찜 리스트 불러오기 _ 마이페이지===============
+		@ResponseBody
+		@RequestMapping(value="pick.me", produces="application/json; charset=UTF-8")
+		public String pickList(String userId, int cPage) {
+			
+			System.out.println(userId);
+			
+			
+			int currentPage = cPage;
+			int listCount = memberService.selectPListCount(userId);
+			
+			int pageLimit = 10;
+			int boardLimit = 10;
+			
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+			
+			ArrayList<Product> list = memberService.pickList(userId,pi);
+			
+			Map<String, Object> ob = new HashMap<String,Object>();
+			
+			ob.put("pi", pi);
+			ob.put("list", list);
+			
+			
+			return new Gson().toJson(ob);
+		}
+		
+		
+		//찜리스트 보여주기
+		@RequestMapping("goPickList.me")
+		public String goPickList() {
+			return "member/pickList";
+		}
 }

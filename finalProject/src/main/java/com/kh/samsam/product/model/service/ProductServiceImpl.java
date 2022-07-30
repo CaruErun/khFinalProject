@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.common.model.vo.PageInfo;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.dao.ProductDao;
 import com.kh.samsam.product.model.vo.Bid;
 import com.kh.samsam.product.model.vo.Postbox;
@@ -62,7 +63,7 @@ public class ProductServiceImpl implements ProductService{
 
 
 	@Override
-	public Object insertProductImages(ArrayList<ProductImages> list) {
+	public int insertProductImages(ArrayList<ProductImages> list) {
 		return productDao.insertProductImages(sqlSession,list);
 	}
 	
@@ -78,16 +79,28 @@ public class ProductServiceImpl implements ProductService{
 	public ArrayList<Product> selectProductList(PageInfo pi) {
 		return productDao.selectProductList(sqlSession,pi);
 	}
-
-	
-	
-	
-	//검색
 	@Override
-	public List<Product> getSearchList(Product p) {
-		
-		return productDao.getSearchList(sqlSession,p);
+	public int increaseCount(int pNo) {
+		// TODO Auto-generated method stub
+		return productDao.increaseCount(sqlSession, pNo);
 	}
+
+
+
+	@Override
+	public Product selectProduct(int pNo) {
+		return productDao.selectProduct(sqlSession, pNo);
+	}
+
+
+
+	@Override
+	public ArrayList<ProductImages> selectImgList(int pNo) {
+		
+		return productDao.selectImgList(sqlSession,pNo);
+	}
+
+	//=======================
 	
 	@Override
 	public ArrayList<Product> selectList(String userId, PageInfo pi) {
@@ -120,15 +133,92 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public int selectListCount() {
+	public int selectListCount(String userId) {
 		// TODO Auto-generated method stub
-		return productDao.selectListCount(sqlSession);
+		return productDao.selectListCount(sqlSession,userId);
 	}
 
 	@Override
-	public int selectListCountt() {
+	public int selectListCountt(String userId) {
 		// TODO Auto-generated method stub
-		return productDao.selectListCountt(sqlSession);
+		return productDao.selectListCountt(sqlSession, userId);
 	}
+	
+	@Override
+	public int selectListCounttt(String userId) {
+		// TODO Auto-generated method stub
+		return productDao.selectListCounttt(sqlSession, userId);
+	}
+	
+	@Override
+	public int selectListCountttt(String userId) {
+		// TODO Auto-generated method stub
+		return productDao.selectListCountttt(sqlSession, userId);
+	}
+	
+	
+	@Override
+	public int selectListCounttttt(String userId) {
+		// TODO Auto-generated method stub
+		return productDao.selectListCounttttt(sqlSession,userId);
+	}
+	
+
+	@Override
+	public ArrayList<Postbox> selectListnPost(String userId, PageInfo pi) {
+		// TODO Auto-generated method stub
+		return productDao.selectListnPost(sqlSession,pi,userId);
+	}
+	
+	//검색
+	@Override
+	public List<Product> getSearchList(Product p) {
+		
+		return productDao.getSearchList(sqlSession,p);
+	}
+	
+	@Override
+	public int addWishlist(ProLike l) {
+		// TODO Auto-generated method stub
+		return productDao.addWishlist(sqlSession,l);
+	}
+
+	@Override
+	public int removeWishlist(ProLike l) {
+		// TODO Auto-generated method stub
+		return productDao.removeWishlist(sqlSession, l);
+	}
+
+	
+	//판매현황 삭제
+	@Override
+	public int deleteSale(String[] chArr) {
+		// TODO Auto-generated method stub
+		return productDao.deleteSale(sqlSession, chArr);
+	}
+
+	//운송장 조회 삭제
+	@Override
+	public int deletePost(String[] chArr2) {
+		// TODO Auto-generated method stub
+		return productDao.deletePost(sqlSession,chArr2);
+	}
+
+	//응찰현황 삭제
+	@Override
+	public int deleteBid(String[] chArr3) {
+		// TODO Auto-generated method stub
+		return productDao.deleteBid(sqlSession,chArr3);
+	}
+
+	//판매 운송장 조회
+	@Override
+	public int nPostDelete(String[] chArr4) {
+		// TODO Auto-generated method stub
+		return productDao.nPostDelete(sqlSession,chArr4);
+	}
+
+
+
 
 }

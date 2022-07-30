@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.common.model.vo.PageInfo;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.vo.Bid;
 import com.kh.samsam.product.model.vo.Postbox;
 import com.kh.samsam.product.model.vo.Product;
@@ -28,19 +29,18 @@ public interface ProductService {
 	
 	int insertProduct(Product p);
 	ArrayList<Category> selectCategoryList(int categoryNo);
-	Object insertProductImages(ArrayList<ProductImages> list);
+	int insertProductImages(ArrayList<ProductImages> list);
 	
 	
 	int selectProListCount();
 	ArrayList<Product> selectProductList(PageInfo pi);
-
+	int increaseCount(int pNo);
+	Product selectProduct(int pNo);
+	ArrayList<ProductImages> selectImgList(int pNo);
 	
 	
-	//검색
-	List<Product> getSearchList(Product p);
 	
-	
-//	//리스트 조회 해오기
+	//리스트 조회 해오기(판매현황)
 	ArrayList<Product> selectList(String userId, PageInfo pi);
 
 	//운송장 등록
@@ -55,9 +55,49 @@ public interface ProductService {
 	//리스트 조회 해오기
 	ArrayList<Bid> selectListBid(String userId, PageInfo pi);
 
+	//리스트 조회 해오기
+	ArrayList<Postbox> selectListnPost(String userId, PageInfo pi);
+	
 	//판매
-	int selectListCount();
+	int selectListCount(String userId);
 
 	//운송장
-	int selectListCountt();
+	int selectListCountt(String userId);
+	
+	//응찰
+	int selectListCounttt(String userId);
+	
+	//낙찰
+	int selectListCountttt(String userId);
+
+	//낙찰 운송장
+	int selectListCounttttt(String userId);
+	
+
+	//검색
+	List<Product> getSearchList(Product p);
+	
+	//찜 추가
+	int addWishlist(ProLike l);
+
+	//찜 삭제
+	int removeWishlist(ProLike l);
+
+	//판매현황 삭제
+	int deleteSale(String[] chArr);
+
+	//운송장  조회 삭제
+	int deletePost(String[] chArr2);
+
+	//낙찰현황 삭제
+	int deleteBid(String[] chArr3);
+
+	//판매운송장 삭제
+	int nPostDelete(String[] chArr4);
+
+
+
+
+	
+	
 }

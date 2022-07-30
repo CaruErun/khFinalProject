@@ -15,6 +15,7 @@
 	<a href="deleteRe.me">회원탈퇴 비밀번호</a> <br>
 	<a href="postBox.me">운송장 등록</a> <br>
 	<a href="pick.me">관심 물품</a> <br>
+	<a href="mumu.me">문의 내역</a> <br>
 	<a href="saleDetail.me">판매현황 상세</a> <br>
 	<a href="salePostBox.me">판매운송장조회 상세</a>
 </body>

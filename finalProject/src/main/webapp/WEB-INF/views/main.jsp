@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -148,13 +149,17 @@
         padding: 5px;
     }
     
-     #h_mark{
+    #h_mark{
         color: lightgray;
     }
 </style>
 <body>
 
 	<jsp:include page="common/header.jsp"/>
+
+
+
+
 
 	<!-- swiper -->
 	<div class="swiper-area" >
@@ -191,24 +196,18 @@
     </script>
 
 
-
-<a href="reportView.mem">신고하기</a> <br>
-<a href="qnaList.qu">QnA 목록</a> <br>
-<a href="pick.me">찜 목록</a> <br>
-	
 	<div class="see-all">
 	    <div>    
 	        <h2>마감임박경매</h2>
 	    </div>
 	    <div id="all">
 	        <span>전체보기</span>
-	        <a href="#">+</a>
+	        <a href="productList.pr">+</a>
 	    </div>
 	</div>
     
 
 	<div class="item-preview">
-	    
 	    <div class="product-box">
 	        <div class="padding-line">
 	            <div class="img-box">
@@ -217,7 +216,17 @@
 	            <div class="text-box">
 	                <div class="content-box">
 	                    <p>젠북 초특가 세일~</p>
-	                    <i class="fa-solid fa-heart" id="h_mark"></i>
+	                    <i class="fa-solid fa-heart" id="h_mark" onclick=""></i>
+	                    <c:if test="${not empty loginUser}">
+								<c:choose>
+									<c:when test="${not empty l}">
+										<button type="button" class="btn btn-warning" onclick="removeWishlist();" style="margin-left: 35px; maring-bottom: 10px;">관심 목록 제거</button>
+									</c:when>
+									<c:otherwise>
+										<button type="button" class="btn btn-primary" onclick="addWishlist('"+i.proNo+"');" style="margin-left: 35px; maring-bottom: 10px; background-color: #2D55C9;">관심 목록 추가</button>
+									</c:otherwise>
+								</c:choose>
+					    </c:if>
 	                </div>
 	            </div>
 	            <div class="price-box">
@@ -238,11 +247,13 @@
 	                02일 11시간 30분 25초
 	            </div>
 	        </div>
+	        
 	            <div class="count-box">
 	                <div class="count-content">
 	                    <p>입찰</p>
 	                    <p>10</p>
 	                </div>
+	                
 	                <div class="count-content">
 	                    <p>조회</p>
 	                    <p>150</p>
@@ -251,9 +262,28 @@
 	    </div>
 	    
 	    
+ 	    <form id="postform" action=""> 
+ 			<input type="hidden" id="selectProNo" name="proNo" value="1"> 
+ 			<input type="hidden" name="userId" value="${loginUser.userId}"> 
+ 		</form> 
+ 		<script> 
+ 			function addWishlist(proNo){
+				$("#selectProNo").val(proNo);
+ 				$("#postform").attr("action", "addWishlist.my").submit();
+ 			}
+ 			
+ 			function removeWishlist(){
+ 				$("#postform").attr("action", "removeWishlist.my").submit();
+ 			}
+ 		</script> 
+	    
+	    
+	    
+	    
+	    
 	    <!-- =======찜하기 버튼을 누를경우 이벤트 발생======= -->
 		<script type="text/javascript">
-		    $(document).ready(function() {
+		    $(function() {
 		        $('#h_mark').click(function(event) {
 		            event.preventDefault();
 		            // 비로그인 상태시 찜하기 버튼을 누르면
@@ -264,7 +294,7 @@
 		                }
 		            // 로그인 상태시 찜하기 버튼을 누르면    
 		             else {
-		                // 해당 멤버ID와 상품ID의 정보를 가져온다
+		                // 해당 멤버ID와 상품ID의 정보를 가져옴
 		                var userId = "${loginUser.userId}";
 		                var proNo = "${p.proNo}";
 		
@@ -275,20 +305,25 @@
 		                		userId : userId,
 		                		proNo : proNo,
 		                };
+		                
+		                
 		
 		                $.ajax({
 		                    type : "POST",
-		                    url : "${pageContext.request.contextPath}/product/{proNo}",
+		                    url : "pickProduct.pr",
 		                    cache : false,
 		                    contentType : 'application/json; charset=utf-8',
-		                    data : JSON.stringify(form),
+		                    data : JSON.stringify(form), //userId, proNo 담은 거!
 		                    success : function(result) {
 		                        console.log(result);
 		                        if (result == "SUCCESS") {
+		                        	 $('#h_mark').css("color","hotpink");
+		                        	 
 		                            console.log("찜 성공!")
+		                            
 		                            if (confirm("해당 상품을 찜하셨습니다. 목록 페이지로 이동하시겠습니까?")) {
 		                                // 승낙하면 마이페이지의 찜하기 리스트로 이동
-		                                location.href = '${pageContext.request.contextPath}/member/pickList';
+		                                location.href = '../member/pickList';
 		                            } else {
 		                                // 거부하면 해당 페이지 새로고침하여 찜한거 반영되게하기(HTTP의 속성 때문...)
 		                                location.reload();
@@ -1115,6 +1150,7 @@
 	                </div>
 	            </div>
 	    </div>
+	    
 
 	    
 	</div>

@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</resultMap>
 		<!-- product ResultMap -->
-	<resultMap type="product" id="productResultSet">
+<resultMap type="product" id="productResultSet">
 		<result column="PRO_NO" property="proNo"/>
 		<result column="PRO_TITLE" property="proTitle"/>
 		<result column="PRO_CONTENT" property="proContent"/>
@@ -20,13 +20,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="PRO_PRICE" property="proPrice"/>
 		<result column="WISH_PRICE" property="wishPrice"/>
 		<result column="POST_PRICE" property="postPrice"/>
+		<result column="BID_PRICE" property="curPrice"/>
 		<result column="START_DATE" property="startDate"/>
 		<result column="END_DATE" property="endDate"/>
 		<result column="PRO_CATE_NO" property="proCateNo"/>
 		<result column="TRADE_CATE_NO" property="tradeCateNo"/>
 		<result column="TRADE_LOCATION" property="tradeLocation"/>
 		<result column="COUNT" property="count"/>
+		<result column="BIDCOUNT" property="bidCount"/>
+		<result column="PATH" property="path"/>
 		<result column="PRO_STATUS" property="proStatus"/>
+
 	</resultMap>
 	
 	<resultMap type="postbox" id="PostboxResultSet">
@@ -46,6 +50,45 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="PRO_CATE_NO" property="proCateNo"/>
 		<result column="PRO_TITLE" property="proTitle"/>
 	</resultMap>
+		<resultMap type="productImages" id="proImgResultSet">
+		<result column="IMAGE_NO" property="imageNo"/>
+		<result column="PRO_NO" property="proNo"/>
+		<result column="ORINAME" property="oriName"/>
+		<result column="SYSNAME" property="sysName"/>
+		<result column="PATH" property="path"/>
+		<result column="IMG_STATUS" property="imgStatus"/>
+	
+	</resultMap>
+		<select id="selectProductList" resultMap="productResultSet">
+		
+		SELECT P.PRO_NO
+			  ,PRO_TITLE
+			  ,PRO_CONTENT
+			  ,SELL_ID
+			  ,PRO_PRICE
+			  ,WISH_PRICE
+			  ,POST_PRICE
+              ,BID_PRICE
+			  ,START_DATE
+			  ,END_DATE
+			  ,PRO_CATE_NO
+			  ,TRADE_CATE_NO
+			  ,TRADE_LOCATION
+			  ,COUNT
+              ,BIDCOUNT
+              ,PATH
+	FROM PRODUCT P
+    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+    , (SELECT D.RNUMS,PRO_NO,PATH FROM (SELECT ROW_NUMBER() OVER(PARTITION BY PI.PRO_NO ORDER BY IMAGE_NO DESC ) AS RNUMS, PI.*
+        FROM PRODUCT_IMAGES PI) D 
+        WHERE D.RNUMS=1)E
+    WHERE P.PRO_NO = B.PRO_NO(+) 
+    AND P.PRO_NO = C.PRO_NO(+)
+    AND P.PRO_NO = E.PRO_NO(+)
+    AND P.PRO_STATUS ='Y'
+    ORDER BY PRO_NO DESC
+	</select>
 	
 	
 	<select id="selectCategoryList" resultMap="categoryResultSet" parameterType="int">
@@ -53,6 +96,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM CATEGORY
 		WHERE TRUNC(CATE_NO,-2) =#{cateNo}
 		AND NOT CATE_NO= #{cateNo}
+	</select>
+	<select id="selectProduct" resultMap="productResultSet">
+		SELECT P.PRO_NO
+			  ,PRO_TITLE
+			  ,PRO_CONTENT
+			  ,SELL_ID
+			  ,PRO_PRICE
+			  ,WISH_PRICE
+			  ,POST_PRICE
+              ,BID_PRICE
+			  ,START_DATE
+			  ,END_DATE
+			  ,PRO_CATE_NO
+			  ,TRADE_CATE_NO
+			  ,TRADE_LOCATION
+			  ,COUNT
+              ,BIDCOUNT
+	FROM PRODUCT P
+    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+
+    WHERE P.PRO_NO = B.PRO_NO(+) 
+    AND P.PRO_NO = C.PRO_NO(+)
+    AND P.PRO_STATUS ='Y'
+	AND P.PRO_NO =#{pNo}
+	</select>
+	<select id="selectImgList" resultMap="proImgResultSet">
+		SELECT IMAGE_NO, PRO_NO, ORINAME, SYSNAME, PATH
+		FROM PRODUCT_IMAGES
+		WHERE PRO_NO =#{pNo}
+				
+	</select>
+	<select id="selectProListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM PRODUCT
+		WHERE PRO_STATUS='Y'
+	
 	</select>
 	<insert id="insertProduct" parameterType="product">
 		
@@ -79,7 +159,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     ,#{wishPrice}
                     ,#{postPrice}
                     ,SYSDATE
-                    ,TO_DATE(SYSDATE+#{bidDate},'YYYY-MM-DD HH24:MI:SS')
+ 					,SYSDATE+#{bidDate}
                     ,#{proCateNo}
                     ,#{tradeCateNo}
                     ,#{tradeLocation}
@@ -87,31 +167,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</insert>
 
-	<insert id="insertProductImages" >
-			INSERT INTO PRODUCT_IMAGES(
-														IMAGE_NO
-														,PRO_NO
-														,ORINAME
-														,SYSNAME
-														,PATH
-														)
-									VALUES
-								
-														(
-														 SEQ_IMGNO.NEXTVAL
-														,SEQ_PRNO.CURVAL
-		<foreach collection="list" item="oriName" index="index" separator="," >
-														,#{oriName[index]}
+	<insert id="insertProductImages">
+		insert into PRODUCT_IMAGES(
+									IMAGE_NO
+									,PRO_NO
+									,ORINAME
+									,SYSNAME
+									,PATH
+									)
+		SELECT SEQ_IMGNO.NEXTVAL,SEQ_PRNO.CURRVAL, A.* from(
+		<foreach item="item" collection="list" separator="UNION ALL ">
+			select #{item.oriName} as ORINAME,
+			#{item.sysName} as SYSNAME,
+			#{item.path} as PATH
+			from dual
 		</foreach>
-		<foreach collection="list" item="sysName" index="index" separator="," >
-														,#{sysName[index]}
-		</foreach>
-		<foreach collection="list" item="path" index="index" separator="," >
-														,#{path[index]}
-		</foreach>
-														)
+		) A
 	</insert>
-
+	<update id="increaseCount">
+		UPDATE PRODUCT
+		SET COUNT = COUNT +1
+		WHERE PRO_STATUS ='Y'
+		AND PRO_NO =#{pNo}
+	</update>
 	
 	
 
@@ -179,57 +257,97 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	
+	<!-- =====마이페이지==== -->
 	<select id="selectListCount" resultType="_int" >
 		SELECT COUNT(*)
 		FROM PRODUCT
-		WHERE PRO_STATUS='Y'
-		AND SELL_ID = 'admin'
-	</select>
-	
-	<select id="selectListCountt" resultType="_int">
-		SELECT COUNT(*)
-		FROM POSTBOX
-		JOIN PRODUCT USING (PRO_NO)
-		WHERE PRO_STATUS='Y'
-		AND SELL_ID = 'admin'
+		WHERE PRO_STATUS IN ('Y','N')
+		AND SELL_ID = #{userId}
 	</select>
 	
 	<select id="selectList" resultMap="productResultSet">
 		SELECT PRO_NO,PRO_TITLE,PRO_PRICE,COUNT,PRO_STATUS
 		FROM PRODUCT
-		WHERE SELL_ID= 'admin' <!-- ${buyId} -->
+		WHERE SELL_ID= #{userId}
+		AND PRO_STATUS IN ('Y','N') <!-- ${buyId} -->
 	</select>
 	
-	<insert id="postInsert" parameterType="Postbox">
-		INSERT INTO POSTBOX(PBOX_NO,PBOX_NAME,PRO_NO) VALUES(#{pboxNo},#{pboxName},#{proNo})
-	</insert>
 	
-	
-	
+	<select id="selectListCountt" resultType="_int">
+		SELECT COUNT(*)
+		FROM POSTBOX
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE PRO_STATUS='N'
+		AND SELL_ID = #{userId}
+	</select>
 	
 	<select id="selectListPost" resultMap="PostboxResultSet">
 		SELECT PRO_TITLE,PBOX_NAME,PBOX_NO
 		FROM POSTBOX 
 		JOIN PRODUCT USING (PRO_NO)
-		WHERE SELL_ID= 'admin'
+		WHERE SELL_ID= #{userId}
+		AND PRO_STATUS='N'
+		AND PBOX_NAME IN ('CJ대한통운','우체국택배','한진택배','롯데택배','로젠택배')
 	</select>
 	
-	
+	<insert id="postInsert" parameterType="Postbox">
+		INSERT INTO POSTBOX(PBOX_NO,PBOX_NAME,PRO_NO) VALUES(#{pboxNo},#{pboxName},#{proNo})
+	</insert>
+
+	<select id="selectListCounttt" resultType="_int">
+		SELECT COUNT(*)
+		FROM BID
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE PRO_STATUS='Y'
+		AND BUYER_ID = #{userId}
+	</select>
 	
 	
 	<select id="selectListAttend" resultMap="BidResultSet">
 		SELECT BUYER_ID,PRO_TITLE,BID_PRICE,BID_STATUS
 		FROM BID B
 		JOIN PRODUCT USING (PRO_NO)
-		WHERE BUYER_ID = 'admin'
+		WHERE BUYER_ID = #{userId}
+		AND PRO_STATUS='Y'
+	</select>
+	
+	<select id="selectListCountttt" resultType="_int">
+		SELECT COUNT(*)
+		FROM BID
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE PRO_STATUS='N'
+		AND BUYER_ID = #{userId}
 	</select>
 	
 	<select id="selectListBid" resultMap="BidResultSet"> 
-		SELECT PRO_TITLE,BID_PRICE
+		SELECT PRO_TITLE,BID_PRICE,BID_NO,END_DATE
 		FROM BID B
 		JOIN PRODUCT USING (PRO_NO)
-		WHERE BID_STATUS = 'N'
+		WHERE PRO_STATUS = 'N'
+        AND BUYER_ID = #{userId}
+        AND BID_STATUS IN ('N')
 	</select>
+	
+	<select id="selectListCounttttt" resultType="_int">
+		SELECT COUNT(*)
+		FROM POSTBOX
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE PRO_STATUS='N'
+		AND BUYER_ID = #{userId}
+	</select>
+	
+	<select id="selectListnPost" resultMap="PostboxResultSet">
+		SELECT DISTINCT(B.PRO_NO), PRO_TITLE, PBOX_NAME, PBOX_NO
+		FROM PRODUCT P
+		LEFT JOIN POSTBOX B ON (P.PRO_NO = B.PRO_NO)
+		LEFT JOIN BID D ON (P.PRO_NO = D.PRO_NO)
+		WHERE D.BUYER_ID = #{userId}
+		AND D.BID_STATUS = 'Y'
+		AND P.PRO_STATUS = 'N'
+		AND PBOX_NAME IN ('CJ대한통운','우체국택배','한진택배','롯데택배','로젠택배')
+	</select>
+	
+	
 		<select id="selectNewMember" resultType="_int">
 		SELECT COUNT(ENTER_DATE) AS COUNT
 		FROM MEMBER
@@ -244,6 +362,68 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND TO_DATE(#{date2},'YY-MM-DD')
 		AND USER_STATUS = 'N'
 	</select>
+	
+		<!-- 찜 추가 -->
+	<insert id="addWishlist" parameterType="proLike"> 
+		INSERT INTO PRO_LIKE (LIKE_NO, USER_ID, PRO_NO) 
+		VALUES (SEQ_LINO.NEXTVAL, #{userId}, #{proNo}) 
+	</insert>
+	
+	<!-- 찜 삭제 -->
+	<delete id="removeWishlist" parameterType="proLike">
+		DELETE FROM PRO_LIKE
+		WHERE PRO_NO = #{proNo}
+	</delete>
+	
+	
+	<!-- 찜 리스트 불러오기_myPage -->
+	<select id="pickList" resultMap="productResultSet">
+		SELECT PRO_TITLE, SELL_ID, PRO_PRICE, PRO_STATUS, PRO_CATE_NO
+		FROM PRODUCT
+		JOIN PRO_LIKE USING(PRO_NO)
+		WHERE USER_ID=#{userId}
+	</select>
+	
+	<!-- 찜 리스트 갯수 불러오기 -->
+	<select id="selectPListCount" resultType="_int" >
+		SELECT COUNT(*)
+		FROM PRODUCT
+		WHERE PRO_STATUS='Y'
+		AND USER_ID = #{userId}
+	</select>
+	
+	
+	<!-- ================================================== -->
+	<!-- 판매현황 삭제 -->
+	<update id="deleteSale">
+		UPDATE PRODUCT
+		SET PRO_STATUS='S'
+		WHERE PRO_NO = #{ch}
+	</update>
+	
+	<!-- 운송장 조회 삭제 -->
+	<update id="deletePost">
+		UPDATE POSTBOX
+		SET PBOX_NAME='바보'
+		WHERE PBOX_NO = #{ch2}
+	</update>
+	
+	<!-- 낙찰현황 삭제 -->
+	<update id="deleteBid">
+		UPDATE BID
+		SET BID_STATUS='S'
+		WHERE BID_NO = #{ch3}
+	</update>
+	
+	<!-- 운송장 조회 삭제 -->
+	<update id="nPostDelete">
+		UPDATE POSTBOX
+		SET PBOX_NAME='바보'
+		WHERE PBOX_NO = #{ch4}
+	</update>
+	
+	
+	
 	
 
 </mapper>

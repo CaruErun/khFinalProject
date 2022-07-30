@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,6 +78,14 @@
 		        });
 		    });
 		</script>
+		
+		
+		
+		
+		
+		
+		
+		
 		<!-- 찜취소 버튼을 누를경우 이벤트 발생 -->
 		<script type="text/javascript">
 		    $(document).ready(function() {
@@ -150,6 +157,11 @@
 		        </c:choose>
 		    </sec:authorize>
 		</div>
+
+
+
+
+
 
 	<jsp:include page="../common/footer.jsp"/>
 </body>

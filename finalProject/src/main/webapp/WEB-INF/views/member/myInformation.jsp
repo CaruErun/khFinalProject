@@ -18,7 +18,9 @@ div{
 .wrap{
     width: 1000px;
     height: 400px;
-    margin: auto;
+	margin: auto;
+	padding-top:100px;
+	
 }
 .wrap>div{ 
     width: 100%;
