@@ -14,18 +14,18 @@
 
 
 <style>
-div{
-    box-sizing: border-box;
-    border: 1px solid red;
-}
+div{ 
+     box-sizing: border-box; 
+     border: 1px solid red; 
+ } 
 .wrap{
     width: 1000px;
     height: 700px;
     margin: auto;
 }
-.wrap>div{ 
-    width: 100%;
-}
+ .wrap>div{  
+     width: 100%; 
+ } 
 #header{
     height: 20%;
 }
