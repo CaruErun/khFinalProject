@@ -64,19 +64,19 @@
         </tr>
         <tr>
             <td id="tt">신고 사유</td>
-		        <c:if test="${r.reportCategoryNo==1201 }">
+		        <c:if test="${r.reportCateNo==1201 }">
 		              <td>허위매물</td>
 		        </c:if>
-		        <c:if test="${r.reportCategoryNo==1202 }">
+		        <c:if test="${r.reportCateNo==1202 }">
 		              <td>전자상거래 금지물품 거래</td>
 		        </c:if>
-		        <c:if test="${r.reportCategoryNo==1203 }">
+		        <c:if test="${r.reportCateNo==1203 }">
 		              <td>욕설 및 비방</td>
 		        </c:if>
-		        <c:if test="${r.reportCategoryNo==1204 }">
+		        <c:if test="${r.reportCateNo==1204 }">
 		              <td>담합</td>
 		        </c:if>
-		        <c:if test="${r.reportCategoryNo==1205 }">
+		        <c:if test="${r.reportCateNo==1205 }">
 		              <td>기타</td>
 		        </c:if>
         </tr>
@@ -88,7 +88,7 @@
     </div>
 
     <br><br>
-    <p>소비자보호원에 신고를 원하시면 아래의 버튼을 눌러주세요.</p>
+    <p>소비자보호원에 신고를 원하시면 아래의 버튼을 눌러주세요.</p> <br>
     <button type="button" class="btn btn-dark" id="button" onclick="location.href='https://www.kca.go.kr/odr/link/pg/pr/osPgReqFormW.do#none'">소비자보호원으로 이동</button>
     </div>
     

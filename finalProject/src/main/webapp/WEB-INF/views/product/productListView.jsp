@@ -16,16 +16,11 @@ crossorigin="anonymous"
 referrerpolicy="no-referrer"
 />
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
 	<!--icon-->
     <script src="https://kit.fontawesome.com/e849be2e05.js" crossorigin="anonymous"></script>
     
     
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
 <title>Insert title here</title>
 </head>
 <style>
@@ -157,6 +152,13 @@ referrerpolicy="no-referrer"
   #h_mark{
         color: lightgray;
     }
+    .h_mark{
+        position: relative;
+        width: 20px;
+        height:20px;
+        color: lightgray;
+        cursor: pointer;
+    }
     
 </style>
 <body>
@@ -198,68 +200,12 @@ referrerpolicy="no-referrer"
 
                         </div>
 
-                         <div class="text-box">
-                         <button class="btn-2" id="h_mark" data-toggle="modal"><i class="fa-solid fa-heart"></i></button>
-                          <!-- =======찜하기 버튼을 누를경우 이벤트 발생======= -->
-		<script>
-		    $(function() {
-		        $('#h_mark').on('click',function(event) { 
-		            event.preventDefault();
-		            // 비로그인 상태시 찜하기 버튼을 누르면
-		            if ("${loginUser.userId}" == "") {
-		                var check1 = confirm("로그인 한 회원만 이용가능합니다.")
-                        if(check1){
-                            $('#h_mark').attr('data-target','#login_modal2');
-                        }else{
-                            $('#h_mark').removeAttr('data-target');
-		                    // 거부하면 해당 페이지 새로고침
-		                    location.reload();
-                        }
-		                }
-		            // 로그인 상태시 찜하기 버튼을 누르면    
-		             else {
-		                // 해당 멤버ID와 상품ID의 정보를 가져옴
-		                var userId = "${loginUser.userId}";
-		                var proNo = "${p.proNo}";
-		
-		                console.log("userId: " + userId);
-		                console.log("proNo: " + proNo);
-
-		                
-		                $.ajax({
-		                    url : "addWishlist.my",
-		                    type : "POST",
-		                    data : {
-		                    	userId : userId,
-		                		proNo : proNo
-		                    	
-		                    }, //userId, proNo 담은 거!
-		                    
-		                    success : function(result) {
-		                        console.log(result);
-		                        if (result >0) {
-		                        	 $('#h_mark').css("color","hotpink");
-		                        	 
-		                            console.log("찜 성공!")
-		                            
-		                            if (confirm("해당 상품을 찜하셨습니다. 목록 페이지로 이동하시겠습니까?")) {
-		                                // 승낙하면 마이페이지의 찜하기 리스트로 이동
-		                                location.href = 'goPickList.me';
-		                            } else {
-		                                // 거부하면 해당 페이지 새로고침하여 찜한거 반영되게하기(HTTP의 속성 때문...)
-		                                location.reload();
-		                            }
-		                        }
-		                    },
-		                    error : function() {
-		                        alert('찜할 수 없습니다.');
-		                        location.reload(); // 실패시 새로고침하기
-		                    }
-		                })
-		            }
-		        });
-		    });
-		</script>
+                        <div class="text-box">
+                            <div class="content-box">
+                                <p>${i.proTitle }</p>
+                                <button class="h_mark" id="h_mark-${status.index}" ><i class="fa-solid fa-heart"></i></button>
+<%--                                 <button class="h_mark" id="h_mark-${status.index}"><i class="fa-solid fa-heart"></i></button> --%>
+                            </div>
                         </div>
 
                         <div class="price-box">
@@ -298,23 +244,6 @@ referrerpolicy="no-referrer"
                 </div>
         </c:forEach>
     </div>
-    
-    <form id="postform" action=""> 
- 			<input type="hidden" id="selectProNo" name="proNo" value="1"> 
- 			<input type="hidden" name="userId" value="${loginUser.userId}"> 
- 	</form> 
- 		<script> 
- 			function addWishlist(proNo){
-				$("#selectProNo").val(proNo);   ///
- 				$("#postform").attr("action", "addWishlist.my").submit();
-				
-				console.log(i);
- 			}
- 			
- 			function removeWishlist(){
- 				$("#postform").attr("action", "removeWishlist.my").submit();
- 			}
- 		</script> 
         
         
         
@@ -377,81 +306,141 @@ referrerpolicy="no-referrer"
 
             pb[i].onclick = function(){
                 var pNo = $(this).children("span").eq(0).text();
-                
+                console.log("11111");
                 location.href ="productDetail.pr?pNo="+pNo;
             }
+            
+            $("#h_mark-"+i).off().on('click',function(e){
+                e.stopPropagation();
+                var proNo = $(this).parent().parent().parent().parent().children("span").eq(0).text();
+                console.log(proNo);
+                if ("${loginUser.userId}" == "") {
+	                var check1 = confirm("로그인 한 회원만 이용가능합니다.")
+                    if(check1){
+                        $('#h_mark').attr('data-target','#login_modal2');
+                    }else{
+                        $('#h_mark').removeAttr('data-target');
+	                    // 거부하면 해당 페이지 새로고침
+	                    location.reload();
+                    }
+	                }
+          });
         }
    
         
         </script>
         
-        <script>
-	    
-	    
-	    // =======찜하기 버튼을 누를경우 이벤트 발생======= 
+        <!-- =======찜하기 버튼을 누를경우 이벤트 발생======= -->
+		<script>
 		    $(function() {
-		        $('#h_mark').click(function(event) {
+		    	
+		    	var proL = 0;
+		    	if("${proL}"!=""){
+		    		proL=${proL};
+		    	}
+		    	
+		        $('.h_mark').on('click',function(event) { 
 		            event.preventDefault();
+		            var proNo = $(this).parent().parent().parent().parent().children("span").eq(0).text();
+		            console.log(proNo);
 		            // 비로그인 상태시 찜하기 버튼을 누르면
 		            if ("${loginUser.userId}" == "") {
-		                confirm("로그인 한 회원만 이용가능합니다.")
+		                var check1 = confirm("로그인 한 회원만 이용가능합니다.")
+                        if(check1){
+                            $('#h_mark').attr('data-target','#login_modal2');
+                        }else{
+                            $('#h_mark').removeAttr('data-target');
 		                    // 거부하면 해당 페이지 새로고침
 		                    location.reload();
+                        }
 		                }
 		            // 로그인 상태시 찜하기 버튼을 누르면    
 		             else {
 		                // 해당 멤버ID와 상품ID의 정보를 가져옴
 		                var userId = "${loginUser.userId}";
-		                var proNo = "${i.proNo}";
+		                
 		
 		                console.log("userId: " + userId);
 		                console.log("proNo: " + proNo);
 
-		                console.log(i);
 		                
-		                var form = {
-		                		userId : userId,
-		                		proNo : proNo,
-		                };
 		                
+		                if(proL==0){
 		                $.ajax({
-		                    type : "POST",
 		                    url : "addWishlist.my",
-		                    cache : false,
-		                    contentType : 'application/json; charset=utf-8',
-		                    data : JSON.stringify(form), //userId, proNo 담은 거!
+		                    data : {
+		                    	userId : userId,
+		                		proNo : proNo
+		                    	
+		                    }, //userId, proNo 담은 거!
 		                    
 		                    success : function(result) {
 		                        console.log(result);
 		                        if (result >0) {
-		                        	 $('#h_mark').css("color","hotpink");
+		                        	 $('#h_mark>i').css("color","hotpink");
 		                        	 
 		                            console.log("찜 성공!")
 		                            
 		                            if (confirm("해당 상품을 찜하셨습니다. 목록 페이지로 이동하시겠습니까?")) {
 		                                // 승낙하면 마이페이지의 찜하기 리스트로 이동
-		                                location.href = '../member/pickList';
+		                                location.href = 'pick.me';
 		                            } else {
 		                                // 거부하면 해당 페이지 새로고침하여 찜한거 반영되게하기(HTTP의 속성 때문...)
-		                                location.reload();
+// 		                                location.reload();
 		                            }
 		                        }
+		                        proL=1;
 		                    },
-		                    error : function(e) {
-		                        console.log(e);
+		                    error : function() {
 		                        alert('찜할 수 없습니다.');
 		                        location.reload(); // 실패시 새로고침하기
 		                    }
 		                })
-		            }
-		        });
+		       
+		      
+		        }else{
+		        	
+		    
+		    //찜 해제
+		    $.ajax({
+                url : "removeWishlist.my",
+                contentType : 'application/json; charset=utf-8',
+                data : {
+                	userId : userId,
+                	proNo : proNo
+                	 
+                },
+                
+                success : function(result) {
+                    console.log(result);
+                    if (result >0) {
+                    	 $('#h_mark').css("color","lightgray");
+                    	 
+                        console.log("찜 해제 성공!")
+                        
+                        if (confirm("찜이 해제되었습니다.")) {
+                            location.reload();
+                        } else {
+                            location.reload();
+                        }
+                    }
+                    proL=0;
+                },
+                error : function(e) {
+                    console.log(e);
+                    alert('찜 해제 할 수 없습니다.');
+                    location.reload(); 
+                }
+    });
+		    
+		    
+		    }
+		        }
+		            
 		    });
-	    
-	    
-	    
-	    
-       
-    </script>
+		      
+		    });
+		</script>
               
 	    
 	 	    <div class="pagingArea">

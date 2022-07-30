@@ -12,16 +12,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
     <style>
-
+    	#chart{
+    		margin: 0 auto;
+    	}
     </style>
-
 </head>
+
 <body>
 		<jsp:include page="../chartMenubar.jsp"/>
 		
-		<div style="width: 900px; height: 900px;">
-			<!--차트가 그려질 부분-->
-			<canvas id="myChart"></canvas>
+		<div id="outer">
+			<div id="chart" style="width: 900px; height: 900px;">
+				<!--차트가 그려질 부분-->
+				<canvas id="myChart"></canvas>
+			</div>
 		</div>
 		
 		<script type="text/javascript">
@@ -96,7 +100,8 @@
                         yAxes: [
                             {
                                 ticks: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    stepSize: 1
                                 }
                             }
                         ]

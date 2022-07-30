@@ -363,7 +363,146 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND USER_STATUS = 'N'
 	</select>
 	
-		<!-- 찜 추가 -->
+	<select id="selectTradedBuy">
+		SELECT DISTINCT P.PRO_NO
+        FROM PRODUCT P
+        JOIN BID B
+        ON P.PRO_NO = B.PRO_NO
+        WHERE PRO_STATUS = 'N'
+        AND BID_STATUS = 'Y'
+        AND BUYER_ID = #{userId}
+	</select>
+	
+	<!-- 검색 조건 (option&keyword) -->
+	<sql id="search">
+		<choose>
+			<when test="searchType !=null and searchType.equals('proTitle')">
+				and PRO_TITLE LIKE '%'|| #{searchKeyword} ||'%'
+			</when>
+			<when test="searchType !=null and searchType.equals('proContent')">
+				and PRO_CONTENT LIKE '%'|| #{searchKeyword} ||'%'
+			</when>
+			<when test="searchType !=null and searchType.equals('sellId')">
+				and SELL_ID LIKE '%'|| #{searchKeyword} ||'%'
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<!-- product 검색 -->
+	<select id="getSearchList" resultMap="productResultSet">
+		SELECT P.PRO_NO
+				  ,PRO_TITLE
+				  ,PRO_CONTENT
+				  ,SELL_ID
+				  ,PRO_PRICE
+				  ,WISH_PRICE
+				  ,POST_PRICE
+	              ,BID_PRICE
+				  ,START_DATE
+				  ,END_DATE
+				  ,PRO_CATE_NO
+				  ,TRADE_CATE_NO
+				  ,TRADE_LOCATION
+				  ,COUNT
+	              ,BIDCOUNT
+		FROM PRODUCT P
+	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    WHERE P.PRO_NO = B.PRO_NO(+) 
+	    AND P.PRO_NO = C.PRO_NO(+)
+	    AND P.PRO_STATUS ='Y'
+		<include refid="search"/>
+		ORDER BY PRO_NO DESC
+	</select>
+	
+	<!-- 게시글 레코드 갯수 -->
+	<select id="searchProListCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM PRODUCT
+		where PRO_STATUS ='Y'
+		<include refid="search"/>
+	</select>
+	
+	
+	<!-- 정렬_필터 조건 -->
+	<sql id="sort">
+		<if test="sort == 'null'"> <!-- 최신순 (값이 없을 때 proNo가 제대로 들어감) -->
+			ORDER BY PRO_NO DESC
+		</if>
+		<if test="sort == 'proNo'"> <!-- 마감임박순 -->
+			ORDER BY PRO_NO ASC
+		</if>
+		
+		<if test="sort == 'hPrice'"> <!-- 높은가격순 -->
+			ORDER BY BID_PRICE ASC
+		</if>
+		<if test="sort == 'rPrice'"> <!-- 낮은가격순 -->
+			ORDER BY BID_PRICE DESC
+		</if>
+		<if test="sort == 'count'"> <!-- 조회수 -->
+			ORDER BY COUNT DESC
+		</if>
+	</sql>
+	
+	
+	
+	<!-- 필터링_정렬 (with 검색) -->
+	<select id="filterList"  resultMap="productResultSet">
+		SELECT P.PRO_NO
+				  ,PRO_TITLE
+				  ,PRO_CONTENT
+				  ,SELL_ID
+				  ,PRO_PRICE
+				  ,WISH_PRICE
+				  ,POST_PRICE
+	              ,BID_PRICE
+				  ,START_DATE
+				  ,END_DATE
+				  ,PRO_CATE_NO
+				  ,TRADE_CATE_NO
+				  ,TRADE_LOCATION
+				  ,COUNT
+	              ,BIDCOUNT
+		FROM PRODUCT P
+	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    WHERE P.PRO_NO = B.PRO_NO(+) 
+	    AND P.PRO_NO = C.PRO_NO(+)
+	    AND P.PRO_STATUS ='Y'
+	    <include refid="search"/>
+		<include refid="sort" />
+	</select>
+    
+    <!-- 필터링_정렬 (without 검색) -->
+	<select id="filterListNoS"  resultMap="productResultSet">
+		SELECT P.PRO_NO
+				  ,PRO_TITLE
+				  ,PRO_CONTENT
+				  ,SELL_ID
+				  ,PRO_PRICE
+				  ,WISH_PRICE
+				  ,POST_PRICE
+	              ,BID_PRICE
+				  ,START_DATE
+				  ,END_DATE
+				  ,PRO_CATE_NO
+				  ,TRADE_CATE_NO
+				  ,TRADE_LOCATION
+				  ,COUNT
+	              ,BIDCOUNT
+		FROM PRODUCT P
+	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    WHERE P.PRO_NO = B.PRO_NO(+) 
+	    AND P.PRO_NO = C.PRO_NO(+)
+	    AND P.PRO_STATUS ='Y'
+		<include refid="sort" />
+	</select>
+    
+	
+		<!--     ===찜하기=== -->
+	<!-- 찜 추가 -->
 	<insert id="addWishlist" parameterType="proLike"> 
 		INSERT INTO PRO_LIKE (LIKE_NO, USER_ID, PRO_NO) 
 		VALUES (SEQ_LINO.NEXTVAL, #{userId}, #{proNo}) 
@@ -375,22 +514,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE PRO_NO = #{proNo}
 	</delete>
 	
-	
 	<!-- 찜 리스트 불러오기_myPage -->
 	<select id="pickList" resultMap="productResultSet">
-		SELECT PRO_TITLE, SELL_ID, PRO_PRICE, PRO_STATUS, PRO_CATE_NO
-		FROM PRODUCT
-		JOIN PRO_LIKE USING(PRO_NO)
+		SELECT PRO_TITLE, SELL_ID, PRO_PRICE, PRO_STATUS, CATE_NAME as PRO_CATE_NO
+		FROM PRO_LIKE PL
+		JOIN PRODUCT P on(P.PRO_NO=PL.PRO_NO)
+		JOIN CATEGORY C
+        ON P.PRO_CATE_NO = C.CATE_NO
 		WHERE USER_ID=#{userId}
+		ORDER BY LIKE_NO DESC
 	</select>
 	
 	<!-- 찜 리스트 갯수 불러오기 -->
 	<select id="selectPListCount" resultType="_int" >
 		SELECT COUNT(*)
-		FROM PRODUCT
-		WHERE PRO_STATUS='Y'
-		AND USER_ID = #{userId}
+		FROM PRO_LIKE
+		WHERE USER_ID = #{userId}
 	</select>
+	
+	
+	
+	<!-- 찜 목록 보내기 -->
+	<select id="prolike" resultType="_int">
+		SELECT COUNT(*)
+		FROM PRO_LIKE
+		WHERE USER_ID = #{userId}
+		AND PRO_NO = #{pNo}
+	</select>
+
 	
 	
 	<!-- ================================================== -->

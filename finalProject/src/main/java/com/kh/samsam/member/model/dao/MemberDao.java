@@ -52,6 +52,44 @@ public int deleteMember(SqlSessionTemplate sqlSession, String userId) {
 	return sqlSession.update("memberMapper.deleteMember",userId);
 }
 
+public int selectBanCount(SqlSessionTemplate sqlSession, String reportedId) {
+	return sqlSession.selectOne("memberMapper.selectBanCount", reportedId);
+}
+
+public int banMember(SqlSessionTemplate sqlSession, Member m) {
+	return sqlSession.update("memberMapper.banMember", m);
+}
+
+
+
+public int deleteReport(SqlSessionTemplate sqlSession, int reportNo) {
+	return sqlSession.update("memberMapper.deleteReport", reportNo);
+}
+
+public int nobanMember(SqlSessionTemplate sqlSession, int reportNo) {
+	return sqlSession.update("memberMapper.nobanMember", reportNo);
+}
+
+
+//====찜리스트====
+//페이징 처리 게시글 count
+public int selectPListCount(SqlSessionTemplate sqlSession, String userId) {
+	
+	return sqlSession.update("productMapper.selectPListCount",userId);
+}
+
+//찜리스트 출력
+public ArrayList<Product> pickList(SqlSessionTemplate sqlSession, String userId, PageInfo pi) {
+	
+	int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+	int limit = pi.getBoardLimit();
+	
+	RowBounds rowBounds = new RowBounds(offset,limit);
+	
+
+	
+	return (ArrayList)sqlSession.selectList("productMapper.pickList",userId,rowBounds);
+}
 
 //====찜리스트====
 //페이징 처리 게시글 count

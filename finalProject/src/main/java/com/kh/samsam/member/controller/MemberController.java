@@ -330,16 +330,78 @@ public class MemberController {
 		public String salePostBox() {
 			return "member/salePostBoxDetail";
 	}
-	
+
+	// 신고 당한 회원 정지
+	@RequestMapping("ban.me")
+	public ModelAndView banMember(ModelAndView mv, String reportedId, int reportNo, HttpSession session ) {
+		
+		// reportNo는 신고상태 n
+		System.out.println(reportedId);
+//		// banCount조회
+		int banCount = memberService.selectBanCount(reportedId);
+		System.out.println("banCount: "+ banCount);
+		int result1 = 0;
+		int result2 = 0;
+		int banPeriod = 0;
+		Member m = new Member();
+		m.setUserId(reportedId);
+		
+		switch(banCount) {
+			case 0: banPeriod = 5;
+					break;
+			case 1: banPeriod = 10;
+					break;
+			default: banPeriod = 15; 
+					break;
+		}
+		m.setBanPeriod(banPeriod);
+		System.out.println("banPeriod: "+banPeriod);
+		result1 = memberService.banMember(m);
+		
+		if(result1>0) {
+			result2 = memberService.deleteReport(reportNo);
+			System.out.println("신고삭제성공");
+		}else {
+			System.out.println("신고삭제실패");
+		}
+		
+		if(result2>0) {
+			// 신고 목록에서 해당 신고 제거
+			
+			session.setAttribute("alertMsg", "해당 회원이 정지되었습니다.");
+			mv.setViewName("redirect:reportList.re");
+			
+		}else {
+			mv.addObject("errorMsg", "회원 정지 실패");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+
+	@RequestMapping("noban.me")
+	public ModelAndView nobanMember(ModelAndView mv, int reportNo, HttpSession session) {
+		System.out.println(reportNo);
+		int result = memberService.nobanMember(reportNo);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "신고가 반려 처리되었습니다.");
+			mv.setViewName("redirect:reportList.re");
+		}else {
+			mv.addObject("errorMsg", "회원 정지 실패");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
 
 	
 	
 	//===============찜 리스트 불러오기 _ 마이페이지===============
 		@ResponseBody
-		@RequestMapping(value="pick.me", produces="application/json; charset=UTF-8")
+		@RequestMapping(value="getPick.me", produces="application/json; charset=UTF-8")
 		public String pickList(String userId, int cPage) {
 			
-			System.out.println(userId);
+//			System.out.println(userId);
+//			System.out.println(proNo);
 			
 			
 			int currentPage = cPage;
@@ -357,13 +419,14 @@ public class MemberController {
 			ob.put("pi", pi);
 			ob.put("list", list);
 			
-			
+		
 			return new Gson().toJson(ob);
 		}
 		
 		
+		
 		//찜리스트 보여주기
-		@RequestMapping("goPickList.me")
+		@RequestMapping("pick.me")
 		public String goPickList() {
 			return "member/pickList";
 		}

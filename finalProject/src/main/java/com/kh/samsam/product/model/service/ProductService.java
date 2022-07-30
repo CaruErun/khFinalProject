@@ -74,14 +74,31 @@ public interface ProductService {
 	int selectListCounttttt(String userId);
 	
 
-	//검색
-	List<Product> getSearchList(Product p);
-	
-	//찜 추가
-	int addWishlist(ProLike l);
+	//검색 전체 목록 => 옵션, 키워드
+		List<Product> getSearchList(String searchType, String searchKeyword,PageInfo pi);
 
-	//찜 삭제
-	int removeWishlist(ProLike l);
+		//검색 레코드 갯수
+		int searchProListCount(String searchType, String searchKeyword);
+		
+		//정렬 (with 검색)
+		List<Product> filterList(String searchType, String searchKeyword, String sort,PageInfo pi);
+
+		//정렬 (without 검색)
+		List<Product> filterListNoS(String sort, PageInfo pi);
+
+
+
+		int[] selectTradedBuy(String userId);
+
+		
+		//찜 추가
+		int addWishlist(ProLike l);
+
+		//찜 삭제
+		int removeWishlist(ProLike l);
+		
+		//찜 목록 보내기
+		int prolike(int pNo, String userId);
 
 	//판매현황 삭제
 	int deleteSale(String[] chArr);

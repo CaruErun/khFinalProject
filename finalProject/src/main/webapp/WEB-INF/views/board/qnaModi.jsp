@@ -51,7 +51,7 @@
 <body>
 	<c:if test="${not empty alertMsg }">
 		<script>
-			alertify.alert("${alertMsg}");
+		alertify.alert("서비스 요청 성공", "${alertMsg}");
 		</script>
 		<c:remove var="alertMsg" scope="session"/>
 	</c:if>
@@ -76,7 +76,6 @@
             <div class="position-absolute top-50 start-50 translate-middle">
 
         <!--카테고리 : 변경할 수 없음(처음 설정 그대로 하기) -->
-
                 <div name="qnaCateNo">${q.qnaCateNo }</div><br>
 	                
                 <br>
@@ -96,7 +95,7 @@
                 
                 <div align="center">
                     <button type="submit"  class="btn btn-dark">수정하기</button>
-                    <button type="button"  class="btn btn-light" onclick="javascript:history.go(-1);">뒤로</button>
+                    <button type="button"  class="btn btn-dark" onclick="javascript:history.go(-1);">뒤로</button>
                 </div> 
             
         

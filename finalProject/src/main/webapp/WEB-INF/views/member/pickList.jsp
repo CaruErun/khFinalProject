@@ -14,18 +14,18 @@
 
 
 <style>
-div{
-    box-sizing: border-box;
-    border: 1px solid red;
-}
+div{ 
+     box-sizing: border-box; 
+     border: 1px solid red; 
+ } 
 .wrap{
     width: 1000px;
     height: 700px;
     margin: auto;
 }
-.wrap>div{ 
-    width: 100%;
-}
+ .wrap>div{  
+     width: 100%; 
+ } 
 #header{
     height: 20%;
 }
@@ -150,6 +150,7 @@ table {
 	background-color: black;
 	
 }
+td{height:30px}
 </style>
 </head>
 <body>
@@ -202,15 +203,13 @@ table {
                     <!--반복-->
                         <table id="tata">
 	                        <thead>
-	                              	<tr > <!-- 구분선 -->
+	                              	<tr> <!-- 구분선 -->
 	                              	<!-- 체크박스 스타일 지정 -->
-                                    <th height="30" width="70"><input type="checkbox" name="Chk_list" id="check_all" style="accent-color: black"></th>
-                                    <th height="30" width="400">경매상태</th>
-                                    <th height="30" width="130">카테고리</th>
-                                    <th height="30" width="130">제목</th>
-                                    <th height="30" width="110">시작가</th>
-                                    <th height="30" width="130">현재가</th>
-                                    <th height="30" width="130">판매자</th>
+                                    <th height="30" width="150" style="text-align: center;">경매상태</th>
+                                    <th height="30" width="150" style="text-align: center;">카테고리</th>
+                                    <th height="30" width="400" style="text-align:center">제목</th>
+                                    <th height="30" width="150" style="text-align: center;">시작가</th>
+                                    <th height="30" width="150" style="text-align: center;">판매자</th>
                                 </tr>
                             </thead>
 	                        <tbody>
@@ -224,36 +223,35 @@ table {
     }
 
     	function pick(cPage){
-    		console.log(cPage);
     		$.ajax({
-    			url : "pick.me",
+    			url : "getPick.me",
     			data : { 
     			userId : "${loginUser.userId}"
     			,cPage : cPage
     			},
     			success : function(result){
+    				console.log(result.list.length);
+    				console.log(result);
+    			
     					var resultStr = "";
-    					
-						for(var i=0; i<result.list.length; i++){
-						
-							resultStr += "<tr>"   
-										+"<td style='text-align: center; accent-color: black'><input name='chkbox' type='checkbox' class='input_check' value="+result.list[i].proNo+"></td>"
-										+"<td style=\"text-align: center;\">"+result.list[i].bidStatus+"</td>"
+    					for(var i=0; i<result.list.length; i++){
+    						
+							resultStr += "<tr>" 
+										+"<td style=\"text-align: center;\">"+((result.list[i].proStatus == 'Y') ? '경매 중' : '경매 완료')+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].proCateNo+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].proTitle+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].proPrice+"</td>"
-										+"<td style=\"text-align: center;\">"+result.list[i].bidPrice+"</td>"
-										+"<td style=\"text-align: center;\">"+"</td>"
 										+"<td style=\"text-align: center;\">"+result.list[i].sellId+"</td>"
 									+"</tr>"
 									
 						}
-					$("#tata>tbody").html(resultStr);	
+					$("#tata>tbody").html(resultStr);
 					
 					var resultStr2 = ""; 
+					
 					for(var i=result.pi.startPage; i<=result.pi.endPage; i++){
 						
-						resultStr2 += "<button type='button' style=\"background-color: gray; color:white; border-color: black; border-radius: 4px; width:30px; text-align:center;\" onclick='sale("+i+")'>"+i+"</button>"
+						resultStr2 += "<button type='button' style=\"background-color: gray; color:white; border-color: white\" onclick='sale("+i+")'>"+i+"</button>"
 						
 					}
 					$("#content_6").html(resultStr2);
@@ -265,14 +263,7 @@ table {
     	}
 
     	
-    	
-    	
-    	
-    	$(function(){
-    		$("#tata>tbody>tr").click(function(){
-    			location.href='productDetail.pr?pNo='+$(this).children().eq(0).text();
-    		});
-    	});
+ 
     	
     	</script>
 

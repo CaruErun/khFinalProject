@@ -15,6 +15,7 @@ import com.kh.samsam.member.model.vo.MemberChart;
 import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.vo.Product;
 
+
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
@@ -109,12 +110,39 @@ public class MemberServiceImpl implements MemberService {
 			
 			return memberDao.selectPListCount(sqlSession,userId);
 		}
+
 		//찜리스트 출력
 		@Override
 		public ArrayList<Product> pickList(String userId, PageInfo pi) {
 			return memberDao.pickList(sqlSession,userId, pi);
 		}
+		
 
+
+
+		
+
+		// 신고 당한 회원 정지 - banCount 조회
+		@Override
+		public int selectBanCount(String reportedId) {
+			return memberDao.selectBanCount(sqlSession, reportedId);
+		}
+
+		// 신고 당한 회원 정지
+		@Override
+		public int banMember(Member m) {
+			return memberDao.banMember(sqlSession, m);
+		}
+		
+		@Override
+		public int deleteReport(int reportNo) {
+			return memberDao.deleteReport(sqlSession, reportNo);
+		}
+
+		@Override
+		public int nobanMember(int reportNo) {
+			return memberDao.nobanMember(sqlSession, reportNo);
+		}
 	
 
 }

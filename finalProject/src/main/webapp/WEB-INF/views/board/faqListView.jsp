@@ -15,44 +15,54 @@
         	color:black;
         	text-decoration: none;
         }
-                #pagingArea{
-        	width:fit-content; margin:auto; 
+        #pagingArea{
+        	width:70%;
  			margin-top:50px; 
+			display: flex;
+			align-items:center;
+			justify-content: center;
+/* 			border: 1px solid black; */
         }
         #content{
+         	margin: 0 auto;
             padding-top:50px;
 		    width: 1500px;
 		    height: 840px;
- 		    margin-left: 20%;
+		    display:flex;
+		    flex-direction: column;
+/*   		    border: 1px solid black; */
+  		    align-items: center;
 		}	
 		table{
+			width:100%;
 		    border-top: 1px solid gray;
 		    border-bottom: 1px solid gray;
 		}
+		#content_1{
+			width: 70%;
+/* 			border: 1px solid blue; */
+		}
 		#content_2{
 		    width: 70%;
-		    height: 100%;
+/* 		    border: 1px solid red; */
 		}
-		
-        .text {width:53%;}
-
         .btn-secondary{
             margin-right: 10px;
         }
-
         #nfContent{
         display: none;
         }
-        
 	</style>
 </head>
 
 <body>
 		<jsp:include page="../customerInfoMenubar.jsp"/>
 		<div id="content">
-            <h2>FAQ</h2>
-            <h4>자주 묻는 질문들을 안내해 드립니다.</h4>
-        <div id="content_2">
+			<div id="content_1">
+            	<h2>FAQ</h2>
+            	<h4>자주 묻는 질문들을 안내해 드립니다.</h4>
+        	</div>
+        	<div id="content_2">
             <br>
             <c:if test="${loginUser.userId eq 'admin' }">
             	<a class="btn btn-secondary" style="float:right;" href="enrollForm.fq">FAQ 작성</a>
@@ -62,15 +72,17 @@
                 <thead>
                     <tr>
                         <th width="10%">글번호</th>
-                        <th width="60%">제목</th>
+                        <th width="15%">카테고리</th>
+                        <th width="50%">제목</th>
                         <th width="15%">작성일</th>
-                        <th width="15%"></th>
+                        <th width="10%"></th>
                     </tr>
                 </thead>
                 <tbody>
                 	<c:forEach var="f" items="${list }">                
 	                    <tr id="nfTitle" onclick="down();">
 	                        <td class="nfNo">${f.rnum }</td>
+	                        <td>${f.nfCateNo}</td>
 	                        <td>${f.nfTitle }</td>
 	                        <td>${f.createDate }</td>
 	                        <td></td>
@@ -110,7 +122,7 @@
             	});
             </script>
             
-            <br><br>
+        	</div>
             <div id="pagingArea">
                 <ul class="pagination">
                 <c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }" step="1">
@@ -118,7 +130,6 @@
                 </c:forEach>
                 </ul>
             </div>
-        </div>
         <br><br>
 
     </div>
@@ -126,3 +137,6 @@
          	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>
+
+
+
