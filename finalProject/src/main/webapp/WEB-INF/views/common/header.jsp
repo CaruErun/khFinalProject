@@ -215,13 +215,19 @@
 					}
 				</script>
 
-				<div class="h3">
-					<select name="" class="search-bar">
-						<option value="">물품명</option>
-					</select> <input type="text" class="search-bar" placeholder="검색어를 입력하세요.">
-					<button class="search-bar">검색</button>
-				</div>
+		<!-- 검색폼 -->
+		<form name="searchForm" action="searchList.pr">
+			<div class="search-wrap">
+				<select class="form-control search-select" name="searchType" id="titleBOx">
+					<option value="proTitle">제목</option>
+					<option value="proContent">내용</option>
+					<option value="sellId">판매자</option>
+				</select>
+				<input type="hidden" value="1" name="cPage">
+				<input type="text" class="form-control search-input" name="searchKeyword" value="${searchKeyword}">
+				<button type="submit" class="btn btn-info search-btn">검색</button>
 			</div>
+		</form>
 		</div>
 	</div>
 

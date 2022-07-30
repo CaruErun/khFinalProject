@@ -193,6 +193,11 @@ public class ProductServiceImpl implements ProductService{
 	public int prolike(int pNo, String userId) {
 		return productDao.prolike(sqlSession, pNo, userId);
 	}
+
+	@Override
+	public int[] selectTradedBuy(String userId) {
+		return productDao.selectTradedBuy(sqlSession, userId);
+	}
 	
 	
 	

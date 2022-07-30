@@ -23,6 +23,7 @@
         width: 70%;
         height: 300px;
         border: solid 1px black;
+/*     	margin-top : 100px; */
     }
     .swiper{
         position: absolute;

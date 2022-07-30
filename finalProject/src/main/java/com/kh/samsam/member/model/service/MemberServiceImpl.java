@@ -128,4 +128,27 @@ public class MemberServiceImpl implements MemberService {
 
 	
 
+	// 신고 당한 회원 정지 - banCount 조회
+	@Override
+	public int selectBanCount(String reportedId) {
+		return memberDao.selectBanCount(sqlSession, reportedId);
+	}
+
+	// 신고 당한 회원 정지
+	@Override
+	public int banMember(Member m) {
+		return memberDao.banMember(sqlSession, m);
+	}
+
+	@Override
+	public int deleteReport(int reportNo) {
+		return memberDao.deleteReport(sqlSession, reportNo);
+	}
+
+	@Override
+	public int nobanMember(int reportNo) {
+		return memberDao.nobanMember(sqlSession, reportNo);
+	}
+	
+
 }

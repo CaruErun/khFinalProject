@@ -77,6 +77,8 @@ public interface ProductService {
 
 
 
+	int[] selectTradedBuy(String userId);
+
 	
 	//찜 추가
 	int addWishlist(ProLike l);

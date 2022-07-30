@@ -34,7 +34,18 @@ public interface MemberService {
 	//마이페이지 탈퇴
 	int deleteMember(String userId);
 
-	
+	// 신고 당한 회원 정지 - banCount 조회
+		int selectBanCount(String reportedId);
+		
+		// 신고 당한 회원 정지
+		int banMember(Member m);
+
+		// 신고 status N으로
+		int deleteReport(int reportNo);
+
+		int nobanMember(int reportNo);
+		
+		
 	//페이징 처리 게시글 count
 	int selectPListCount(String userId);
 

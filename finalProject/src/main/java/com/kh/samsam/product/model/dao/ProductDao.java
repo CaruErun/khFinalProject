@@ -203,6 +203,12 @@ public class ProductDao {
 		return sqlSession.selectList("productMapper.filterListNoS", sort, rowBounds);
 	}
 
+	public int[] selectTradedBuy(SqlSessionTemplate sqlSession, String userId) {
+//		sqlSession.selectList("productMapper.selectTradedBuy", userId);
+		int[] arrBuy = {1,2,5};
+		return arrBuy;
+	}
+
 	
 	
 	

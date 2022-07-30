@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 // 접두어 app이 있어서 이 컨트롤러로 옴
 public class StompChatController {
 	// 메세지를 보내기위한 템플릿 자바/스톰프에서 제공함
-    private final SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
+	private final SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
 
     @MessageMapping(value = "/chat/enter")
     public void enter(ChatMessageDTO message){
@@ -24,6 +24,6 @@ public class StompChatController {
 
     @MessageMapping(value = "/chat/message")
     public void message(ChatMessageDTO message){
-        template.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
+    	template.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
     }
 }

@@ -51,6 +51,24 @@ public int deleteMember(SqlSessionTemplate sqlSession, String userId) {
 	return sqlSession.update("memberMapper.deleteMember",userId);
 }
 
+public int selectBanCount(SqlSessionTemplate sqlSession, String reportedId) {
+	return sqlSession.selectOne("memberMapper.selectBanCount", reportedId);
+}
+
+public int banMember(SqlSessionTemplate sqlSession, Member m) {
+	return sqlSession.update("memberMapper.banMember", m);
+}
+
+
+
+public int deleteReport(SqlSessionTemplate sqlSession, int reportNo) {
+	return sqlSession.update("memberMapper.deleteReport", reportNo);
+}
+
+public int nobanMember(SqlSessionTemplate sqlSession, int reportNo) {
+	return sqlSession.update("memberMapper.nobanMember", reportNo);
+}
+
 
 //====찜리스트====
 //페이징 처리 게시글 count
