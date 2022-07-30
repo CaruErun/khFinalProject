@@ -219,6 +219,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   				CREATE_DATE = SYSDATE
   			WHERE QNA_NO = #{qnaNo}
 	</update>
+	
+	
+	<!-- 마이페이지 -->
+	<!-- 게시글 전체 개수  -->
+	<select id="selectListMyPageCount" resultType="int">
+			SELECT COUNT (*)
+			FROM QNA
+			WHERE QNA_STATUS = 'Y'
+			AND QNA_TYPE = 2
+	</select>
+	
+	<!-- 리스트 조회 -->
+	<select id="selectQnaListMyPageView" resultMap="qnaResultSet">
+			SELECT  QNA_NO,
+				    QNA_CATE_NO,
+				    QNA_TITLE, 
+				    QNA_ID,
+					CREATE_DATE,
+					ANS_STATUS
+		    FROM QNA
+		    WHERE QNA_STATUS='Y'
+		   	AND QNA_ID = #{userId}
+		    ORDER BY CREATE_DATE DESC
+	</select>
+	
 
 
 </mapper>

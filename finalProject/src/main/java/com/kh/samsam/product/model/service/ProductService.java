@@ -40,7 +40,7 @@ public interface ProductService {
 	
 	
 	
-//	//리스트 조회 해오기
+	//리스트 조회 해오기(판매현황)
 	ArrayList<Product> selectList(String userId, PageInfo pi);
 
 	//운송장 등록
@@ -55,41 +55,66 @@ public interface ProductService {
 	//리스트 조회 해오기
 	ArrayList<Bid> selectListBid(String userId, PageInfo pi);
 
+	//리스트 조회 해오기
+	ArrayList<Postbox> selectListnPost(String userId, PageInfo pi);
+	
 	//판매
-	int selectListCount();
+	int selectListCount(String userId);
 
 	//운송장
-	int selectListCountt();
+	int selectListCountt(String userId);
 	
+	//응찰
+	int selectListCounttt(String userId);
+	
+	//낙찰
+	int selectListCountttt(String userId);
+
+	//낙찰 운송장
+	int selectListCounttttt(String userId);
 	
 
 	//검색 전체 목록 => 옵션, 키워드
-	List<Product> getSearchList(String searchType, String searchKeyword,PageInfo pi);
+		List<Product> getSearchList(String searchType, String searchKeyword,PageInfo pi);
 
-	//검색 레코드 갯수
-	int searchProListCount(String searchType, String searchKeyword);
-	
-	//정렬 (with 검색)
-	List<Product> filterList(String searchType, String searchKeyword, String sort,PageInfo pi);
-
-	//정렬 (without 검색)
-	List<Product> filterListNoS(String sort, PageInfo pi);
-
-
-
-	int[] selectTradedBuy(String userId);
-
-	
-	//찜 추가
-	int addWishlist(ProLike l);
-
-	//찜 삭제
-	int removeWishlist(ProLike l);
-
-	
-	//찜 목록 보내기
-	int prolike(int pNo, String userId);
+		//검색 레코드 갯수
+		int searchProListCount(String searchType, String searchKeyword);
 		
+		//정렬 (with 검색)
+		List<Product> filterList(String searchType, String searchKeyword, String sort,PageInfo pi);
+
+		//정렬 (without 검색)
+		List<Product> filterListNoS(String sort, PageInfo pi);
+
+
+
+
+
+		
+		//찜 추가
+		int addWishlist(ProLike l);
+
+		//찜 삭제
+		int removeWishlist(ProLike l);
+		
+		//찜 목록 보내기
+		int prolike(int pNo, String userId);
+
+	//판매현황 삭제
+	int deleteSale(String[] chArr);
+
+	//운송장  조회 삭제
+	int deletePost(String[] chArr2);
+
+	//낙찰현황 삭제
+	int deleteBid(String[] chArr3);
+
+	//판매운송장 삭제
+	int nPostDelete(String[] chArr4);
+
+
+
+
 	
 	
 }

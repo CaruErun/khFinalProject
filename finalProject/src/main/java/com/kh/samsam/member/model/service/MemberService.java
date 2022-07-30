@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.vo.Product;
 
 public interface MemberService {
@@ -35,26 +36,26 @@ public interface MemberService {
 	int deleteMember(String userId);
 
 	// 신고 당한 회원 정지 - banCount 조회
-		int selectBanCount(String reportedId);
-		
-		// 신고 당한 회원 정지
-		int banMember(Member m);
+			int selectBanCount(String reportedId);
+			
+			// 신고 당한 회원 정지
+			int banMember(Member m);
 
-		// 신고 status N으로
-		int deleteReport(int reportNo);
+			// 신고 status N으로
+			int deleteReport(int reportNo);
 
-		int nobanMember(int reportNo);
-		
-		
+			int nobanMember(int reportNo);
+			
+			
+		//페이징 처리 게시글 count
+		int selectPListCount(String userId);
+
+		//찜리스트 출력
+		ArrayList<Product> pickList(String userId, PageInfo pi);
+
+
 	//페이징 처리 게시글 count
-	int selectPListCount(String userId);
-
+		int selectPListCount(String userId);
 	//찜리스트 출력
-	ArrayList<Product> pickList(String userId, PageInfo pi);
-
-
-
-
-	
-
+		ArrayList<Product> pickList(String userId, PageInfo pi);
 }

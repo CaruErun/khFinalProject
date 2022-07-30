@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +22,7 @@ import com.kh.samsam.member.model.service.MailSendService;
 import com.kh.samsam.member.model.service.MemberService;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.vo.Product;
 
 @Controller
@@ -213,26 +213,23 @@ public class MemberController {
 		String newPwd = m.getNewPwd();
 		String newPwdCheck = m.getNewPwdCheck();
 		
-		String encPwd = bcryptPasswordEncoder.encode(m.getUserPw());
-		
-//		if(userPw!=null && userPwd!=null && !userPw.equals(userPwd)) {
-			
-			if(!bcryptPasswordEncoder.matches(userPwd,encPwd)) {
+			if(!bcryptPasswordEncoder.matches(userPwd,userPw)) {
 				
-//			if(bcryptPasswordEncoder.matches(userPw, encPwd)) {
-			
 			session.setAttribute("alertMsg", "이전 비밀번호와 동일하지 않습니다.");
 			
 			return "member/changePassword" ;
 		}else {
 			
+			String encPwd = bcryptPasswordEncoder.encode(m.getNewPwd());
+			
+			m.setNewPwd(encPwd);
+			m.setUserId(userId);
+			
 			int result = memberService.pwdChange(m);
 			
-//			if(newPwd!=null && newPwdCheck!=null && newPwd.equals(newPwdCheck)) {
-			if(bcryptPasswordEncoder.matches(userPwd,encPwd)) {
+			if(newPwd!=null && newPwdCheck!=null && newPwd.equals(newPwdCheck)) {
 				
 				Member updatePwd = memberService.loginMember(m);
-				
 				session.setAttribute("loginUser", updatePwd);
 				
 				session.setAttribute("alertMsg", "비밀번호가 변경되었습니다");
@@ -286,19 +283,20 @@ public class MemberController {
 				
 				String userPwd = m.getUserPwd();
 				
-				
 				//비밀번호가 일치할 경우 - 탈퇴 처리
-				if(userPw!=null && userPwd!=null && userPw.equals(userPwd)) {
+					if(bcryptPasswordEncoder.matches(userPwd,userPw)) {
+						
+						m.setUserId(userId);
+						
 					int result = memberService.deleteMember(userId);
-					
 					
 					if(result>0) {
 						//탈퇴성공 - session에 등록된 loginUser정보 삭제(로그아웃)
 						session.removeAttribute("loginUser");
 						
-						session.setAttribute("alertMsg", "만나서 즐거웠고 다신보지말자");
+						session.setAttribute("alertMsg", "잘가~");
 						
-						return "redirect:myPageSuccess.me"; //메인으로 갈 예정 
+						return "redirect:/";
 						
 					}else {
 						//탈퇴실패
@@ -310,7 +308,6 @@ public class MemberController {
 					session.setAttribute("alertMsg", "비밀번호를 잘못입력하셨습니다.");
 					return "common/errorPage";
 				}
-			
 	}
 	
 	
@@ -319,22 +316,21 @@ public class MemberController {
 	      return "member/myPageSuccess";
 	   }
 	
-	
-	
-	
-	
 	@RequestMapping("changePwd.me")
 	   public String changePassword() {
 	      return "member/changePassword";
 	   }
 	
-
+	@RequestMapping("pick.me")
+	   public String interestItem() {
+	      return "member/pickList";
+	   }
 	
 	@RequestMapping("salePostBox.me")
 		public String salePostBox() {
 			return "member/salePostBoxDetail";
 	}
-	
+
 	// 신고 당한 회원 정지
 	@RequestMapping("ban.me")
 	public ModelAndView banMember(ModelAndView mv, String reportedId, int reportNo, HttpSession session ) {
@@ -399,48 +395,35 @@ public class MemberController {
 
 	
 	
-	
-	
 	//===============찜 리스트 불러오기 _ 마이페이지===============
-	@ResponseBody
-	@RequestMapping(value="getPick.me", produces="application/json; charset=UTF-8")
-	public String pickList(String userId, int cPage) {
+		@ResponseBody
+		@RequestMapping(value="getPick.me", produces="application/json; charset=UTF-8")
+		public String pickList(String userId, int cPage) {
+			
+//			System.out.println(userId);
+//			System.out.println(proNo);
+			
+			
+			int currentPage = cPage;
+			int listCount = memberService.selectPListCount(userId);
+			
+			int pageLimit = 10;
+			int boardLimit = 10;
+			
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+			
+			ArrayList<Product> list = memberService.pickList(userId,pi);
+			
+			Map<String, Object> ob = new HashMap<String,Object>();
+			
+			ob.put("pi", pi);
+			ob.put("list", list);
+			
 		
-//		System.out.println(userId);
-//		System.out.println(proNo);
+			return new Gson().toJson(ob);
+		}
 		
 		
-		int currentPage = cPage;
-		int listCount = memberService.selectPListCount(userId);
 		
-		int pageLimit = 10;
-		int boardLimit = 10;
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		
-		ArrayList<Product> list = memberService.pickList(userId,pi);
-		
-		Map<String, Object> ob = new HashMap<String,Object>();
-		
-		ob.put("pi", pi);
-		ob.put("list", list);
-		
-	
-		return new Gson().toJson(ob);
-	}
-	
-	
-	
-	//찜리스트 보여주기
-	@RequestMapping("pick.me")
-	public String goPickList() {
-		return "member/pickList";
-	}
-	
+
 }
-
-
-
-
-
-

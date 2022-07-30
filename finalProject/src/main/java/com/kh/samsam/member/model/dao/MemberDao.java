@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.vo.Product;
 
 @Repository
@@ -90,7 +91,26 @@ public ArrayList<Product> pickList(SqlSessionTemplate sqlSession, String userId,
 	return (ArrayList)sqlSession.selectList("productMapper.pickList",userId,rowBounds);
 }
 
-
+//====찜리스트====
+//페이징 처리 게시글 count
+public int selectPListCount(SqlSessionTemplate sqlSession, String userId) {
+	
+	return sqlSession.update("memberMapper.selectPListCount",userId);
+}
+//찜리스트 출력
+public ArrayList<Product> pickList(SqlSessionTemplate sqlSession, String userId, PageInfo pi) {
+	
+	int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+	int limit = pi.getBoardLimit();
+	
+	RowBounds rowBounds = new RowBounds(offset,limit);
+	
+	Map<String,String> map = new HashMap<String,String>();
+	map.put("userId", userId);
+	
+	
+	return (ArrayList)sqlSession.selectList("productMapper.pickList",rowBounds);
+}
 
 
 	

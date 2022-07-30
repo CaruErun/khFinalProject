@@ -404,7 +404,48 @@ public class BoardController {
 			
 			return mv;
 		}
-	
+		
+		
+		@RequestMapping(value = "mumu.me")
+		   public String myPageSuccess() {
+		      return "board/mumuList";
+		   }
+		
+		//마이페이지 큐앤에이 목록 조회
+				@RequestMapping("list.bo")
+				public String selectQnaListMyPageView(
+												@RequestParam(value="mpage",defaultValue="1") int currentPage,
+												Model model,String userId
+												) {
+					
+//					System.out.println(currentPage);
+
+					int listCount = service.selectListMyPageCount();
+					
+//					System.out.println(listCount);
+					
+					int pageLimit = 10;
+					int boardLimit = 5;
+					
+					PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+					
+//					System.out.println(pi);
+					
+					ArrayList<QnA> list = service.selectQnaListMyPageView(pi,userId);
+					
+//					System.out.println(list);
+//					System.out.println(userId);
+					
+					model.addAttribute("list", list);
+					model.addAttribute("pi",pi);
+					
+					return "board/mumuList";
+					
+				}
+				
+		
+		
+		
 	
 }
 

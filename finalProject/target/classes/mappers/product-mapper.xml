@@ -194,6 +194,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 
 	
+	
+	<!-- product 검색 -->
+
 	<!--
 	DML 구문일때는 결과값이 항상 int이기때문에 resultType을 적지 않아도 되지만
 	select구문일때는 타입이 특정되지 않기 때문에 적어야한다.
@@ -239,57 +242,97 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	
+	<!-- =====마이페이지==== -->
 	<select id="selectListCount" resultType="_int" >
 		SELECT COUNT(*)
 		FROM PRODUCT
-		WHERE PRO_STATUS='Y'
-		AND SELL_ID = 'admin'
-	</select>
-	
-	<select id="selectListCountt" resultType="_int">
-		SELECT COUNT(*)
-		FROM POSTBOX
-		JOIN PRODUCT USING (PRO_NO)
-		WHERE PRO_STATUS='Y'
-		AND SELL_ID = 'admin'
+		WHERE PRO_STATUS IN ('Y','N')
+		AND SELL_ID = #{userId}
 	</select>
 	
 	<select id="selectList" resultMap="productResultSet">
 		SELECT PRO_NO,PRO_TITLE,PRO_PRICE,COUNT,PRO_STATUS
 		FROM PRODUCT
-		WHERE SELL_ID= 'admin' <!-- ${buyId} -->
+		WHERE SELL_ID= #{userId}
+		AND PRO_STATUS IN ('Y','N') <!-- ${buyId} -->
 	</select>
 	
-	<insert id="postInsert" parameterType="Postbox">
-		INSERT INTO POSTBOX(PBOX_NO,PBOX_NAME,PRO_NO) VALUES(#{pboxNo},#{pboxName},#{proNo})
-	</insert>
 	
-	
-	
+	<select id="selectListCountt" resultType="_int">
+		SELECT COUNT(*)
+		FROM POSTBOX
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE PRO_STATUS='N'
+		AND SELL_ID = #{userId}
+	</select>
 	
 	<select id="selectListPost" resultMap="PostboxResultSet">
 		SELECT PRO_TITLE,PBOX_NAME,PBOX_NO
 		FROM POSTBOX 
 		JOIN PRODUCT USING (PRO_NO)
-		WHERE SELL_ID= 'admin'
+		WHERE SELL_ID= #{userId}
+		AND PRO_STATUS='N'
+		AND PBOX_NAME IN ('CJ대한통운','우체국택배','한진택배','롯데택배','로젠택배')
 	</select>
 	
-	
+	<insert id="postInsert" parameterType="Postbox">
+		INSERT INTO POSTBOX(PBOX_NO,PBOX_NAME,PRO_NO) VALUES(#{pboxNo},#{pboxName},#{proNo})
+	</insert>
+
+	<select id="selectListCounttt" resultType="_int">
+		SELECT COUNT(*)
+		FROM BID
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE PRO_STATUS='Y'
+		AND BUYER_ID = #{userId}
+	</select>
 	
 	
 	<select id="selectListAttend" resultMap="BidResultSet">
 		SELECT BUYER_ID,PRO_TITLE,BID_PRICE,BID_STATUS
 		FROM BID B
 		JOIN PRODUCT USING (PRO_NO)
-		WHERE BUYER_ID = 'admin'
+		WHERE BUYER_ID = #{userId}
+		AND PRO_STATUS='Y'
+	</select>
+	
+	<select id="selectListCountttt" resultType="_int">
+		SELECT COUNT(*)
+		FROM BID
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE PRO_STATUS='N'
+		AND BUYER_ID = #{userId}
 	</select>
 	
 	<select id="selectListBid" resultMap="BidResultSet"> 
-		SELECT PRO_TITLE,BID_PRICE
+		SELECT PRO_TITLE,BID_PRICE,BID_NO,END_DATE
 		FROM BID B
 		JOIN PRODUCT USING (PRO_NO)
-		WHERE BID_STATUS = 'N'
+		WHERE PRO_STATUS = 'N'
+        AND BUYER_ID = #{userId}
+        AND BID_STATUS IN ('N')
 	</select>
+	
+	<select id="selectListCounttttt" resultType="_int">
+		SELECT COUNT(*)
+		FROM POSTBOX
+		JOIN PRODUCT USING (PRO_NO)
+		WHERE PRO_STATUS='N'
+		AND BUYER_ID = #{userId}
+	</select>
+	
+	<select id="selectListnPost" resultMap="PostboxResultSet">
+		SELECT DISTINCT(B.PRO_NO), PRO_TITLE, PBOX_NAME, PBOX_NO
+		FROM PRODUCT P
+		LEFT JOIN POSTBOX B ON (P.PRO_NO = B.PRO_NO)
+		LEFT JOIN BID D ON (P.PRO_NO = D.PRO_NO)
+		WHERE D.BUYER_ID = #{userId}
+		AND D.BID_STATUS = 'Y'
+		AND P.PRO_STATUS = 'N'
+		AND PBOX_NAME IN ('CJ대한통운','우체국택배','한진택배','롯데택배','로젠택배')
+	</select>
+	
+	
 		<select id="selectNewMember" resultType="_int">
 		SELECT COUNT(ENTER_DATE) AS COUNT
 		FROM MEMBER
@@ -304,19 +347,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND TO_DATE(#{date2},'YY-MM-DD')
 		AND USER_STATUS = 'N'
 	</select>
-	
-	<select id="selectTradedBuy">
-		SELECT DISTINCT P.PRO_NO
-        FROM PRODUCT P
-        JOIN BID B
-        ON P.PRO_NO = B.PRO_NO
-        WHERE PRO_STATUS = 'N'
-        AND BID_STATUS = 'Y'
-        AND BUYER_ID = #{userId}
-	</select>
-	
-
-
 	<!-- 검색 조건 (option&keyword) -->
 	<sql id="search">
 		<choose>
@@ -444,10 +474,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="sort" />
 	</select>
     
-    
-    
-    
-<!--     ===찜하기=== -->
+	
+		<!--     ===찜하기=== -->
 	<!-- 찜 추가 -->
 	<insert id="addWishlist" parameterType="proLike"> 
 		INSERT INTO PRO_LIKE (LIKE_NO, USER_ID, PRO_NO) 
@@ -489,4 +517,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	
+	
+	<!-- ================================================== -->
+	<!-- 판매현황 삭제 -->
+	<update id="deleteSale">
+		UPDATE PRODUCT
+		SET PRO_STATUS='S'
+		WHERE PRO_NO = #{ch}
+	</update>
+	
+	<!-- 운송장 조회 삭제 -->
+	<update id="deletePost">
+		UPDATE POSTBOX
+		SET PBOX_NAME='바보'
+		WHERE PBOX_NO = #{ch2}
+	</update>
+	
+	<!-- 낙찰현황 삭제 -->
+	<update id="deleteBid">
+		UPDATE BID
+		SET BID_STATUS='S'
+		WHERE BID_NO = #{ch3}
+	</update>
+	
+	<!-- 운송장 조회 삭제 -->
+	<update id="nPostDelete">
+		UPDATE POSTBOX
+		SET PBOX_NAME='바보'
+		WHERE PBOX_NO = #{ch4}
+	</update>
+	
+	
+	
+	
+
 </mapper>

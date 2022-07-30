@@ -129,13 +129,6 @@
 		</script>
 		
 		
-		
-		
-		
-		
-		
-		
-		
 		<!-- 상품 찜 기능 -->
 		<div class="icon" style="float: left; padding-left: 20px; padding-top: 10px;">
 		    <!-- 찜하기 했을 경우 해당 정보 가져오기 -->

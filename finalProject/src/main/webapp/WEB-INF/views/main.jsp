@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -211,7 +212,6 @@
     
 
 	<div class="item-preview">
-	    
 	    <div class="product-box">
 	        <div class="padding-line">
 	            <div class="img-box">
@@ -221,7 +221,17 @@
 	            <div data-no="${proNo }"></div>
 	                <div class="content-box">
 	                    <p>젠북 초특가 세일~</p>
-	                    <i class="fa-solid fa-heart" id="h_mark"></i>
+	                    <i class="fa-solid fa-heart" id="h_mark" onclick=""></i>
+	                    <c:if test="${not empty loginUser}">
+								<c:choose>
+									<c:when test="${not empty l}">
+										<button type="button" class="btn btn-warning" onclick="removeWishlist();" style="margin-left: 35px; maring-bottom: 10px;">관심 목록 제거</button>
+									</c:when>
+									<c:otherwise>
+										<button type="button" class="btn btn-primary" onclick="addWishlist('"+i.proNo+"');" style="margin-left: 35px; maring-bottom: 10px; background-color: #2D55C9;">관심 목록 추가</button>
+									</c:otherwise>
+								</c:choose>
+					    </c:if>
 	                </div>
 	            </div>
 	            <div class="price-box">
@@ -242,6 +252,7 @@
 	                02일 11시간 30분 25초
 	            </div>
 	        </div>
+	        
 	            <div class="count-box">
 	                <div class="count-content">
 	                    <p>입찰</p>
@@ -254,6 +265,22 @@
 	                </div>
 	            </div>
 	    </div>
+	    
+	    
+ 	    <form id="postform" action=""> 
+ 			<input type="hidden" id="selectProNo" name="proNo" value="1"> 
+ 			<input type="hidden" name="userId" value="${loginUser.userId}"> 
+ 		</form> 
+ 		<script> 
+ 			function addWishlist(proNo){
+				$("#selectProNo").val(proNo);
+ 				$("#postform").attr("action", "addWishlist.my").submit();
+ 			}
+ 			
+ 			function removeWishlist(){
+ 				$("#postform").attr("action", "removeWishlist.my").submit();
+ 			}
+ 		</script> 
 	    
 	    
 	    
@@ -1131,6 +1158,7 @@
 	                </div>
 	            </div>
 	    </div>
+	    
 
 	    
 	</div>

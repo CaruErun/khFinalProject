@@ -173,6 +173,24 @@ public class BoardDao {
 	public List<Category> selectCategoryList(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectList("commonMapper.selectCategoryList");
 	}
+
+//MyPage
+	//게시글 전체 개수
+	public int selectListMyPageCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("boardMapper.selectListMyPageCount");
+	}
+
+	//리스트 조회
+	public ArrayList<QnA> selectQnaListMyPageView(SqlSessionTemplate sqlSession, String userId, PageInfo pi) {
+		
+		int offset=(pi.getCurrentPage()-1)*pi.getBoardLimit();
+		int limit=pi.getBoardLimit();
+		
+		RowBounds rowBounds=new RowBounds(offset,limit);
+		
+				
+		return (ArrayList)sqlSession.selectList("boardMapper.selectQnaListMyPageView",userId,rowBounds);
+	}
 }
 
 

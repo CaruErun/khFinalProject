@@ -512,7 +512,6 @@
                             </select>
                             <select name="proCateNo" id="se-list2" size="5" required>
                                 <option value="none" disabled>- 선택하세요 -</option>
-                              
                             </select>
                         </div>
                     </div>

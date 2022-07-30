@@ -179,6 +179,25 @@ public class BoardServiceImpl implements BoardService{
 		
 		return dao.selectCategoryList(sqlSession);
 	}
+
+	
+
+//	============ myPage ============
+	
+	//전체 게시글 개수 구하기
+	@Override
+	public int selectListMyPageCount() {
+		// TODO Auto-generated method stub
+		return dao.selectListMyPageCount(sqlSession);
+	}
+	
+
+	//리스트 조회
+	@Override
+	public ArrayList<QnA> selectQnaListMyPageView(PageInfo pi, String userId) {
+		// TODO Auto-generated method stub
+		return dao.selectQnaListMyPageView(sqlSession,userId,pi);
+	}
 	
 	
 	

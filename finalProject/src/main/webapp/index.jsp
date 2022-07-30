@@ -11,6 +11,7 @@
 	
 <%-- 	<jsp:forward page="WEB-INF/views/chat/room.jsp"/> --%>
 	<jsp:forward page="WEB-INF/views/main.jsp"/>
+<%--  	<jsp:forward page="WEB-INF/views/product/productDetail.jsp"/> --%>
 
 <%-- 	<jsp:forward page="WEB-INF/views/report/report.jsp"/> --%>
 <%-- 	<jsp:forward page="WEB-INF/views/product/productDetail.jsp"/> --%>

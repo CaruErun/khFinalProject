@@ -133,72 +133,119 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public int selectListCount() {
+	public int selectListCount(String userId) {
 		// TODO Auto-generated method stub
-		return productDao.selectListCount(sqlSession);
+		return productDao.selectListCount(sqlSession,userId);
 	}
 
 	@Override
-	public int selectListCountt() {
+	public int selectListCountt(String userId) {
 		// TODO Auto-generated method stub
-		return productDao.selectListCountt(sqlSession);
+		return productDao.selectListCountt(sqlSession, userId);
 	}
-
+	
+	@Override
+	public int selectListCounttt(String userId) {
+		// TODO Auto-generated method stub
+		return productDao.selectListCounttt(sqlSession, userId);
+	}
+	
+	@Override
+	public int selectListCountttt(String userId) {
+		// TODO Auto-generated method stub
+		return productDao.selectListCountttt(sqlSession, userId);
+	}
 	
 	
+	@Override
+	public int selectListCounttttt(String userId) {
+		// TODO Auto-generated method stub
+		return productDao.selectListCounttttt(sqlSession,userId);
+	}
+	
 
+	@Override
+	public ArrayList<Postbox> selectListnPost(String userId, PageInfo pi) {
+		// TODO Auto-generated method stub
+		return productDao.selectListnPost(sqlSession,pi,userId);
+	}
+	
+	//검색
 	//검색 전체 목록 => 옵션, 키워드
-	@Override
-	public List<Product> getSearchList(String searchType, String searchKeyword, PageInfo pi) {
-		return productDao.getSearchList(sqlSession, searchType, searchKeyword, pi);
-	}
+		@Override
+		public List<Product> getSearchList(String searchType, String searchKeyword, PageInfo pi) {
+			return productDao.getSearchList(sqlSession, searchType, searchKeyword, pi);
+		}
 
-	//검색 레코드 갯수
-	public int searchProListCount(String searchType, String searchKeyword) {
-		return productDao.searchProListCount(sqlSession, searchType, searchKeyword);
-		
-	}
-		
-		
-	//정렬 (with 검색)
-	@Override
-	public List<Product> filterList(String searchType, String searchKeyword, String sort, PageInfo pi) {
-		return productDao.filterList(sqlSession, searchType, searchKeyword, sort, pi);
-	}
+		//검색 레코드 갯수
+		public int searchProListCount(String searchType, String searchKeyword) {
+			return productDao.searchProListCount(sqlSession, searchType, searchKeyword);
+			
+		}
+			
+			
+		//정렬 (with 검색)
+		@Override
+		public List<Product> filterList(String searchType, String searchKeyword, String sort, PageInfo pi) {
+			return productDao.filterList(sqlSession, searchType, searchKeyword, sort, pi);
+		}
 
-	//정렬 (without 검색)
-	@Override
-	public List<Product> filterListNoS(String sort, PageInfo pi) {
-		return productDao.filterListNoS(sqlSession, sort, pi);
-	}
+		//정렬 (without 검색)
+		@Override
+		public List<Product> filterListNoS(String sort, PageInfo pi) {
+			return productDao.filterListNoS(sqlSession, sort, pi);
+		}
 
+
+		
+		
+		@Override
+		public int addWishlist(ProLike l) {
+			// TODO Auto-generated method stub
+			return productDao.addWishlist(sqlSession,l);
+		}
+
+		@Override
+		public int removeWishlist(ProLike l) {
+			// TODO Auto-generated method stub
+			return productDao.removeWishlist(sqlSession, l);
+		}
+			//찜 목록 보내기
+			@Override
+			public int prolike(int pNo, String userId) {
+				return productDao.prolike(sqlSession, pNo, userId);
+			}
 
 	
-	
+	//판매현황 삭제
 	@Override
-	public int addWishlist(ProLike l) {
+	public int deleteSale(String[] chArr) {
 		// TODO Auto-generated method stub
-		return productDao.addWishlist(sqlSession,l);
+		return productDao.deleteSale(sqlSession, chArr);
 	}
 
+	//운송장 조회 삭제
 	@Override
-	public int removeWishlist(ProLike l) {
+	public int deletePost(String[] chArr2) {
 		// TODO Auto-generated method stub
-		return productDao.removeWishlist(sqlSession, l);
+		return productDao.deletePost(sqlSession,chArr2);
 	}
 
-	
-	//찜 목록 보내기
+	//응찰현황 삭제
 	@Override
-	public int prolike(int pNo, String userId) {
-		return productDao.prolike(sqlSession, pNo, userId);
+	public int deleteBid(String[] chArr3) {
+		// TODO Auto-generated method stub
+		return productDao.deleteBid(sqlSession,chArr3);
 	}
 
+	//판매 운송장 조회
 	@Override
-	public int[] selectTradedBuy(String userId) {
-		return productDao.selectTradedBuy(sqlSession, userId);
+	public int nPostDelete(String[] chArr4) {
+		// TODO Auto-generated method stub
+		return productDao.nPostDelete(sqlSession,chArr4);
 	}
-	
-	
-	
+
+
+
+
 }
