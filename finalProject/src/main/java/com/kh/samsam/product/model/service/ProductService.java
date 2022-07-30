@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.common.model.vo.PageInfo;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.vo.Bid;
 import com.kh.samsam.product.model.vo.Postbox;
 import com.kh.samsam.product.model.vo.Product;
@@ -63,21 +64,32 @@ public interface ProductService {
 	
 
 	//검색 전체 목록 => 옵션, 키워드
-	List<Product> getSearchList(String searchType, String searchKeyword);
+	List<Product> getSearchList(String searchType, String searchKeyword,PageInfo pi);
 
 	//검색 레코드 갯수
 	int searchProListCount(String searchType, String searchKeyword);
 	
 	//정렬 (with 검색)
-	List<Product> filterList(String searchType, String searchKeyword, String sort);
+	List<Product> filterList(String searchType, String searchKeyword, String sort,PageInfo pi);
 
 	//정렬 (without 검색)
-	List<Product> filterListNoS(String sort);
+	List<Product> filterListNoS(String sort, PageInfo pi);
 
 
 
 	int[] selectTradedBuy(String userId);
 
+	
+	//찜 추가
+	int addWishlist(ProLike l);
+
+	//찜 삭제
+	int removeWishlist(ProLike l);
+
+	
+	//찜 목록 보내기
+	int prolike(int pNo, String userId);
+		
 	
 	
 }

@@ -88,7 +88,7 @@
     </div>
 
     <br><br>
-    <p>소비자보호원에 신고를 원하시면 아래의 버튼을 눌러주세요.</p>
+    <p>소비자보호원에 신고를 원하시면 아래의 버튼을 눌러주세요.</p> <br>
     <button type="button" class="btn btn-dark" id="button" onclick="location.href='https://www.kca.go.kr/odr/link/pg/pr/osPgReqFormW.do#none'">소비자보호원으로 이동</button>
     </div>
     
