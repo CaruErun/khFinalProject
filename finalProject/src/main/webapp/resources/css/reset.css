@@ -31,7 +31,6 @@ sub,
 sup,
 tt,
 var,
-
 u,
 i,
 center,
@@ -96,6 +95,8 @@ section {
   display: block;
 }
 
+
+
 ol,
 ul {
   list-style: none;
@@ -125,7 +126,6 @@ a {
   outline: none;
 }
 
-
 button {
   background: inherit;
   border: none;
@@ -134,4 +134,4 @@ button {
   padding: 0;
   overflow: visible;
   cursor: pointer;
-} 
+}

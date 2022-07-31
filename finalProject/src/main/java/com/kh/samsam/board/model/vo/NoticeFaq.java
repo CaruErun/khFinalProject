@@ -10,7 +10,7 @@ public class NoticeFaq {
 	private int nfNo;			//	NF_NO	NUMBER
 	private int nfType;			//	NF_TYPE	NUMBER
 	private String nfTitle;		//	NF_TITLE	VARCHAR2(100 BYTE)
-	private int nfCateNo;		//	NF_CATE_NO	NUMBER
+	private String nfCateNo;		//	NF_CATE_NO	NUMBER
 	private String nfContent;	//	NF_CONTENT	VARCHAR2(1000 BYTE)
 	private Date createDate;	//	CREATE_DATE	DATE
 	private int count;			//	COUNT	NUMBER

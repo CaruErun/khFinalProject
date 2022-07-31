@@ -7,9 +7,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.samsam.common.model.vo.PageInfo;
@@ -38,7 +40,8 @@ public class ReportController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		ArrayList<Report> list = reportService.selectReportList(pi);
-		
+		System.out.println(pi);
+		System.out.println(listCount);
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
 		
@@ -61,26 +64,37 @@ public class ReportController {
 		Report r = reportService.selectReportContent(reportNo);
 		return new Gson().toJson(r);
 	}
-	//report
-	//신고하기 form으로 전달하기
-	@RequestMapping("reportView.mem")
-	public String reportView(Model model) {
-		
-		return "sim/report";
-	}
 	
+	//report
+//	//신고하기 form으로 전달하기
+//	@RequestMapping("reportView.mem")
+//	public String reportView(Model model) {
+//		
+//		return "report/report";
+//	}
+	
+	
+	@RequestMapping("reportForm.mem")
+	public ModelAndView reportForm(Report r, ModelAndView mv,
+							String sellId  ) {
+		
+		mv.addObject("sellId",sellId);
+		mv.addObject("r",r).setViewName("report/report");
+		return mv;
+	}
+
 	
 	//신고하기
 	@RequestMapping("report.mem")
 	public String reportMember(Report r, HttpSession session, Model model) {
-			System.out.println("hh");
+			System.out.println(r);
 			int result = service.reportMember(r);
 			
 			if(result>0) { //성공
 				
 				model.addAttribute("r",r);
 				session.setAttribute("alertMsg", "회원 신고가 완료되었습니다.");
-				return "sim/report_done";
+				return "report/report_done";
 				
 			}else { //실패
 				model.addAttribute("errorMsg","신고에 실패하였습니다.");
@@ -92,8 +106,12 @@ public class ReportController {
 	//신고완료
 	@RequestMapping("reportDoneView.mem")
 	public String reportDoneView() {
-		return "sim/report_done";
+		return "report/report_done";
 	}
+	
+	
+
+	
 	
 
 }

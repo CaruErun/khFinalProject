@@ -6,6 +6,7 @@
 <html>
 <head>
 <title>QnA</title>
+
     <!-- jQuery 라이브러리 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- 부트스트랩에서 제공하고 있는 스타일 -->
@@ -51,84 +52,80 @@
 <body>
 	<c:if test="${not empty alertMsg }">
 		<script>
-			alertify.alert("${alertMsg}");
+			alertify.alert("서비스 요청 성공", "${alertMsg}");
 		</script>
 		<c:remove var="alertMsg" scope="session"/>
 	</c:if>
 	
-   
   	 <!-- header.jsp include -->
-	 	<jsp:include page="../common/header.jsp"/>
+<%-- 	 	<jsp:include page="../common/header.jsp"/> --%>
 	
+		<jsp:include page="../customerInfoMenubar.jsp"/>
 			
 		<br><br><br><br><br><br>
 		
-		
-     <form action="qnaModi.qu" method="post" id="queEnrollform" enctype="multipart/form-data" >
-		    <input type="hidden" name="qnaNo" value="${q.qnaNo}">
-        
         <div class="outer position-relative" >
-        <br><br>
-        <h2 align="center">QnA 수정하기</h2>
-        <br>
-
-
+        
+        
             <div class="position-absolute top-50 start-50 translate-middle">
-
-        <!--카테고리 : 변경할 수 없음(처음 설정 그대로 하기) -->
-		<select class="form-select form-select-sm" aria-label=".form-select-sm example" name="qnaCateNo">
-		               
-		               <c:if test="${q.qnaCateNo ==1101}">
-		                    <option value="${q.qnaCateNo}">회원문의</option>
-                        </c:if>
-                        <c:if test="${q.qnaCateNo ==1102 }">
-                        	<option value="${q.qnaCateNo}">기타문의</option>
-                        </c:if>
-                        	<c:if test="${q.qnaCateNo ==1103 }">
-                        <option value="${q.qnaCateNo}">공지/이벤트문의</option>
-                        </c:if>
-                        <c:if test="${q.qnaCateNo ==1104 }">
-                        	<option value="${q.qnaCateNo}">경매문의</option>
-                        </c:if>
-		 </select>
-		 
-		 
-                        <script>
-                             $(function(){
-                                 $("option").each(function(){
-                                    if($(this).text()=="${q.qnaCateNo}"){
-                                         $(this).attr("selected",true); 
-                                     }
-                                 })
-
-                             })
-                        </script>
-                        
-                        
+				<h2>QnA 상세보기</h2>
+                <!--카테고리-->
+                <div><b>${q.qnaCateNo }</b></div>
                 <br>
 
                 <!--제목-->
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" id="title" aria-label="Text input with dropdown button" name="qnaTitle" value="${q.qnaTitle}">
+                    <input type="text" class="form-control" id="title" aria-label="Text input with dropdown button" name="qnaTitle" readonly value="${q.qnaTitle}" >
                 </div>
-
+				<br>
                 <!--내용-->
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label" id="content" ><b>내용</b></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" style="resize:none" name="qnaContent">${q.qnaContent}</textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" style="resize:none" name="qnaContent" readonly>${q.qnaContent}</textarea>
                 </div>
-
                 
-                
-                <div align="center">
-                    <button type="submit"  class="btn btn-dark">수정하기</button>
-                    <button type="button"  class="btn btn-light" onclick="javascript:history.go(-1);">뒤로</button>
-                </div> 
-            
-        
+                <c:choose>
+                	<c:when test="${q.answerContent ne null }">
+                		<div class="mb-3">
+                    		<label for="exampleFormControlTextarea1" class="form-label" id="anscontent" ><b>답변</b></label>
+                    		<textarea class="form-control" id="exampleFormControlTextarea2" rows="10" style="resize:none" name="qnaansContent" readonly>${q.answerContent }</textarea>
+                		</div>
+                	</c:when>
+                	<c:otherwise>
+                			등록된 답변이 없습니다.
+                	</c:otherwise>
+                </c:choose><br>
+				
+                <c:if test="${loginUser.userId eq q.qnaId and q.ansStatus eq 'N'}">
+	            	<div align="center">
+			            <form method="post" name="form">
+				            	<input type="hidden" name="qNo" value="${q.qnaNo }">
+				            	
+						    <button type="submit" class="btn btn-dark" value="update" onclick="javascript: form.action='qnaModiView.qu';">수정하기</button>
+						    <button type="submit" class="btn btn-dark" value="delete" onclick="javascript: form.action='delete.qu';">삭제하기</button>
+						
+						</form>
+	                </div>
+            	</c:if>
+            	<br>
+            	<c:if test="${loginUser.userId eq 'admin' and q.answerContent eq null }">
+		            <form id=enrollForm method="post" action="insert.ans?qnaNo=${q.qnaNo }">
+			            <div align="center">
+			                <textarea id="content" class="form-control" rows="10" style="resize:none;" name="answerContent" required></textarea>
+			            </div>
+		            	<br>
+		            	<div align="center">
+		                    <button type="submit" class="btn btn-secondary">등록하기</button>
+		                </div>
+		        	</form>
+            	</c:if>
+            	
+            	
+			        <a class="btn btn-secondary" href="qnaList.qu" style="float:right;">목록으로</a>
+            	
+            	
             </div>
         </div>
-</form>
 
         
 	

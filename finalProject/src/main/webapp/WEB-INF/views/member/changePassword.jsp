@@ -22,11 +22,11 @@
 
 
     <div class="wrap">
+                <form action="pwdChange.me" method="post">
         <div id="header">
             <div id="title">비밀번호 변경</div>
             
         </div>
-                <form action="pwdChange.me" method="post">
         <div id="content">
                     <div id="content1">
                         <span style="color: midnightblue; font-weight: 550; font-size: 14px;">안전한 비밀번호로 내정보를 보호하세요</span>

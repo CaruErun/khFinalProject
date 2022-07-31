@@ -55,7 +55,7 @@
         border: solid 1px black;
         background-color: white;
     }
-    .navbar div{
+.navbar div:not(.alarmList, #alarmListDiv){
         width: 35%;
         height: 100%;
         font-size: 14px;
@@ -118,7 +118,36 @@
         height: 30px;
         font-size: 15px;
     }
+<%--2022.07.25 alarm css--%>
+	#alarmB, .alarmList{
+		cursor:pointer;
+	}
+	#alarmNo{
+	}
+	#alarmListDiv{
+	margin-top:10px;	
+	width:300px;
+	background-color:white;
+	flex-direction:column;
+	position:fixed;
+	right:13%;
+	z-index:1;
+	border: 1px solid black;
+	}
+	#alarmListDiv div{
+	width:100%;
+	flex-direction:column;
+	text-align:center;
+	}
+	.alarmList{
 
+	}
+	.suBid, .suProduct, .faProduct, .topBid{
+		border:1px solid black;
+	}
+	<%-- 2022.07.27 alarm css 끝 --%>
+	
+	#titleBOx{width:100px;}
     </style>
        	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
@@ -130,25 +159,127 @@
         <div id="clock" style="color:black"></div>
         <div>
             <ul class="nav-list">
-             <c:choose>
+            	<c:choose>
 				    <c:when test="${ empty loginUser }">
-                <li><a href="#!">samsam은 처음이신가요?</a></li>
-                <li><a data-toggle="modal" data-target="#login_modal2" id="lolo">로그인</a></li>
-                <li><a href="enrollForm.me">회원가입</a></li>
-                <li><a href="#">고객센터</a></li>
-                  </c:when>      
-                  <c:otherwise>
-	               		<!-- 로그인 후 -->
-	                    <lable>${loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
-	                    
-	                    <a href="myPageSale.me">마이페이지</a>
-	                    <a href="logout.me">로그아웃</a>
-            </c:otherwise>	                
+		                <li><a href="#!">samsam은 처음이신가요?</a></li>
+		                <li><a data-toggle="modal" data-target="#login_modal2">로그인</a></li>
+		                <li><a href="enrollForm.me">회원가입</a></li>
+		                <li><a href="noticeList.no">고객센터</a></li>
+                  	</c:when>      
+                  	<c:otherwise>
+	                    <c:choose>
+	                    	<c:when test="${loginUser.userId eq 'admin' }">
+	                    		<b>${ loginUser.userName }님 환영합니다</b> &nbsp;&nbsp;
+	                   	 		<a href="logout.me">로그아웃</a>
+	                    		<a href="noticeList.no">고객센터</a>
+	                    		<a href="new.me">차트</a>
+	                    	</c:when>
+	                    	<c:otherwise>
+	                    		<b>${ loginUser.userName }님 환영합니다</b> &nbsp;&nbsp;
+	                    		
+	                    		
+	                    		<%-- 2022.07.24 알림 시작 --%>
+    	                    	<b id="alarmB" onclick="clickk(document.getElementById('alarmNo'));" >알림</b>
+	                   			<span id="alarmNo"></span> 
+	                    		<%-- 2022.07.24 알림 끝 --%>
+	                    		
+	                    		<a href="myPageSale.me">마이페이지</a>
+	                   	 		<a href="logout.me">로그아웃</a>
+	                    		<a href="noticeList.no">고객센터</a>
+	                    	</c:otherwise>
+	                    </c:choose>
+            		</c:otherwise>	                
                 </c:choose>
   
             </ul>
         </div>
     </div>
+    <!-- chat -->
+<div id="chatAl"></div>
+<div id="sellAl"></div>
+
+<%-- 채팅, 알람 시작 ver 2022.07.25 --%>
+
+<script>
+var login = '${loginUser.userId}'
+$(document).ready(function(){
+// 	bidCheck();
+	if(login!=null && login!=""){
+		alarm(login);
+	}
+})
+function clickk(a){
+	console.log("123");
+	console.log(a.children[0].style.display)
+	console.log(a.children);
+	if(a.children[0].style.display=='none') {
+		for(var i = 0 ; i<a.children.length;i++){
+			a.children[i].style.display="";
+		}
+	}else{
+		for(var i = 0 ; i<a.children.length;i++){
+			a.children[i].style.display='none';
+		}	
+	}
+// 	if(a.children.style.display == "none")
+// 	else a.children.style.display="none";
+}
+function alarm(userId){
+	$.ajax({
+		url : 'ajaxAlarm.ax',
+		data : {
+			userId : userId
+		},
+		success : function(alarmList){
+			if(alarmList.suBid == "") console.log("123");
+			var str ="<div id='alarmListDiv' style='display:none'>";
+			if(alarmList.suBid == "" &&
+					alarmList.suProduct == "" &&
+					alarmList.faProduct == "" &&
+					alarmList.topBid == ""){
+				str="<div class='noAlarm alarmList'>알람이 없습니다.</div>"
+			}else{
+				if(alarmList.suBid != ""){
+					str+="<div class='suBid alarmList' onclick='clickk(this);'>낙찰 상품이 있습니다.";
+					for(var i in alarmList.suBid) {
+						str+="<div class='alarmList' style='display:none;'><a href='chatenter.ch?chatRoomNo="+alarmList.suBid[i].proNo+"&name=${loginUser.userId}' class='suBidChil'> 경매 "+alarmList.suBid[i].proTitle+"이(가) 낙찰 되었습니다.</a></div>";
+					}
+					str+="</div>";
+				}
+				if(alarmList.suProduct != ""){
+					str+="<div class='suProduct alarmList' onclick='clickk(this);'>판매 상품이 있습니다.";
+					for(var i in alarmList.suProduct) {
+						str+="<div class='alarmList' style='display:none;'><a href='chatenter.ch?chatRoomNo="+alarmList.suProduct[i].proNo+"&name=${loginUser.userId}' class='suProChil'> 경매 "+alarmList.suProduct[i].proTitle+"이(가) 판매 되었습니다.</a></div>";
+					}
+					str+="</div>";
+				}
+				if(alarmList.faProduct != ""){
+					str+="<div class='faProduct alarmList'>유찰 상품이 있습니다.";
+					for(var i in alarmList.faProduct) {
+						str+="<div class='alarmList' style='display:none;'><a href='#' class='faProChil'> 경매 "+alarmList.faProduct[i].proTitle+"이(가) 유찰 되었습니다.</a></div>";
+					}
+					str+="</div>";
+				}
+				if(alarmList.topBid != ""){
+					str+="<div class='topBid alarmList'>입찰하신 상품에 상위 입찰자가 있습니다.";
+					for(var i in alarmList.topBid) {
+						str+="<div class='alarmList' style='display:none;'><a href='#' class='topBidChil'> 경매 "+alarmList.topBid[i].proTitle+"에 상위 입찰자가 있습니다.</a></div>";
+					}
+					str+="</div></div>";
+				}
+				$("#alarmNo").html(str);
+			}
+		},
+		error : function(){
+			
+			
+		}
+	})
+	
+}
+</script>
+<%-- 채팅, 알람 끝 --%>
+    
     <script>
         var clockTarget = document.getElementById("clock");
         function clock() {
@@ -176,8 +307,8 @@
         <div class="head-inner">
             <div class="h1">
                 <img src="#" alt="">
-                <a href="#">samsam<br>Auction</a>
-            </div>
+                  <a href=${path }>samsam<br>Auction</a>
+                       </div>
             <div class="h2">
                 <ul class="header-nav">
                 
@@ -188,13 +319,21 @@
                 
                 </ul>
             </div>
-            <div class="h3">
-                <select name="" class="search-bar">
-                    <option value="">물품명</option>
-                </select>
-                <input type="text" class="search-bar"placeholder="검색어를 입력하세요.">
-                <button class="search-bar">검색</button>
-            </div>
+            
+         	<!-- 검색폼 -->
+		<form name="searchForm" action="searchList.pr">
+			<div class="search-wrap">
+				<select class="form-control search-select" name="searchType" id="titleBOx">
+					<option value="proTitle">제목</option>
+					<option value="proContent">내용</option>
+					<option value="sellId">판매자</option>
+				</select>
+				<input type="hidden" value="1" name="cPage">
+				<input type="text" class="form-control search-input" name="searchKeyword" value="${searchKeyword}">
+				<button type="submit" class="btn btn-info search-btn">검색</button>
+			</div>
+		</form>
+		
         </div>
     </div>
 </div>
@@ -397,48 +536,4 @@ $("#userId").keyup(function(){
 
 </body>
 
-    <!-- Header-->
-    <div class="header">
-        <div class="head-inner">
-
-            <div class="h1">
-                <img src="#" alt="">
-                <a href="${pageContext.request.contextPath }">samsam<br>Auction</a>
-            </div>
-            <div class="h2">
-                <ul class="header-nav">
-                    
-                    <li><a href="#">신규경매</a></li>
-                    <li><a href="#">마감임박경매</a></li>
-                    <li><a href="#">카테고리</a></li>
-                    <li><a href="insertProductForm.pr">물품등록</a></li>
-                </ul>
-            </div>
-
-
-				<!-- 검색폼 -->
-				<div class="h3">
-					<form id="searchForm" action="" method="get" align="center">
-						<div class="select">
-							<select class="custom-select" name="searchType">
-								<option value="sellId">작성자</option>
-								<option value="proTitle">제목</option>
-								<option value="proContent">내용</option>
-							</select>
-						</div>
-						<div class="text">
-							<input type="text" class="form-control" name="searchKeyword">
-						</div>
-						<button type="submit" class="searchBtn btn btn-secondary">검색</button>
-					</form>
-				</div>
-				
-				
-        </div>
-
-    </div>
-</div>
-
-
-</body>
 </html>

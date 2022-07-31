@@ -53,21 +53,16 @@
 <body>
 	<c:if test="${not empty alertMsg }">
 		<script>
-			alertify.alert("${alertMsg}");
+			alertify.alert("서비스 요청 성공", "${alertMsg}");
 		</script>
 		<c:remove var="alertMsg" scope="session"/>
 	</c:if>
 	
 	
   	 <!-- header.jsp include -->
-	 	<jsp:include page="../common/header.jsp"/>
 	
+	<jsp:include page="../customerInfoMenubar.jsp"/>
 	
-			
-		<br><br><br><br><br><br>
-		
-		
-		
      <form action="insert.qu" method="post" id="queEnrollform" enctype="multipart/form-data" >
         
         <div class="outer position-relative" >
@@ -90,28 +85,26 @@
 		                            	<option value="${c.cateNo}">${c.cateName}</option>
 		                        </c:if>
 		                    </c:forEach>
-		                    
-            
 		 </select>
 
                 <br>
 
                 <!--제목-->
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" id="title" aria-label="Text input with dropdown button" name="qnaTitle" placeholder="제목">
+                    <input type="text" class="form-control" id="title" aria-label="Text input with dropdown button" required maxlength="23" name="qnaTitle" placeholder="제목">
                 </div>
 
                 <!--내용-->
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label" id="qnaContent" ><b>내용</b></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" style="resize:none" name="qnaContent" placeholder="내용"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" style="resize:none" name="qnaContent" required placeholder="내용"></textarea>
                 </div>
 
                 
                 
                 <div align="center">
                     <button type="submit"  class="btn btn-dark">등록하기</button>
-                    <button type="reset"  class="btn btn-light">초기화</button>
+                    <button type="reset"  class="btn btn-dark">초기화</button>
                 </div> 
             
         
@@ -119,12 +112,7 @@
         </div>
 </form>
 
-        
 	
-	
-   
-   
-   
    
    	<!-- footer.jsp include -->
 		<jsp:include page="../common/footer.jsp"/>

@@ -1,5 +1,6 @@
 package com.kh.samsam.member.model.service;
 
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,6 +10,8 @@ import com.kh.samsam.member.model.dao.MemberDao;
 import com.kh.samsam.member.model.vo.MemberChart;
 
 import java.io.PrintWriter;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,10 +26,11 @@ import org.springframework.stereotype.Service;
 
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.dao.MemberDao;
-import com.kh.samsam.member.model.vo.Bid;
 import com.kh.samsam.member.model.vo.Member;
-import com.kh.samsam.member.model.vo.Postbox;
-import com.kh.samsam.member.model.vo.Product;
+import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.member.model.vo.ProLike;
+import com.kh.samsam.product.model.vo.Product;
+
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -103,13 +107,6 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 
-	@Override
-	public String emailFirst(String email) {
-		// TODO Auto-generated method stub
-		String emailFirst = memberDao.emailFirst(sqlSession,email);
-		
-		return emailFirst;
-	}
 	
 	// 이메일 발송
 		@Override
@@ -191,37 +188,6 @@ public class MemberServiceImpl implements MemberService {
 			}
 		}
 
-	@Override
-	public String emailBack(String email) {
-		// TODO Auto-generated method stub
-		String emailBack = memberDao.emailBack(sqlSession,email);
-		
-		return emailBack;
-	}
-
-	@Override
-	public String phoneFirst(String phone) {
-		// TODO Auto-generated method stub
-		String phoneFirst = memberDao.phoneFirst(sqlSession,phone);
-		
-		return phoneFirst;
-	}
-
-	@Override
-	public String phoneMiddle(String phone) {
-		// TODO Auto-generated method stub
-		String phoneMiddle = memberDao.phoneMiddle(sqlSession,phone);
-		
-		return phoneMiddle;
-	}
-
-	@Override
-	public String phoneBack(String phone) {
-		// TODO Auto-generated method stub
-		String phoneBack = memberDao.phoneBack(sqlSession,phone);
-		
-		return phoneBack;
-	}
 
 	@Override
 	public int pwdChange(Member m) {
@@ -239,7 +205,7 @@ public class MemberServiceImpl implements MemberService {
 	    // 4 params(to, from, type, text) are mandatory. must be filled
 	    HashMap<String, String> params = new HashMap<String, String>();
 	    params.put("to", userPhoneNumber);    // 수신전화번호
-	    params.put("from", "01092515043");    // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
+	    params.put("from", "010");    // 발신전화번호. 테스트시에는 발신,수신 둘다 본인 번호로 하면 됨
 	    params.put("type", "SMS");
 	    params.put("text", "[TEST] 인증번호는" + "["+randomNumber+"]" + "입니다."); // 문자 내용 입력
 	    params.put("app_version", "test app 1.2"); // application name and version
@@ -269,42 +235,49 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
-	@Override
-	public int selectListCount() {
-		// TODO Auto-generated method stub
-		int count = memberDao.selectListCount(sqlSession);
+	
+	//======찜리스트======
+		//페이징 처리 게시글 count
+		@Override
+		public int selectPListCount(String userId) {
+			
+			return memberDao.selectPListCount(sqlSession,userId);
+		}
+
+		//찜리스트 출력
+		@Override
+		public ArrayList<Product> pickList(String userId, PageInfo pi) {
+			return memberDao.pickList(sqlSession,userId, pi);
+		}
 		
-		return count;
-	}
 
-	@Override
-	public ArrayList<Product> selectList(String userId, PageInfo pi) {
-		// TODO Auto-generated method stub
-		return memberDao.selectList(sqlSession,pi,userId);
-	}
 
-	@Override
-	public int postInsert(Postbox p) {
-		// TODO Auto-generated method stub
-		return memberDao.postInsert(sqlSession,p);
-	}
 
-	@Override
-	public ArrayList<Postbox> selectListPost(String userId, PageInfo pi) {
-		// TODO Auto-generated method stub
-		return memberDao.selectListPost(sqlSession,pi,userId);
-	}
+		
 
-	@Override
-	public ArrayList<Bid> selectListAttend(String userId, PageInfo pi) {
-		// TODO Auto-generated method stub
-		return memberDao.selectListAttend(sqlSession,pi,userId);
-	}
+		// 신고 당한 회원 정지 - banCount 조회
+		@Override
+		public int selectBanCount(String reportedId) {
+			return memberDao.selectBanCount(sqlSession, reportedId);
+		}
 
-	@Override
-	public ArrayList<Bid> selectListBid(String userId, PageInfo pi) {
-		// TODO Auto-generated method stub
-		return memberDao.selectListBid(sqlSession,pi,userId);
-	}
+
+		// 신고 당한 회원 정지
+		@Override
+		public int banMember(Member m) {
+			return memberDao.banMember(sqlSession, m);
+		}
+		
+		@Override
+		public int deleteReport(int reportNo) {
+			return memberDao.deleteReport(sqlSession, reportNo);
+		}
+
+		@Override
+		public int nobanMember(int reportNo) {
+			return memberDao.nobanMember(sqlSession, reportNo);
+		}
+	
+
 
 }

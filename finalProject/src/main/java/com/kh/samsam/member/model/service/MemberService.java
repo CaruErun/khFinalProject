@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.samsam.common.model.vo.PageInfo;
-import com.kh.samsam.member.model.vo.Bid;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
-import com.kh.samsam.member.model.vo.Postbox;
-import com.kh.samsam.member.model.vo.Product;
+import com.kh.samsam.member.model.vo.ProLike;
+import com.kh.samsam.product.model.vo.Product;
 
 public interface MemberService {
 
@@ -23,6 +22,7 @@ public interface MemberService {
 	//회원가입 서비스 (insert)
 		int insertMember(Member m);
 		
+
 		//아이디 중복
 		public void check_id(String id, HttpServletResponse response) throws Exception;
 		//이메일중복
@@ -35,21 +35,7 @@ public interface MemberService {
 	//비밀번호 찾기
 	void find_pw(HttpServletResponse response, Member m) throws Exception;
 	
-	//이메일 @ 앞
-	String emailFirst(String email);
 	
-	//이메일 @ 뒤
-	String emailBack(String email);
-
-	//폰 앞
-	String phoneFirst(String phone);
-
-	//폰 중간
-	String phoneMiddle(String phone);
-
-	//폰 뒤
-	String phoneBack(String phone);
-
 	//비밀번호 변경
 	int pwdChange(Member m);
 
@@ -64,27 +50,24 @@ public interface MemberService {
 	//마이페이지 탈퇴
 	int deleteMember(String userId);
 
-	//페이징 처리
-	int selectListCount();
+	// 신고 당한 회원 정지 - banCount 조회
+			int selectBanCount(String reportedId);
+			
+			// 신고 당한 회원 정지
+			int banMember(Member m);
 
-//	//리스트 조회 해오기
-	ArrayList<Product> selectList(String userId, PageInfo pi);
+			// 신고 status N으로
+			int deleteReport(int reportNo);
 
-	//운송장 등록
-	int postInsert(Postbox p);
-	
-	//리스트 조회 해오기
-	ArrayList<Postbox> selectListPost(String userId, PageInfo pi);
+			int nobanMember(int reportNo);
+			
+			
+		//페이징 처리 게시글 count
+		int selectPListCount(String userId);
 
-	//리스트 조회 해오기
-	ArrayList<Bid> selectListAttend(String userId, PageInfo pi);
-
-	//리스트 조회 해오기
-	ArrayList<Bid> selectListBid(String userId, PageInfo pi);
+		//찜리스트 출력
+		ArrayList<Product> pickList(String userId, PageInfo pi);
 
 
 
-	
-//	//리스트 조회 해오기
-//	ArrayList<Product> selectList(PageInfo pi);
 }

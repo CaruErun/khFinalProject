@@ -14,24 +14,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column = "REPORT_CONTENT" property = "reportContent"/>
 		<result column = "REPORT_STATUS" property = "reportStatus"/>
 		<result column = "CREATE_DATE" property = "createDate"/>
-		
 	</resultMap>
 
 	<select id="selectReportListCount" resultType="_int">
         SELECT COUNT(*)
         FROM REPORT
-        WHERE REPORT_STATUS = 'Y'
 	</select>
 	
 	<select id="selectReportList" resultMap="reportResultSet">
         SELECT ROWNUM AS RNUM, A.* FROM(
-        SELECT REPORT_NO, REPORT_ID, REPORTED_ID, PRO_NO, REPORT_CONTENT, CREATE_DATE, CATE_NAME AS REPORT_CATE_NO
+        SELECT REPORT_NO, REPORT_ID, REPORTED_ID, PRO_NO, REPORT_CONTENT, CREATE_DATE, CATE_NAME AS REPORT_CATE_NO, REPORT_STATUS
         FROM REPORT R
         JOIN CATEGORY C
         ON R.REPORT_CATE_NO = C.CATE_NO
-        WHERE REPORT_STATUS = 'Y'
-        ORDER BY CREATE_DATE) A
-        ORDER BY RNUM DESC
+        ORDER BY REPORT_NO) A
+        ORDER BY REPORT_STATUS DESC, RNUM DESC
 	</select>
 	
 	<select id="selectReportContent" resultMap="reportResultSet">
@@ -56,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	            			#{reportId}, 
 	            			#{reportedId}, 
 	            			#{proNo}, 
-	            			#{reportCategoryNo}, 
+	            			#{reportCateNo}, 
 	            			#{reportContent},
 	            			SYSDATE,
 	            			'Y'

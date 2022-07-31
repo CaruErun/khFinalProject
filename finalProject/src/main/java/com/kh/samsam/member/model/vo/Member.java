@@ -35,4 +35,6 @@ public class Member {
 	private String newPwdCheck;
 	
 	private String buyerId;
+	private int banPeriod;
+	private int reportNo;
 }

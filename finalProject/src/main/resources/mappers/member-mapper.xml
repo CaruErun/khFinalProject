@@ -28,6 +28,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result column="PHONE_BACK" property="phoneBack"/>
     
     </resultMap>
+  <resultMap type="proLike" id="prolikeResultSet">
+    		 <result column="LIKE_NO" property="likeNo"/>
+    		 <result column="USER_ID" property="userId"/>
+    		 <result column="PRO_NO" property="proNo"/>
+    	</resultMap>
   
   <!-- 로그인 -->
   <select id="loginMember" resultMap="memberResultSet">
