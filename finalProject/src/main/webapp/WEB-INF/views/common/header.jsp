@@ -162,7 +162,7 @@
             	<c:choose>
 				    <c:when test="${ empty loginUser }">
 		                <li><a href="#!">samsam은 처음이신가요?</a></li>
-		                <li><a data-toggle="modal" data-target="#login_modal2">로그인</a></li>
+		                <li><a data-toggle="modal" data-target="#login_modal2" id="lolo">로그인</a></li>
 		                <li><a href="enrollForm.me">회원가입</a></li>
 		                <li><a href="noticeList.no">고객센터</a></li>
                   	</c:when>      
