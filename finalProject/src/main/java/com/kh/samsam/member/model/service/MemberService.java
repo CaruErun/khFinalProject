@@ -2,6 +2,8 @@ package com.kh.samsam.member.model.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
@@ -21,6 +23,19 @@ public interface MemberService {
 		int insertMember(Member m);
 		
 
+		//아이디 중복
+		public void check_id(String id, HttpServletResponse response) throws Exception;
+		//이메일중복
+		public void check_email(String email, HttpServletResponse response) throws Exception;
+		//아이디 찾기
+	String find_id(HttpServletResponse response, String email) throws Exception;
+	
+	//비밀번호 찾기 이메일 발송
+	void send_mail(Member m, String div) throws Exception;
+	//비밀번호 찾기
+	void find_pw(HttpServletResponse response, Member m) throws Exception;
+	
+	
 	//비밀번호 변경
 	int pwdChange(Member m);
 
@@ -54,8 +69,5 @@ public interface MemberService {
 		ArrayList<Product> pickList(String userId, PageInfo pi);
 
 
-	//페이징 처리 게시글 count
-		int selectPListCount(String userId);
-	//찜리스트 출력
-		ArrayList<Product> pickList(String userId, PageInfo pi);
+
 }

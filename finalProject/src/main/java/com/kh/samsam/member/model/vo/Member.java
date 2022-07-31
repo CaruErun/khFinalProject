@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import lombok.Data;
 
-@Data
+@Data 
 public class Member {
 	
 
@@ -35,8 +35,6 @@ public class Member {
 	private String newPwdCheck;
 	
 	private String buyerId;
-	
 	private int banPeriod;
 	private int reportNo;
-
 }

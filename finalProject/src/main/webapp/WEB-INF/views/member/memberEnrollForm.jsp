@@ -394,7 +394,10 @@ function execPostCode() {
 </script> 
 </head>
 <body>
+	
 
+ 	<jsp:include page="../common/header.jsp"/>
+ 	<div style="height: 60px;"></div>
  
    <div class="container">
             <div class="page-header">
@@ -482,5 +485,7 @@ function execPostCode() {
                 </form>
             </div>
         </div>
+        
+        <jsp:include page="../common/footer.jsp"/>
 </body>
 </html>
