@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta charset="UTF-8">
     <title>Document</title>
     <c:set var="path" value="${pageContext.request.contextPath}"/>
@@ -13,26 +13,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
- <!-- 부트스트랩에서 제공하고 있는 스타일 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
-    
-    <!-- alert창 예쁘게 꾸미는 구문 Started -->
-    <!-- JavaScript -->
-	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-	
-	<!-- CSS -->
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-	<!-- Default theme -->
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
-	<!-- Semantic UI theme -->
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 
+<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- alert창 예쁘게 꾸미는 구문 Started -->
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
     
    	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
+	
+</head>
     <style>
       *{
         margin: 0;
@@ -139,21 +139,29 @@
 	flex-direction:column;
 	text-align:center;
 	}
-	.alarmList{
-
-	}
+	
 	.suBid, .suProduct, .faProduct, .topBid{
 		border:1px solid black;
 	}
-	<%-- 2022.07.27 alarm css 끝 --%>
 	
 	#titleBOx{width:100px;}
     </style>
-       	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
-	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
-</head>
+    
+    
+    
+
+
+
 <body>
+<c:if test="${ not empty alertMsg }">
+<script>
+	alert("${alertMsg}");
+</script>
+<c:remove var="alertMsg" scope="session"/>
+</c:if>
+	
 	<div class="menubar">
+
     <!-- Navigation-->
     <div class="navbar">
         <div id="clock" style="color:black"></div>
@@ -281,6 +289,7 @@ function alarm(userId){
 <%-- 채팅, 알람 끝 --%>
     
     <script>
+
         var clockTarget = document.getElementById("clock");
         function clock() {
             var today = new Date();
@@ -292,6 +301,7 @@ function alarm(userId){
         }
         init();
     </script>
+
 <!-- 
     <script type="text/javascript">
 	$(document).ready(function() {
@@ -331,12 +341,15 @@ function alarm(userId){
 				<input type="hidden" value="1" name="cPage">
 				<input type="text" class="form-control search-input" name="searchKeyword" value="${searchKeyword}">
 				<button type="submit" class="btn btn-info search-btn">검색</button>
+
 			</div>
+
 		</form>
 		
         </div>
     </div>
 </div>
+
 
 
 
@@ -496,6 +509,7 @@ $("#userId").keyup(function(){
       crossorigin="anonymous"
     ></script>
     <script>
+
       let modalCheck = false;
       $(".login-btn").click(function () {
         if (!modalCheck) {
@@ -523,6 +537,7 @@ $("#userId").keyup(function(){
           
         }
       });
+
      
       <!--
       $("#user-id").focus(function () {	

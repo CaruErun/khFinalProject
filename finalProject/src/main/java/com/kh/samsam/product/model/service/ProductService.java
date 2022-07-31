@@ -113,6 +113,20 @@ public interface ProductService {
 	int nPostDelete(String[] chArr4);
 
 
+	int insertBid(Bid b);
+
+	int selectBidPrice(int proNo);
+
+	int buyImeddiately(int proNo);
+
+	int deleteProduct(int proNo);
+
+	int deleteProImg(int proNo);
+
+	int selectProNo(String sellId);
+
+	int endSell(int proNo);
+
 
 
 	

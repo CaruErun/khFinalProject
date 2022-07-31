@@ -16,11 +16,12 @@
 	<title>Insert title here</title>
 </head>
 <style>
+
 	.swiper-area{
         position: relative;
         z-index: 0;
         left: 15%;
-        top: 150px;
+        top: 250px;
         width: 70%;
         height: 300px;
         border: solid 1px black;
@@ -54,7 +55,7 @@
     .see-all{
         position: relative;
         left: 15%;
-        top:150px;
+        top:250px;
         width: 70%;
         height: 80px;
         border-bottom: 1px dotted black;
@@ -75,7 +76,7 @@
         width: 70%;
         height: 1000px;
         left: 15%;
-        top:150px;
+        top:250px;
         display: flex;
         flex-wrap:wrap;
         justify-content: center;
@@ -160,6 +161,8 @@
 
 
 
+
+	<div class="outer">
 
 
 	<!-- swiper -->
@@ -348,18 +351,6 @@
 		        });
 		    });
 		</script>
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
 	    
 	    
 	    
@@ -1158,10 +1149,12 @@
 	                </div>
 	            </div>
 	    </div>
+
 	    
 
 	    
 	</div>
+</div>
 	<jsp:include page="common/footer.jsp"/>
 
 </body>

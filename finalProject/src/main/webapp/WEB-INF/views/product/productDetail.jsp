@@ -13,6 +13,7 @@
         <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
 
+
 	<!--icon-->
     <script src="https://kit.fontawesome.com/e849be2e05.js" crossorigin="anonymous"></script>
     
@@ -718,6 +719,7 @@
                                     clearInterval(timer);
                                     $('#delete-dday').html("판매취소가 불가능합니다.");
                                     $('.deleteBtn').attr('disabled',true);
+
                                     $('.deleteBtn').css("background","gray");
                                 }
                                 
@@ -725,15 +727,7 @@
                           
                             timer =setInterval(show,1000);
                         }
-
-                        
-                           
-                       
-                            
-                          
-                           
-                                
-                                
+           
                         countDown5('delete-dday',convert(startDate));
                    
                     </script>

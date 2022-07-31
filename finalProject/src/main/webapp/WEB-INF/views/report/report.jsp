@@ -11,7 +11,8 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 <!-- jQuery library -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <!-- Popper JS -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
@@ -44,6 +45,7 @@
 </style>
 </head>
 <body>
+
         <form action="report.mem"  method="post" >
         <!-- Modal body -->
         <div class="modal-body">
@@ -51,6 +53,7 @@
           <h4 class="modal-title">신고하기</h4>
           <p id="gray"><br>&nbsp;&nbsp;사유가 인정될 경우 해당 사용자의 이용이 제한됩니다.</p>
           <hr>
+
 <%--             <input type="hidden" value="${loginUser.userId }" name="reportId"> --%>
             <input type="text" value="${loginUser.userId }" name="reportId">
 <!--            <input type="hidden" value="user02" name="reportId"> -->
@@ -91,6 +94,7 @@
           <button type="submit" class="btn btn-danger btn-block">완료</button>
           <!--  data-dismiss="modal" : 모달창을 닫아준다 -->
         </div>
+
          </form>
 </body>
 </html>

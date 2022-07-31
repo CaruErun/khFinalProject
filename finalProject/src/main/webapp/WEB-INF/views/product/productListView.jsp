@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -8,14 +7,14 @@
 
 <jsp:include page="../common/header.jsp"/>
 
-<link 
-rel="stylesheet" 
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-crossorigin="anonymous" 
-referrerpolicy="no-referrer"
-/>
 
+        <link 
+            rel="stylesheet" 
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+            integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+            crossorigin="anonymous" 
+            referrerpolicy="no-referrer"
+        />
 
 	<!--icon-->
     <script src="https://kit.fontawesome.com/e849be2e05.js" crossorigin="anonymous"></script>
@@ -24,8 +23,8 @@ referrerpolicy="no-referrer"
 <title>Insert title here</title>
 </head>
 <style>
-  
-	.see-all{
+ 
+	.see-all1{
         position: relative;
         left: 15%;
         top:150px;
@@ -35,9 +34,12 @@ referrerpolicy="no-referrer"
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 100px;
+    
+   
+
+        
     }
-    .see-all>div{
+    .see-all1>div{
         padding-top: 30px;
     }
     .selectList {
@@ -143,28 +145,30 @@ referrerpolicy="no-referrer"
     }
     .pagingArea{
         position: relative;
-        top:170px;
+        top:150px;
         display: flex;
         justify-content: center;
         align-items: center;
     }
  
-  #h_mark{
-        color: lightgray;
-    }
-    .h_mark{
+  .h_mark{
         position: relative;
         width: 20px;
         height:20px;
         color: lightgray;
         cursor: pointer;
+        
+        
     }
+
     
 </style>
 <body>
-	 
-     
-        <div class="see-all">
+       
+      
+        
+        
+        <div class="see-all1">
             <div>    
                 <i class="fa-solid fa-circle-check"></i>
                 <span>모두 ${pi.listCount}개의 게시물이 검색되었습니다.</span>
@@ -201,10 +205,10 @@ referrerpolicy="no-referrer"
                         </div>
 
                         <div class="text-box">
-                            <div class="content-box">
+                            <div class="content-box ">
                                 <p>${i.proTitle }</p>
+
                                 <button class="h_mark" id="h_mark-${status.index}" ><i class="fa-solid fa-heart"></i></button>
-<%--                                 <button class="h_mark" id="h_mark-${status.index}"><i class="fa-solid fa-heart"></i></button> --%>
                             </div>
                         </div>
 
@@ -242,7 +246,7 @@ referrerpolicy="no-referrer"
                     </div>
                     
                 </div>
-        </c:forEach>
+            </c:forEach>
     </div>
         
         
@@ -277,16 +281,41 @@ referrerpolicy="no-referrer"
 		function showRemaining() {
 			var now = new Date();
 			var dDay = _Date - now;
-
-			if (dDay < 0) {
-				clearInterval(timer);
-				
-			}
-
-			var days = Math.floor(dDay / _day);
+            var days = Math.floor(dDay / _day);
 			var hours = Math.floor((dDay % _day) / _hour);
 			var minutes = Math.floor((dDay % _hour) / _minute);
 			var seconds = Math.floor((dDay % _minute) / _second);
+            var remains = days+hours+minutes+seconds;
+           
+			if (remains <= 0) {
+                console.log("11");
+                var pNo = $('#'+id).parent().parent().parent().children("span").eq(0).text();
+                console.log(pNo);
+				clearInterval(timer);
+                $.ajax({
+                    url : "endSell.pr",
+                    data : {
+                        proNo: pNo
+                    },
+                    success : function(result){
+                        if(result>0){
+                            console.log("되나");
+                            location.reload();
+                          
+
+
+                        }
+                    },
+                    error : function(){
+                           console.log("이미 사라졌어.")
+                    }
+
+                });
+
+				
+			}
+
+
 
 			document.getElementById(id).textContent = days + '일 ';
 			document.getElementById(id).textContent += hours + '시간 ';
@@ -301,7 +330,8 @@ referrerpolicy="no-referrer"
             countDownTimer('ed-'+i,convertFromStringToDate(endDate[i])); 
             
         }
-        var pb= $(".product-box")
+        var pb= $(".product-box");
+       
         for(var i =0;i<pb.length;i++){
 
             pb[i].onclick = function(){
@@ -309,6 +339,7 @@ referrerpolicy="no-referrer"
                 console.log("11111");
                 location.href ="productDetail.pr?pNo="+pNo;
             }
+
             
             $("#h_mark-"+i).off().on('click',function(e){
                 e.stopPropagation();
@@ -330,7 +361,6 @@ referrerpolicy="no-referrer"
         
         </script>
         
-        <!-- =======찜하기 버튼을 누를경우 이벤트 발생======= -->
 		<script>
 		    $(function() {
 		    	
@@ -473,13 +503,15 @@ referrerpolicy="no-referrer"
                 	</c:choose>
                 </ul>
             </div>
+  
         
         
 	 
+            <jsp:include page="../common/footer.jsp" />
 	 
 	 
 
-	 <jsp:include page="../common/footer.jsp" />
+
 	 
 </body>
 </html>

@@ -55,21 +55,21 @@
 </style>
 <body>
 	<div class="footer">
-    <div class="footer-content">
-        <div class="footer-sns">
-            <h1>Follow Us</h1>
-        </div>
-        <div class="footer-text">
-            상호명 : (주)삼삼옥션 / 조장: 노민규 / 조원 : 심현진, 이찬주, 이수형, 이지민, 이예구 
-            <br>당산지원 : 서울특별시 영등포구 선유동2로 57 이레빌딩 (구관) 19F, 20F
-            <br>Tel: 010-7153-5291 (정확한 상담을 위해 통화내용이 저장됩니다. )
-        </div>
-        <div class="footer-text2">
-            삼삼옥션에서 등록된 상품은 개별판매자가 시스템을 이용하여 등록한 것으로서 삼삼은 등록된 상품과 그 내용에 대하여 일체의 책임을 지지 않습니다.
-            <br><br>
-            <b>Copyright © samsam 2022 All Right Reserved</b>
+        <div class="footer-content">
+            <div class="footer-sns">
+                <h1>Follow Us</h1>
+            </div>
+            <div class="footer-text">
+                상호명 : (주)삼삼옥션 / 조장: 노민규 / 조원 : 심현진, 이찬주, 이수형, 이지민, 이예구 
+                <br>당산지원 : 서울특별시 영등포구 선유동2로 57 이레빌딩 (구관) 19F, 20F
+                <br>Tel: 010-7153-5291 (정확한 상담을 위해 통화내용이 저장됩니다. )
+            </div>
+            <div class="footer-text2">
+                삼삼옥션에서 등록된 상품은 개별판매자가 시스템을 이용하여 등록한 것으로서 삼삼은 등록된 상품과 그 내용에 대하여 일체의 책임을 지지 않습니다.
+                <br><br>
+                <b>Copyright © samsam 2022 All Right Reserved</b>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>

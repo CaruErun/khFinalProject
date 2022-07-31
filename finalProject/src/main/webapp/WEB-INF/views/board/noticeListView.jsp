@@ -16,6 +16,7 @@
         	text-decoration: none;
         }
         #pagingArea{
+
         	width:70%;
  			margin-top:50px; 
 			display: flex;

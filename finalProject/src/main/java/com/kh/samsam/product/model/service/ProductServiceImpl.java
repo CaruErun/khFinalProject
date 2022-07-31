@@ -190,6 +190,51 @@ public class ProductServiceImpl implements ProductService{
 			return productDao.filterList(sqlSession, searchType, searchKeyword, sort, pi);
 		}
 
+
+
+	//입찰하기
+	@Override
+	public int insertBid(Bid b) {
+		// TODO Auto-generated method stub
+		return productDao.insertBid(sqlSession, b);
+	}
+
+	@Override
+	public int selectBidPrice(int proNo) {
+		// TODO Auto-generated method stub
+		return productDao.selectBidPrice(sqlSession, proNo);
+	}
+
+	@Override
+	public int buyImeddiately(int proNo) {
+		// TODO Auto-generated method stub
+		return productDao.buyImmediately(sqlSession, proNo);
+	}
+
+	@Override
+	public int deleteProduct(int proNo) {
+		// TODO Auto-generated method stub
+		return productDao.deleteProduct(sqlSession,proNo);
+	}
+
+	@Override
+	public int deleteProImg(int proNo) {
+		return productDao.deleteProImg(sqlSession,proNo);
+	}
+
+	@Override
+	public int selectProNo(String sellId) {
+		// TODO Auto-generated method stub
+		return productDao.selectProNo(sqlSession,sellId);
+	}
+
+	@Override
+	public int endSell(int proNo) {
+		// TODO Auto-generated method stub
+		return productDao.endSell(sqlSession,proNo);
+	}
+	
+
 		//정렬 (without 검색)
 		@Override
 		public List<Product> filterListNoS(String sort, PageInfo pi) {
@@ -215,6 +260,7 @@ public class ProductServiceImpl implements ProductService{
 			public int prolike(int pNo, String userId) {
 				return productDao.prolike(sqlSession, pNo, userId);
 			}
+
 
 	
 	//판매현황 삭제
