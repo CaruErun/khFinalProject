@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.Service;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,12 +25,14 @@ import com.google.gson.Gson;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.common.template.Pagenation;
 import com.kh.samsam.member.model.service.MailSendService;
+
 import com.kh.samsam.member.model.service.MemberService;
 import com.kh.samsam.member.model.vo.Bid;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
 import com.kh.samsam.member.model.vo.Postbox;
 import com.kh.samsam.member.model.vo.Product;
+
 
 @Controller
 public class MemberController {
@@ -137,7 +142,8 @@ public class MemberController {
 			session.setAttribute("loginUser", loginUser);
 			mv.setViewName("redirect:/");
 		}else {
-			
+
+
 			mv.addObject("errorMsg","로그인 실패");
 			mv.setViewName("common/errorPage");
 		}
@@ -186,8 +192,41 @@ public class MemberController {
 			model.addAttribute("errorMsg","회원가입 실패!");
 			return "common/errorPage";
 		}
-		
+//		// 아이디 중복 검사(AJAX)
+//		@RequestMapping(value = "/check_id.do", method = RequestMethod.POST)
+//		public void check_id(@RequestParam("id") String id, HttpServletResponse response) throws Exception{
+//			service.check_id(id, response);
+//		}
+//		
+//		// 이메일 중복 검사(AJAX)
+//		@RequestMapping(value = "/check_email.do", method = RequestMethod.POST)
+//		public void check_email(@RequestParam("email") String email, HttpServletResponse response) throws Exception{
+//			service.check_email(email, response);
+//		}
 	}
+	// 아이디 찾기 폼
+		@RequestMapping(value = "/find_id_form.do")
+		public String find_id_form() throws Exception{
+			return "member/find_id_form";
+		}
+	// 아이디 찾기
+		@RequestMapping(value = "/find_id.do", method = RequestMethod.POST)
+		public String find_id(HttpServletResponse response, @RequestParam("email") String email, Model md) throws Exception{
+			md.addAttribute("id", memberService.find_id(response, email));
+		
+			return "member/find_id";
+		}
+		// 비밀번호 찾기 폼
+		@RequestMapping(value = "/find_pw_form.do")
+		public String find_pw_form() throws Exception{
+			return "member/find_pw_form";
+		}
+		// 비밀번호 찾기
+		@RequestMapping(value = "/find_pw.do", method = RequestMethod.POST)
+		public void find_pw(@ModelAttribute Member m, HttpServletResponse response) throws Exception{
+			System.out.println(m.getUserId());
+			memberService.find_pw(response, m);
+		}
 
 	@Autowired
 	private MailSendService mailService;
@@ -202,10 +241,8 @@ public class MemberController {
 			System.out.println("이메일 인증 이메일 : " + email);
 			return mailService.joinEmail(email);
 		}
-	
-	
 
-	
+		
 	
 	@RequestMapping("pwdChangeHome.me")
 	public String pwdChangeHome() {

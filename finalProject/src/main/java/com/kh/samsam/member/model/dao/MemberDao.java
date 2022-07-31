@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Bid;
@@ -34,6 +35,24 @@ public Member loginMember(SqlSessionTemplate sqlSession, Member m) {
 public int insertMember(SqlSessionTemplate sqlSession, Member m) {
 	return sqlSession.insert("memberMapper.insertMember",m);
 }
+	//아이디 중복 검사
+	public int check_id(SqlSessionTemplate sqlSession, String id) throws Exception{
+		return sqlSession.selectOne("memberMapper.check_id", id);
+	}
+	
+	// 이메일 중복 검사
+	public int check_email(SqlSessionTemplate sqlSession,String email) throws Exception{
+		return sqlSession.selectOne("memberMapper.check_email", email);
+	}
+//아이디 찾기
+	public String find_id(SqlSessionTemplate sqlSession, String email) throws Exception{
+		return sqlSession.selectOne("memberMapper.find_id", email);
+	}
+// 비밀번호 변경
+		@Transactional
+		public int update_pw(SqlSessionTemplate sqlSession, Member m){
+			return sqlSession.update("memberMapper.update_pw", m);
+		}
 
 public String emailFirst(SqlSessionTemplate sqlSession, String email) {
 	// TODO Auto-generated method stub
@@ -124,6 +143,10 @@ public ArrayList<Bid> selectListBid(SqlSessionTemplate sqlSession, PageInfo pi, 
 	return (ArrayList)sqlSession.selectList("memberMapper.selectListBid", userId, rowBounds);
 }
 
+
+
+}
+
 //public ArrayList<Product> selectListCount(SqlSessionTemplate sqlSession, PageInfo pi) {
 //	// TODO Auto-generated method stub
 //	
@@ -135,5 +158,3 @@ public ArrayList<Bid> selectListBid(SqlSessionTemplate sqlSession, PageInfo pi, 
 //	return (ArrayList)sqlSession.selectList("memberMapper.selectList", null, rowBounds);
 //}
 	
-
-}

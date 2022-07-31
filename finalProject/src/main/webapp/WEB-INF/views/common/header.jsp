@@ -11,7 +11,7 @@
     
     <!-- jQuery 라이브러리 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
  <!-- 부트스트랩에서 제공하고 있는 스타일 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -133,17 +133,19 @@
              <c:choose>
 				    <c:when test="${ empty loginUser }">
                 <li><a href="#!">samsam은 처음이신가요?</a></li>
-                <li><a data-toggle="modal" data-target="#login_modal2">로그인</a></li>
+                <li><a data-toggle="modal" data-target="#login_modal2" id="lolo">로그인</a></li>
                 <li><a href="enrollForm.me">회원가입</a></li>
                 <li><a href="#">고객센터</a></li>
                   </c:when>      
                   <c:otherwise>
 	               		<!-- 로그인 후 -->
-	                    <lable>${ loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
+	                    <lable>${loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
+	                    
 	                    <a href="myPageSale.me">마이페이지</a>
 	                    <a href="logout.me">로그아웃</a>
             </c:otherwise>	                
                 </c:choose>
+  
             </ul>
         </div>
     </div>
@@ -159,6 +161,16 @@
         }
         init();
     </script>
+<!-- 
+    <script type="text/javascript">
+	$(document).ready(function() {
+		var name = ${result}.response.name;
+		
+		$("#name").html("환영합니다. "+name+"님");
+		
+	  });
+</script>
+     -->
     <!-- Header-->
     <div class="header">
         <div class="head-inner">
@@ -193,8 +205,8 @@
       <h2 class="blind">로그인 팝업</h2>
       <div class="login-modal-box">
         <div class="login-modal-head">
-          <button class="close-btn"></button>
-          <h3 class="login-modal-title">로그인</h3>
+          <button style="color:white; float : right;"type="button" class="close2" data-dismiss="#login_modal2">&times;</button>
+          <h3 class="login-modal-title" style="color:white;">로그인</h3>
         </div>
         <div class="topline"></div>
         <div style="text-align:center;">
@@ -234,16 +246,21 @@
         </form>
         <ul class="user-function-wrap">
           <li class="user-function-list">
-            <a href="" class="user-function-link">회원가입</a>
+            <a href="enrollForm.me" class="user-function-link">회원가입</a>
           </li>
           <li class="user-function-list">
-            <a href="" class="user-function-link">아이디/비밀번호 찾기</a>
+          
+           <a href="find_id_form.do" class="user-function-link" id="find_id_btn">아이디 찾기 |</a>
+          </li>
+           <li class="user-function-list">
+            <a href="find_pw_form.do" class="user-function-link">비밀번호 찾기</a>
           </li>
         </ul>
         <div class="line">또는</div>
         <ul class="easy-login-wrap">
+          <!-- 
           <li>
-            <a class="easy-login-link google" href="https://www.google.com/"
+            <a class="easy-login-link google" href="" 
               >구글 계정으로 로그인</a
             >
           </li>
@@ -252,11 +269,12 @@
               >페이스북 계정으로 로그인</a
             >
           </li>
+           -->
           <li>
-            <a class="easy-login-link naver" href="https://www.naver.com/"
-              >네이버 계정으로 로그인</a
-            >
+            <div id="naver_id_login" style="text-align:center"><a href="" class="easy-login-link naver">네이버 계정으로 로그인</a></div>
+          
           </li>
+          <!-- 
           <li>
             <a
               class="easy-login-link kakao"
@@ -264,10 +282,75 @@
               >카카오톡 계정으로 로그인</a
             >
           </li>
+           -->
         </ul>
       </div>
     </div>
-
+   
+    <!-- 
+    <script>
+    $(function(){
+		$("#find_id_btn").click(function(){
+		location.href='../member/find_id_form.do';
+	})
+	})
+	</script>
+	 -->
+	 <script>
+	 	$(function(){
+	 		
+	 		$("#lolo").click(function(){
+	 			$.ajax({
+					url : "login",
+					success : function(result){
+						console.log("성공");
+						$("#naver_id_login>a").attr("href",result);
+					},error : function(){
+						console.log("실패");
+					}
+					
+				})	
+	 		})
+	 	});
+	 
+	 </script>
+	 <script>
+	 $("#userId").val(Cookies.get('key'));      
+    if($("#userId").val() != ""){
+        $("#login-status-btn").attr("checked", true);
+    }
+    
+$("#login-status-btn").change(function(){
+    if($("#login-status-btn").is(":checked")){
+        Cookies.set('key', $("#userId").val(), { expires: 7 });
+    }else{
+          Cookies.remove('key');
+    }
+});
+     
+$("#userId").keyup(function(){
+    if($("#login-status-btn").is(":checked")){
+        Cookies.set('key', $("#userId").val(), { expires: 7 });
+    }
+});
+</script>
+<!-- 	
+	 <script>
+ 	const onClickGoogleLogin = (e) {
+    	//구글 인증 서버로 인증코드 발급 요청
+ 		window.location.replace("https://accounts.google.com/o/oauth2/v2/auth?
+        client_id=257552570565-pr3dslj59tcc5j0ufo2dvobr8d7clh0e.apps.googleusercontent.com
+        &redirect_uri=http://localhost:8080/login/google/auth
+        &response_type=code
+        &scope=email%20profile%20openid
+        &access_type=offline")
+ 	}
+	
+	const googleLoginBtn = document.getElementById("googleLoginBtn");
+	googleLoginBtn.addEventListener("click", onClickGoogleLogin);
+    
+</script>
+ -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -283,7 +366,7 @@
       });
       $(".close-btn").click(function () {
         if (modalCheck) {
-          $(".login-modal").hide();
+          $("#login_modal2").hide();
           modalCheck = false;
         }
       });
@@ -291,16 +374,19 @@
         let userID = $("#user-id").val();
         if (userID =="") {
         	$(".info-error").show();
+        
         	<!--
         	$(".id-error").show();
           $(".error-line").show(); -->
+          
           $("#user-id").css("border", "2px solid #F4492E");
         } else {
           
         }
       });
+     
       <!--
-      $("#user-id").focus(function () {
+      $("#user-id").focus(function () {	
         $("#user-id").css("border", "");
         $(".id-error").hide();
         $(".error-line").hide();

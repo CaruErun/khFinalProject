@@ -149,7 +149,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- QnA 리스트 조회(페이징) -->
-	<select id="selectQnaListView" resultMap="qnaResertSet">
+	<select id="selectQnaListView" resultMap="qnaResultSet">
 			SELECT  QNA_NO,
 				    QNA_CATE_NO,
 				    QNA_TITLE, 
