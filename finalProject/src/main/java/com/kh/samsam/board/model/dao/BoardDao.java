@@ -188,7 +188,12 @@ public class BoardDao {
 	public int selectInquiry(SqlSessionTemplate sqlSession, int proNo) {
 		return sqlSession.selectOne("boardMapper.selectInquiry",proNo);
 	}
+	public void insertConQna(SqlSessionTemplate sqlSession, QnA q) {
+		sqlSession.insert("boardMapper.insertConQna", q);
+	}
 	//2022.07.25 상품문의 끝 
+
+
 
 
 

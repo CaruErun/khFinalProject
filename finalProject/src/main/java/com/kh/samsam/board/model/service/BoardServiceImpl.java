@@ -192,7 +192,13 @@ public class BoardServiceImpl implements BoardService{
 	public int selectInquiry(int proNo) {
 		return boardDao.selectInquiry(sqlSession, proNo);
 	}
+	@Override
+	public void insertConQna(QnA q) {
+		boardDao.insertConQna(sqlSession, q);
+	}
 	//2022.07.25 상품문의 끝 
+
+
 
 
 	

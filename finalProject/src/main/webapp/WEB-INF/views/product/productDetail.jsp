@@ -266,6 +266,25 @@
             width: 100%;
            
         }
+       	<%-- 2022.07.27 물품문의 css --%>
+       	
+       	.content-qna > #content-qna-input{
+       		width:100%;
+       	}
+       	#content-qna-input{
+       		float:left;
+       	}
+       	
+       	#input-qna{
+       		width:70%;
+       		height:40px;
+       		margin-right:20px;
+       	}
+       	.btn-qna{
+       		width:20%;
+       	}
+       	
+       	<%-- 2022.07.27 물품문의 css 끝 --%>
         #qna-table > thead {
             height: 40px;
             background-color: black;
@@ -284,7 +303,6 @@
             color: white;
             border-radius: 3px;
             float: right;
-            margin-top: 15px;
         }
         .content-ship{
             width: 100%;
@@ -542,6 +560,7 @@
                     <button class="btn-black">배송정보</button>
                     <div class="btn-line"></div>
                 </div>
+                <%-- 2022.07.27 물품문의 시작 --%>
                 <div class="content-qna">
                     <table id="qna-table" border="1">
                         <thead>
@@ -556,8 +575,14 @@
                         <tbody id="qna-tbody">        
                         </tbody>
                     </table>
-                    <button class="btn-qna">문의하기</button>
+                    <div id="content-qna-input">
+                    <input type="text" id="input-qna">
+                    <input type="checkbox" name="secret" id="secret" value="1">
+                    <label for="secret">비밀글</label>
+                    <button type="button" class="btn-qna" onclick="insertConQna()">문의하기</button>
+                    </div>
                 </div>
+                <%-- 2022.07.27 물품문의 끝 --%>
                 <div class="content-btn">
                     <button class="btn-black">물품정보</button>
                     <button class="btn-black">물품문의</button>
@@ -632,10 +657,45 @@
 			var inquiryTr = document.getElementById("qna-tbody");
 			if(inquiryTr.children[ro+1].style.display=='none') {inquiryTr.children[ro+1].style.display="";}
 			else {inquiryTr.children[ro+1].style.display='none'}
+		}
+    	
+		function insertConQna(){
+			if('${loginUser.userId}'==""){
+				window.alert("로그인 후 이용해주세요.");
+				
+			}else{
+				var inputQna = document.getElementById("input-qna").value;
+				if(inputQna==""){
+					window.alert("문의 내용이 없습니다. 문의 내용을 작성해주세요");
+				}else{
+					var secret = document.getElementById("secret");
+					var secretChecked = 0;
+					if(secret.checked==true){
+						secretChekced = 1;
+					}
+					$.ajax({
+						url:"insertConQna.pr",
+						data:{
+							proNo : '${p.proNo}',
+							qnaContent : inputQna,
+							qnaCateNo : secretChecked
+						},
+						success : function(){
+							ProductInquiry(1);
+							
+						},
+						error : function(){
+							
+							
+						}
+						
+					})
+					
+				}
+			}
 			
 			
 		}
-    	
     	
     	</script>
     	<%--물품문의 끝  --%>

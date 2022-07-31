@@ -145,7 +145,7 @@
 	.suBid, .suProduct, .faProduct, .topBid{
 		border:1px solid black;
 	}
-
+	<%-- 2022.07.27 alarm css 끝 --%>
 	
 	#titleBOx{width:100px;}
     </style>
@@ -209,40 +209,6 @@ $(document).ready(function(){
 		alarm(login);
 	}
 })
-// function bidCheck(){
-// 	if(login != ""){
-// 		$.ajax({
-// 			url : "ajaxBid.ch",
-// 			data : {userId : login},
-// 			success : function(list){
-// 				var listStr="";
-// 				var listStr2="";
-// 				if(list.chatList!=null){
-// 					console.log("1")
-// 					for(var i=0;i<list.chatList.length;i++){
-// 						listStr+="<div>경매에 낙찰되셨습니다<br>아래 채팅에 참여하여 판매자와 거래해보세요"+
-// 						"<a href='chatenter.ch?chatRoomNo="+list.chatList[i].chatRoomNo+"&name="+list.chatList[i].buyerId+"'>이동</a><br></div>";
-// 					}
-// 					$("#chatAl").html(listStr);
-// 				}
-// 				if(list.sellList!=null){
-// 					console.log("2")
-// 					for(var i=0;i<list.sellList.length;i++){
-						
-// 						listStr2+="<div>물품이 판매 되었습니다<br>아래 채팅에 참여하여 구매자와 거래해보세요"+
-// 						"<a href='chatenter.ch?chatRoomNo="+list.sellList[i].chatRoomNo+"&name="+list.sellList[i].sellId+"'>이동</a><br></div>"
-// 					}
-// 					$("#sellAl").html(listStr2)
-// 				}
-// 			},
-// 			error : function(){
-					
-// 			}
-// 		})
-		
-// 	}
-	
-// }
 function clickk(a){
 	console.log("123");
 	console.log(a.children[0].style.display)
@@ -376,7 +342,7 @@ function alarm(userId){
       <h2 class="blind">로그인 팝업</h2>
       <div class="login-modal-box">
         <div class="login-modal-head">
-          <button class="close-btn"></button>
+          <button type="button" class="close-btn" style="color:white;" data-dismiss="modal">X</button>
           <h3 class="login-modal-title">로그인</h3>
         </div>
         <div class="topline"></div>
@@ -459,14 +425,16 @@ function alarm(userId){
     <script>
       let modalCheck = false;
       $(".login-btn").click(function () {
-        if (!modalCheck) {
-          $(".login-modal").show();
+	       if (!modalCheck) {
+          $("#login_modal2").css("display","");
+          $(".modal-backdrop").css("display","");
           modalCheck = true;
         }
       });
       $(".close-btn").click(function () {
-        if (modalCheck) {
-          $(".login-modal").hide();
+         if (modalCheck) {
+          $("#login_modal2").css("display","none");
+          $(".modal-backdrop").css("display","none");
           modalCheck = false;
         }
       });

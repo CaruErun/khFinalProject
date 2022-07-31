@@ -412,7 +412,7 @@ public class BoardController {
 			int listCount = boardService.selectInquiry(proNo);
 			
 			int pageLimit = 5;
-			int boardLimit = 10;
+			int boardLimit = 5;
 			
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 			
@@ -424,6 +424,12 @@ public class BoardController {
 			inquiryMap.put("pi", pi);
 			
 			return new Gson().toJson(inquiryMap);
+		}
+		@RequestMapping(value = "insertConQna.pr", produces = "application/json; charset=UTF-8")
+		@ResponseBody
+		public void InsertConQna(QnA q) {
+			boardService.insertConQna(q);
+			
 		}
 		
 
