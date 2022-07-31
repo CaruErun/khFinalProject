@@ -185,6 +185,39 @@ public class ProductDao {
 		return sqlSession.selectList("productMapper.filterListNoS", sort);
 	}
 
+	public int insertBid(SqlSessionTemplate sqlSession, Bid b) {
+		return sqlSession.insert("productMapper.insertBid",b);
+	}
+
+	public int selectBidPrice(SqlSessionTemplate sqlSession, int proNo) {
+		return sqlSession.selectOne("productMapper.selectBidPrice",proNo);
+	}
+
+	public int buyImmediately(SqlSessionTemplate sqlSession, int proNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("productMapper.buyImmediately",proNo);
+	}
+
+	public int deleteProduct(SqlSessionTemplate sqlSession, int proNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("productMapper.deleteProduct",proNo);
+	}
+
+	public int deleteProImg(SqlSessionTemplate sqlSession, int proNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("productMapper.deleteProImg",proNo);
+	}
+
+	public int selectProNo(SqlSessionTemplate sqlSession, String sellId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("productMapper.selectProNo",sellId);
+	}
+
+	public int endSell(SqlSessionTemplate sqlSession, int proNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("productMapper.endSell",proNo);
+	}
+
 	
 	
 	

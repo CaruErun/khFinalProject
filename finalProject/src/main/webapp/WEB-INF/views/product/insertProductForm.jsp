@@ -494,6 +494,7 @@
                 <h1>온라인 물품등록</h1>
 
                 <form action="insertProduct.pr" id="insertForm" method="post" enctype="multipart/form-data">
+                    <input type="hidden" value="${loginUser.userId}"name="sellId">
                     <div class="enroll-category">
                         <h3>◆ 카테고리 선택</h3>
                         <div class="cate-location">
@@ -764,7 +765,7 @@
                             var ak = 0;
 
                             $('.price1').on("focusin",function(){
-                                console.log('시발');
+                                
                                
                                     if($('#upfile0').val()==""&&ak==0){
                                         alert('이미지는 1개이상 등록해주세요!');
@@ -801,7 +802,7 @@
                                 var price2 = parseInt($('.price2').val().replaceAll(',',''));
                                 console.log(price1);
                                 console.log(price2);
-                                if((price2<price1)&&(price1!=0)){
+                                if((price2<=price1)&&(price1!=0)){
                                     alert('즉시구매가는 시작가보다 낮게 설정할 수 없습니다.');
                                     console.log($('.price2').val());
                                     console.log($('.price1').val());
@@ -817,7 +818,7 @@
                                 var price1 = parseInt($('.price1').val().replaceAll(',',''));
                                 var price2 = parseInt($('.price2').val().replaceAll(',',''));
                            
-                                if((price1>price2)&&(price2!=0)){
+                                if((price1>=price2)&&(price2!=0)){
                                     alert('시작가는 즉시구매가보다 높게 설정할 수 없습니다.');
                                     $('.price1').val("");
                                     $('#ptext0').empty();
@@ -843,7 +844,7 @@
                                     <option value="9">9일</option>
                                     <option value="10">10일</option>
                                 </select>
-                                <span>※물품등록을 한 이후부터 적용됩니다. 물품등록 후 5분 동안만 삭제가 가능하며, 그 이후에는 수정/삭제 불가하오니, 등록 시에 주의하세요!</span>
+                                <span>※물품등록을 한 이후부터 적용됩니다. 물품등록 후 5분 동안만 삭제가 가능하며, 그 이후에는 삭제 불가하오니, 등록 시에 주의하세요!</span>
                             </div>
                         </div>
                     </div>
@@ -864,7 +865,7 @@
                             </div>
                             <div class="shp-2">
                                 <div class="shp-price">
-                                    <input type="text" class="price3" name="postPrice" maxlength="8" oninput="numberMaxLength(this);">원
+                                    <input type="text" class="price3" name="postPrice" required maxlength="8" oninput="numberMaxLength(this);">원
                                     <span class="kor-no" id="ptext2"></span>
                                 </div>
                             </div>

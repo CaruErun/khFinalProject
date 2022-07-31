@@ -210,14 +210,16 @@ public class ProductController {
 				}
 			}
 		
-
+	
 		
 		int result =productService.insertProduct(p);
 		if(result>0) {
 			int result1 =productService.insertProductImages(list);
+			int proNo= productService.selectProNo(p.getSellId());
+			System.out.println(proNo);
 			if(result1>0) {
 				session.setAttribute("alertMsg", "상품등록 성공");
-				mv.setViewName("redirect:productList.pr");
+				mv.setViewName("redirect:productDetail.pr?pNo="+proNo);
 			}else {
 				mv.addObject("errorMsg", "상품등록 실패");
 				mv.setViewName("common/errorPage");
@@ -235,7 +237,7 @@ public class ProductController {
 					) {
 		
 		int listCount = productService.selectProListCount();
-		System.out.println(listCount);
+		
 		int pageLimit =10;
 		int boardLimit = 20;
 		
@@ -248,25 +250,92 @@ public class ProductController {
 	}
 	@RequestMapping("productDetail.pr")
 	public String selectProduct(int pNo
-								,Model model) {
-		System.out.println(pNo);
+								,Model model
+								,HttpSession session) {
+	
 		
 		int result=productService.increaseCount(pNo);
 		if(result > 0) {
 			Product p =productService.selectProduct(pNo);
 			p.setProContent(p.getProContent().replaceAll("\n", "<br>"));
 			ArrayList<ProductImages> piList = productService.selectImgList(pNo);
-			System.out.println(piList);
 			model.addAttribute("p",p);
 			model.addAttribute("piList",piList);
+			
 			return "product/productDetail";
+			
 		}else {
 			model.addAttribute("errorMsg", "상품조회 실패");
 			return "common/errorPage";
 		}
 		
 	}
-	
+	@RequestMapping("insertBid.pr")
+	public String insertBid(Bid b, HttpSession session, Model model) {
+		System.out.println(b);
+		
+		int result=productService.insertBid(b);
+		if(result>0) {
+			session.setAttribute("alertMsg", "성공적으로 입찰하셨습니다.");
+			return "redirect:/productDetail.pr?pNo="+b.getProNo();
+			
+		}else {//실패
+			model.addAttribute("errorMsg","입찰 실패");
+			return "common/errorPage";
+		}
+	}
+	@ResponseBody
+	@RequestMapping(value="selectBidPrice.pr", produces="json/application; charset=UTF-8")
+	public String selectBidPrice(int proNo) {
+		
+		int bidPrice = productService.selectBidPrice(proNo);
+		return new Gson().toJson(bidPrice);
+		
+	}
+	@ResponseBody
+	@RequestMapping(value="buyImmediately.pr", produces="json/application; charset=UTF-8")
+	public String buyImmediately(int proNo
+								,HttpSession session
+								,Model model) {
+		System.out.println(proNo);
+		int result = productService.buyImeddiately(proNo);
+		
+		return new Gson().toJson(result);
+		
+	}
+	@RequestMapping("deleteProduct.pr")
+	public ModelAndView deleteProduct(int proNo
+								,HttpSession session
+								,ModelAndView mv) {
+		
+		int result = productService.deleteProduct(proNo);
+		if(result>0) {
+			int result2= productService.deleteProImg(proNo);
+			if(result2>0) {
+				session.setAttribute("alertMsg", "상품삭제 성공");
+				mv.setViewName("redirect:productList.pr");
+			}else {
+				mv.addObject("errorMsg", "상품삭제 실패");
+				mv.setViewName("common/errorPage");
+			}
+		}else {
+			mv.addObject("errorMsg", "상품삭제 실패");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+		
+	}
+	@ResponseBody
+	@RequestMapping(value="endSell.pr", produces="json/application; charset=UTF-8")
+	public String endSell(int proNo
+								,HttpSession session
+								,Model model) {
+		
+		int result = productService.endSell(proNo);
+		
+		return new Gson().toJson(result);
+		
+	}
 	
 	public String saveFile(MultipartFile upfile, HttpSession session) {
 		

@@ -131,6 +131,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT IMAGE_NO, PRO_NO, ORINAME, SYSNAME, PATH
 		FROM PRODUCT_IMAGES
 		WHERE PRO_NO =#{pNo}
+		
 				
 	</select>
 	<select id="selectProListCount" resultType="int">
@@ -189,14 +190,59 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</foreach>
 		) A
 	</insert>
+	<insert id="insertBid">
+		INSERT INTO BID(
+						BID_NO
+						,BUYER_ID
+						,PRO_NO
+						,BID_PRICE
+						)
+					VALUES(
+					SEQ_BINO.NEXTVAL
+					,#{buyerId}
+					,#{proNo}
+					,#{bidPrice}
+					)
+	
+	</insert>
+	<select id="selectBidPrice" resultType="int">
+		SELECT BID_PRICE 
+		FROM BID 
+		WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)
+		AND PRO_NO =#{proNo}
+	</select>
+	<select id="selectProNo" resultType="int">
+		SELECT A.*
+		FROM (SELECT MAX(PRO_NO) FROM PRODUCT
+		WHERE SELL_ID =#{sellId})A
+	
+	</select>
 	<update id="increaseCount">
 		UPDATE PRODUCT
 		SET COUNT = COUNT +1
 		WHERE PRO_STATUS ='Y'
 		AND PRO_NO =#{pNo}
 	</update>
+	<update id="buyImmediately">
+		UPDATE PRODUCT
+		SET PRO_STATUS ='N'
+		WHERE PRO_NO=#{proNo}
+	</update>
+	<update id="endSell">
+		UPDATE PRODUCT
+		SET PRO_STATUS='N'
+		WHERE PRO_NO=#{proNo}
+		
 	
-	
+	</update>
+	<delete id="deleteProduct">
+		DELETE FROM PRODUCT
+		WHERE PRO_NO=#{proNo}
+	</delete>
+	<delete id="deleteProImg">
+		DELETE FROM PRODUCT_IMAGES
+		WHERE PRO_NO=#{proNo}
+	</delete>
 
 	
 	<!--

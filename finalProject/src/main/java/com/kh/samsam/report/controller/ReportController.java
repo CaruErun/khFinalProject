@@ -73,6 +73,10 @@ public class ReportController {
 	
 	
 	//신고하기
+	@RequestMapping("reportForm.mem")
+	public String reportForm() {
+		return "report/report";
+	}
 	@RequestMapping("report.mem")
 	public String reportMember(Report r, HttpSession session, Model model) {
 			System.out.println("hh");

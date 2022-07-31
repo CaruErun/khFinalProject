@@ -12,7 +12,8 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 <!-- jQuery library -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <!-- Popper JS -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
@@ -46,29 +47,12 @@
 </style>
 </head>
 <body>
-		<jsp:include page="../common/header.jsp"/>
-	
-	
-	
-  <br><br><br>		
-		<br><br><br><br><br><br>
+
 		
 
-<!-- Button to Open the Modal -->
 
 
-<script>
-$(".modal-content").load("/loginModal");
-</script>
 
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
-    신고하기
-  </button>
-  
-  <!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
       	<form action="report.mem"  method="post" >
 
         <!-- Modal body -->
@@ -79,10 +63,10 @@ $(".modal-content").load("/loginModal");
 
           <hr>
           
-			<input type="hidden" value="${loginUser.userId }" name="reportId">
+			<input type="text" value="${loginUser.userId }" name="reportId">
 <!-- 			<input type="hidden" value="user02" name="reportId"> -->
 
-			<input type="hidden" value="${p.proNo }" name="proNo">
+			<input type="text" value="${p.proNo }" name="proNo">
 <!-- 			<input type="hidden" value="1" name="proNo"> -->
 			
           <p><b>피신고자</b></p>
@@ -130,11 +114,7 @@ $(".modal-content").load("/loginModal");
         </div>
   
  		 </form>
-      </div>
-    </div>
-  </div>
-    
-    
-    	<jsp:include page="../common/footer.jsp"/>
+  
+
 </body>
 </html>

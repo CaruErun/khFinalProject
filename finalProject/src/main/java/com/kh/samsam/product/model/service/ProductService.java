@@ -74,6 +74,20 @@ public interface ProductService {
 	//정렬 (without 검색)
 	List<Product> filterListNoS(String sort);
 
+	int insertBid(Bid b);
+
+	int selectBidPrice(int proNo);
+
+	int buyImeddiately(int proNo);
+
+	int deleteProduct(int proNo);
+
+	int deleteProImg(int proNo);
+
+	int selectProNo(String sellId);
+
+	int endSell(int proNo);
+
 
 
 	

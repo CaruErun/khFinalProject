@@ -16,8 +16,8 @@
         	text-decoration: none;
         }
         #pagingArea{
-        	width:fit-content; margin:auto; 
- 			margin-top:50px; 
+        	width:fit-content;
+ 		
         }
         #content{
             padding-top:50px; 
