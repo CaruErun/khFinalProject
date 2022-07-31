@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +9,7 @@
 	<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 	<link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
 	
-	    <!--icon-->
+	<!--icon-->
     <script src="https://kit.fontawesome.com/e849be2e05.js" crossorigin="anonymous"></script>
     
     
@@ -24,6 +25,7 @@
         width: 70%;
         height: 300px;
         border: solid 1px black;
+/*     	margin-top : 100px; */
     }
     .swiper{
         position: absolute;
@@ -162,7 +164,7 @@
 
 	<div class="outer">
 
-	
+
 	<!-- swiper -->
 	<div class="swiper-area" >
 	    
@@ -198,6 +200,9 @@
     </script>
 
 
+<a href="productDetail.pro">productDetail</a>
+
+
 	<div class="see-all">
 	    <div>    
 	        <h2>마감임박경매</h2>
@@ -210,16 +215,26 @@
     
 
 	<div class="item-preview">
-	    
 	    <div class="product-box">
 	        <div class="padding-line">
 	            <div class="img-box">
 	                <img class="item-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
 	            </div>
 	            <div class="text-box">
+	            <div data-no="${proNo }"></div>
 	                <div class="content-box">
 	                    <p>젠북 초특가 세일~</p>
-	                    <i class="fa-solid fa-heart" id="h_mark"></i>
+	                    <i class="fa-solid fa-heart" id="h_mark" onclick=""></i>
+	                    <c:if test="${not empty loginUser}">
+								<c:choose>
+									<c:when test="${not empty l}">
+										<button type="button" class="btn btn-warning" onclick="removeWishlist();" style="margin-left: 35px; maring-bottom: 10px;">관심 목록 제거</button>
+									</c:when>
+									<c:otherwise>
+										<button type="button" class="btn btn-primary" onclick="addWishlist('"+i.proNo+"');" style="margin-left: 35px; maring-bottom: 10px; background-color: #2D55C9;">관심 목록 추가</button>
+									</c:otherwise>
+								</c:choose>
+					    </c:if>
 	                </div>
 	            </div>
 	            <div class="price-box">
@@ -240,6 +255,7 @@
 	                02일 11시간 30분 25초
 	            </div>
 	        </div>
+	        
 	            <div class="count-box">
 	                <div class="count-content">
 	                    <p>입찰</p>
@@ -254,13 +270,30 @@
 	    </div>
 	    
 	    
+ 	    <form id="postform" action=""> 
+ 			<input type="hidden" id="selectProNo" name="proNo" value="1"> 
+ 			<input type="hidden" name="userId" value="${loginUser.userId}"> 
+ 		</form> 
+ 		<script> 
+ 			function addWishlist(proNo){
+				$("#selectProNo").val(proNo);
+ 				$("#postform").attr("action", "addWishlist.my").submit();
+ 			}
+ 			
+ 			function removeWishlist(){
+ 				$("#postform").attr("action", "removeWishlist.my").submit();
+ 			}
+ 		</script> 
+	    
+	    
+	    
 	    
 	    
 	    
 	    <!-- =======찜하기 버튼을 누를경우 이벤트 발생======= -->
-		<script type="text/javascript">
+		<script>
 		    $(function() {
-		        $('#h_mark').click(function(event) {
+		        $('#h_mark').on('click',function(event) { //#h=x
 		            event.preventDefault();
 		            // 비로그인 상태시 찜하기 버튼을 누르면
 		            if ("${loginUser.userId}" == "") {
@@ -273,26 +306,28 @@
 		                // 해당 멤버ID와 상품ID의 정보를 가져옴
 		                var userId = "${loginUser.userId}";
 		                var proNo = "${p.proNo}";
+		                var sellId= "${p.sellId}";
 		
 		                console.log("userId: " + userId);
 		                console.log("proNo: " + proNo);
-		
+		                console.log("sellId: " + sellId);
+
 		                var form = {
 		                		userId : userId,
 		                		proNo : proNo,
+		                		sellId : sellId
 		                };
 		                
-		                
-		
 		                $.ajax({
+		                    url : "addWishlist.my",
 		                    type : "POST",
-		                    url : "pickProduct.pr",
 		                    cache : false,
 		                    contentType : 'application/json; charset=utf-8',
-		                    data : JSON.stringify(form), //userId, proNo 담은 거!
+		                    data : JSON.stringify(form), //userId, proNo, sellId 담은 거!
+		                    
 		                    success : function(result) {
 		                        console.log(result);
-		                        if (result == "SUCCESS") {
+		                        if (result >0) {
 		                        	 $('#h_mark').css("color","hotpink");
 		                        	 
 		                            console.log("찜 성공!")
@@ -1114,6 +1149,8 @@
 	                </div>
 	            </div>
 	    </div>
+
+	    
 
 	    
 	</div>

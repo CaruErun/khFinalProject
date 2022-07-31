@@ -20,12 +20,12 @@
 </c:if>
 
     <div class="wrap">
+                <form action="deleteRe.me" method="post">
         <div id="header">
             <div id="title">회원탈퇴</div>
             
         </div>
         <div id="content">
-                <form action="deleteRe.me" method="post">
                     <div id="content1">
                         <span style="color: midnightblue; font-weight: 550; font-size: 14px;">탈퇴 후 복구가 불가능합니다. 
                             정말로 탈퇴 하시겠습니까? </span>

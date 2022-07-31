@@ -42,8 +42,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id = "selectNoticeList" resultMap="noticeFaqResultSet">
         SELECT ROWNUM AS RNUM, A.* FROM(
-        SELECT NF_NO, NF_TITLE, COUNT, CREATE_DATE
-        FROM NOTICE_FAQ
+        SELECT NF_NO, NF_TITLE, COUNT, CREATE_DATE, CATE_NAME AS NF_CATE_NO
+        FROM NOTICE_FAQ N
+        JOIN CATEGORY C
+        ON N.NF_CATE_NO = C.CATE_NO
         WHERE NF_STATUS = 'Y'
         AND NF_TYPE = 1
         ORDER BY CREATE_DATE) A
@@ -73,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id = "insertNotice" parameterType="noticeFaq">
 		INSERT INTO NOTICE_FAQ(NF_NO, NF_TYPE, NF_TITLE, NF_CATE_NO, NF_CONTENT, CREATE_DATE, COUNT, NF_STATUS)
-    	VALUES(SEQ_NFNO.NEXTVAL, 1, #{nfTitle}, 1000, #{nfContent}, SYSDATE, 0, 'Y')
+    	VALUES(SEQ_NFNO.NEXTVAL, 1, #{nfTitle}, #{nfCateNo}, #{nfContent}, SYSDATE, 0, 'Y')
 	</insert>
 	
 	<update id="deleteNoticeFaq">
@@ -92,8 +94,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id = "selectFaqList" resultMap="noticeFaqResultSet">
         SELECT ROWNUM AS RNUM, A.* FROM(
-        SELECT NF_NO, NF_TITLE, COUNT, CREATE_DATE, NF_CONTENT
-        FROM NOTICE_FAQ
+        SELECT NF_NO, NF_TITLE, COUNT, CREATE_DATE, NF_CONTENT, CATE_NAME AS NF_CATE_NO
+        FROM NOTICE_FAQ N
+        JOIN CATEGORY C
+        ON N.NF_CATE_NO = C.CATE_NO
         WHERE NF_STATUS = 'Y'
         AND NF_TYPE = 2
         ORDER BY CREATE_DATE) A
@@ -102,7 +106,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id = "insertFaq" parameterType="noticeFaq">
 		INSERT INTO NOTICE_FAQ(NF_NO, NF_TYPE, NF_TITLE, NF_CATE_NO, NF_CONTENT, CREATE_DATE, COUNT, NF_STATUS)
-    	VALUES(SEQ_NFNO.NEXTVAL, 2, #{nfTitle}, 1000, #{nfContent}, SYSDATE, 0, 'Y')
+    	VALUES(SEQ_NFNO.NEXTVAL, 2, #{nfTitle}, #{nfCateNo}, #{nfContent}, SYSDATE, 0, 'Y')
 	</insert>
 	
 <!-- 	====================== QNA ====================== -->
@@ -143,23 +147,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 전체 QnA 개수 구하기 -->
 	<select id="selectListCount" resultType="int">
-			SELECT COUNT (*)
-			FROM QNA
-			WHERE QNA_STATUS = 'Y'
-			AND QNA_TYPE = 2
+        SELECT COUNT(*)
+		FROM QNA
+		WHERE QNA_STATUS = 'Y'
+		AND QNA_TYPE = 2
 	</select>
 	
 	<!-- QnA 리스트 조회(페이징) -->
 	<select id="selectQnaListView" resultMap="qnaResultSet">
-			SELECT  QNA_NO,
-				    QNA_CATE_NO,
-				    QNA_TITLE, 
-				    QNA_ID,
-					CREATE_DATE,
-					ANS_STATUS
-		    FROM QNA
-		    WHERE QNA_STATUS='Y'
-		    ORDER BY CREATE_DATE DESC
+        SELECT ROWNUM AS RNUM, A.* FROM(
+        SELECT QNA_NO, QNA_ID, QNA_TITLE, CREATE_DATE, ANS_STATUS, ANSWER_CONTENT, CATE_NAME AS QNA_CATE_NO
+        FROM QNA Q
+        JOIN CATEGORY C
+        ON Q.QNA_CATE_NO = C.CATE_NO
+        WHERE QNA_STATUS = 'Y'
+        AND QNA_TYPE = 2
+        ORDER BY ANS_STATUS DESC, CREATE_DATE) A
+        ORDER BY RNUM DESC
 	</select>
 
 
@@ -191,16 +195,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 <!-- QnA 상세조회 -->
 	<select id="selectQna" resultMap="qnaResultSet">
-			SELECT  QNA_NO, 
-				  	QNA_TITLE,
-				  	QNA_CATE_NO,
-				  	QNA_ID, 
-				  	QNA_CONTENT, 
-				  	CREATE_DATE, 
-				  	ANS_STATUS
-		  	FROM QNA
-		  	WHERE QNA_NO = #{qnaNo}
-		  	AND QNA_STATUS = 'Y'
+        SELECT QNA_NO, QNA_ID, QNA_TITLE, CREATE_DATE, QNA_CONTENT, ANSWER_CONTENT, ANSWER_DATE, CATE_NAME AS QNA_CATE_NO, ANS_STATUS
+		FROM QNA Q
+        JOIN CATEGORY C
+        ON Q.QNA_CATE_NO = C.CATE_NO
+		WHERE QNA_NO = #{qNo}
 	</select>
 	
 	
@@ -220,6 +219,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   				CREATE_DATE = SYSDATE
   			WHERE QNA_NO = #{qnaNo}
 	</update>
+	
+	
+	<!-- 마이페이지 -->
+	<!-- 게시글 전체 개수  -->
+	<select id="selectListMyPageCount" resultType="int">
+			SELECT COUNT (*)
+			FROM QNA
+			WHERE QNA_STATUS = 'Y'
+			AND QNA_TYPE = 2
+	</select>
+	
+	<!-- 리스트 조회 -->
+	<select id="selectQnaListMyPageView" resultMap="qnaResultSet">
+			SELECT  QNA_NO,
+				    QNA_CATE_NO,
+				    QNA_TITLE, 
+				    QNA_ID,
+					CREATE_DATE,
+					ANS_STATUS
+		    FROM QNA
+		    WHERE QNA_STATUS='Y'
+		   	AND QNA_ID = #{userId}
+		    ORDER BY CREATE_DATE DESC
+	</select>
+	
 
 
 </mapper>

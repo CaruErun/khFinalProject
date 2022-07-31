@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper 
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-
 <mapper namespace="memberMapper">
     <resultMap type="member" id="memberResultSet">
         <result column="USER_ID" property="userId"/>
@@ -26,10 +25,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result column="PHONE_FIRST" property="phoneFirst"/>
         <result column="PHONE_MIDDLE" property="phoneMiddle"/>
         <result column="PHONE_BACK" property="phoneBack"/>
-    
-    </resultMap>
-  
-  <!-- 로그인 -->
+   </resultMap>
+    	<resultMap type="proLike" id="prolikeResultSet">
+    		 <result column="LIKE_NO" property="likeNo"/>
+    		 <result column="USER_ID" property="userId"/>
+    		 <result column="PRO_NO" property="proNo"/>
+    	</resultMap>
+<!-- 로그인 -->
   <select id="loginMember" resultMap="memberResultSet">
 	    SELECT USER_ID
 	           ,USER_PW
@@ -78,42 +80,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              )
   </insert>
   
-  <select id="emailFirst" resultType="String">
-  	SELECT SUBSTR(EMAIL,1,INSTR(EMAIL,'@')-1) AS EMAIL_FIRST
-	FROM MEMBER
-	WHERE USER_ID = #{userId}
-  </select>
-  
-  <select id="emailBack" resultType="String">
- 	SELECT SUBSTR(EMAIL,INSTR(EMAIL,'@')+1) AS EMAIL_BACK
-	FROM MEMBER
-	WHERE USER_ID = #{userId}
-  </select>
-  
-  <select id="phoneFirst" resultType="String">
-  	SELECT SUBSTR(PHONE,1,INSTR(PHONE,'-')-1) AS PHONE_FIRST
-	FROM MEMBER
-	WHERE USER_ID = #{userId}
-  </select>
-  
-  <select id="phoneMiddle" resultType="String">
-  	SELECT SUBSTR(PHONE,5,INSTR(PHONE,'-')) AS PHONE_MIDDLE
-	FROM MEMBER
-	WHERE USER_ID = #{userId}
-  </select>
-  
-  <select id="phoneBack" resultType="String">
-  	SELECT SUBSTR(PHONE,10,INSTR(PHONE,'-')+1) AS PHONE_BACK
-	FROM MEMBER
-	WHERE USER_ID = #{userId}
-  </select>
-  
+  <!-- 아이디 찾기 -->
+	<select id="find_id" parameterType="String" resultType="String">
+		SELECT USER_ID 
+		FROM MEMBER 
+		WHERE EMAIL = #{email}
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="update_pw" parameterType="member">
+		UPDATE MEMBER 
+		SET USER_PW = #{userPw} 
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 아이디 중복 검사 -->
+	<select id="check_id" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE USER_ID = #{id}
+	</select>
+	
+	<!-- 이메일 중복 검사 -->
+	<select id="check_email" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE EMAIL=#{email}
+	</select>
+
   <select id="pwdChange" parameterType="member">
   	UPDATE  MEMBER
 	SET USER_PW = #{newPwd}
 	WHERE USER_ID = #{userId}
   </select>
-  
   <update id="updateMember" parameterType="member">
 	  	UPDATE MEMBER
 	  	SET EMAIL = #{email},
@@ -123,17 +122,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	  		ADDRESS_DETAIL = #{addressDetail}
 	  	WHERE USER_ID = #{userId}
   </update>
-  
    <update id="deleteMember" parameterType="String">
-		UPDATE MEMBER 
+		UPDATE MEMBER
 		SET USER_STATUS = 'N'
 		WHERE USER_ID = #{userId}
 	</update>
 	
-	<select id="selectBanCount" resultType="_int">	
-        SELECT BAN_COUNT 
-        FROM MEMBER 
-        WHERE USER_ID = #{userId}
+	
+<select id="selectBanCount" resultType="_int">	
+        SELECT BAN_COUNT
+        FROM MEMBER
+        WHERE USER_ID = #{reportedId}
 	</select>
+	
+	<update id="banMember" parameterType="member">
+	    UPDATE MEMBER
+        SET USER_STATUS = 'N',
+            BAN_COUNT = BAN_COUNT + 1,
+            BAN_DATE = CASE WHEN BAN_DATE IS NULL THEN SYSDATE+#{banPeriod} ELSE BAN_DATE+#{banPeriod} END
+        WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="deleteReport">
+		UPDATE REPORT
+        SET REPORT_STATUS = 'N'
+        WHERE REPORT_NO = #{reportNo}
+	</update>
+	
+	<select id="selectNewMember" resultType="_int">
+		SELECT COUNT(ENTER_DATE) AS COUNT
+		FROM MEMBER
+		WHERE ENTER_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+	</select>
+	
+	<select id="selectRemoveMember" resultType="_int">		
+		SELECT COUNT(MODIFY_DATE) AS COUNT
+		FROM MEMBER
+		WHERE MODIFY_DATE BETWEEN TO_DATE(#{date1},'YY-MM-DD')
+		AND TO_DATE(#{date2},'YY-MM-DD')
+		AND USER_STATUS = 'N'
+	</select>
+	
+	<select id="nobanMember" resultType="_int">
+        UPDATE REPORT
+        SET REPORT_STATUS = 'N'
+        WHERE REPORT_NO = #{reportNo}
+	</select>
+	
+	
+	
+	
+	
 	
  </mapper>

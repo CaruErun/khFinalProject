@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +27,8 @@ import com.google.gson.Gson;
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.common.template.Pagination;
+import com.kh.samsam.member.model.vo.ProLike;
+import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.product.model.service.ProductService;
 import com.kh.samsam.product.model.vo.Bid;
 import com.kh.samsam.product.model.vo.Postbox;
@@ -248,11 +252,19 @@ public class ProductController {
 		model.addAttribute("pi",pi);
 		return "product/productListView";
 	}
+	
+	
 	@RequestMapping("productDetail.pr")
 	public String selectProduct(int pNo
-								,Model model
-								,HttpSession session) {
+
+								,Model model, HttpSession session) {
 	
+
+		
+		String userId="";
+		if(((Member)session.getAttribute("loginUser")) != null) {
+			userId = ((Member)session.getAttribute("loginUser")).getUserId();
+		}
 		
 		int result=productService.increaseCount(pNo);
 		if(result > 0) {
@@ -262,6 +274,13 @@ public class ProductController {
 			model.addAttribute("p",p);
 			model.addAttribute("piList",piList);
 			
+
+			if(userId != "") {
+			int proL = productService.prolike(pNo, userId);
+			model.addAttribute("proL",proL);
+			}
+			
+
 			return "product/productDetail";
 			
 		}else {
@@ -361,17 +380,21 @@ public class ProductController {
 	}	
 	
 	
-
+	//판매현황
 	@ResponseBody
 	@RequestMapping(value="sale.me", produces="application/json; charset=UTF-8")
 	public String sale(String userId, int cPage) {
 		int currentPage = cPage;
-		int listCount = productService.selectListCount();
+		int listCount = productService.selectListCount(userId);
+		
+//		System.out.println(listCount);
 		
 		int pageLimit = 10;
 		int boardLimit = 3;
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
+//		System.out.println(pi.getEndPage());
 		
 		ArrayList<Product> list = productService.selectList(userId,pi);
 		
@@ -395,7 +418,7 @@ public class ProductController {
 	@RequestMapping("postInsert.me")
 	public String postInsert(Postbox p,HttpSession session ,Model model) {
 		
-		System.out.println(p);
+//		System.out.println(p);
 		
 		int result = productService.postInsert(p); 
 		
@@ -414,13 +437,15 @@ public class ProductController {
 	@RequestMapping(value="post.me", produces="application/json; charset=UTF-8")
 	public String post(String userId, int pPage) {
 		int currentPage = pPage;
-		int listCount = productService.selectListCountt();
+		int listCount = productService.selectListCountt(userId);
+		
+//		System.out.println(listCount);
 		
 		int pageLimit = 10;
 		int boardLimit = 3;
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		
+//		System.out.println(pi.getEndPage());
 		ArrayList<Postbox> list = productService.selectListPost(userId,pi);
 		
 		Map<String, Object> ob = new HashMap<String,Object>();
@@ -435,15 +460,18 @@ public class ProductController {
 	@ResponseBody
 	@RequestMapping(value="attend.me", produces="application/json; charset=UTF-8")
 	public String attend(String userId, int sPage) {
-		System.out.println(userId);
+//		System.out.println(userId);
 		int currentPage = sPage;
-		int listCount = productService.selectListCount();
+		int listCount = productService.selectListCounttt(userId);
+		
+//		System.out.println(listCount);
 		
 		int pageLimit = 10;
 		int boardLimit = 3;
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		System.out.println(pi);
+		
+//		System.out.println(pi.getEndPage());
 		
 		ArrayList<Bid> list = productService.selectListAttend(userId,pi);
 		
@@ -452,7 +480,7 @@ public class ProductController {
 		ob.put("pi", pi);
 		ob.put("list", list);
 		
-		System.out.println(list);
+//		System.out.println(list);
 		
 		return new Gson().toJson(ob);
 	}
@@ -460,16 +488,17 @@ public class ProductController {
 	@ResponseBody
 	@RequestMapping(value="bid.me", produces="application/json; charset=UTF-8")
 	public String bid(String userId, int bPage) {
-		System.out.println(userId);
 		int currentPage = bPage;
-		int listCount = productService.selectListCount();
+		int listCount = productService.selectListCountttt(userId);
+		
+//		System.out.println(listCount);
 		
 		int pageLimit = 10;
 		int boardLimit = 3;
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		System.out.println(pi);
 		
+//		System.out.println(pi.getEndPage());		
 		ArrayList<Bid> list = productService.selectListBid(userId,pi);
 		
 		Map<String, Object> ob = new HashMap<String,Object>();
@@ -477,89 +506,235 @@ public class ProductController {
 		ob.put("pi", pi);
 		ob.put("list", list);
 		
-		System.out.println(list);
+//		System.out.println(list);
+		
+		return new Gson().toJson(ob);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="nPost.me", produces="application/json; charset=UTF-8")
+	public String nPost(String userId, int nPage) {
+		int currentPage = nPage;
+		int listCount = productService.selectListCounttttt(userId);
+		
+//		System.out.println(listCount);
+		
+		int pageLimit = 10;
+		int boardLimit = 3;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
+//		System.out.println(pi.getEndPage());		
+		ArrayList<Postbox> list = productService.selectListnPost(userId,pi);
+		
+		Map<String, Object> ob = new HashMap<String,Object>();
+		
+		ob.put("pi", pi);
+		ob.put("list", list);
+		
+//		System.out.println(list);
 		
 		return new Gson().toJson(ob);
 	}
 	
 //	================================================검색================================================
-	@RequestMapping("searchList.pr")
+//	@GetMapping("getSearchList.pr")
+//	@ResponseBody
+//	public String getSearchList(Model model, Product p) {
+//		
+//		
+//		 List<Product> proList =  productService.getSearchList(p);
+//		 
+//		model.addAttribute("proList",proList);
+//
+//		model.addAttribute("searchType",p.getSearchType());
+//		model.addAttribute("searchKeyword",p.getSearchKeyword());
+//		
+//		return "product/searchList";
+//		
+//	}
+	
+	
+	
+	
+	
+@RequestMapping("searchList.pr")
 	public ModelAndView getSearchList(
-								int cPage,
-								String searchType,
-								String searchKeyword,
-								ModelAndView mv) {
+			int cPage,
+			String searchType,
+			String searchKeyword,
+			ModelAndView mv) {
 
-		//페이징
-		int listCount = productService.searchProListCount(searchType, searchKeyword);
-		int pageLimit =10;
-		int boardLimit = 10;
+//페이징
+int listCount = productService.searchProListCount(searchType, searchKeyword);
+int pageLimit =10;
+int boardLimit = 10;
+
+PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
+
+//리스트 불러오기
+List<Product> plist = productService.getSearchList(searchType, searchKeyword,pi);
+
+
+mv.addObject("searchType",searchType);
+mv.addObject("searchKeyword",searchKeyword);
+mv.addObject("pi",pi);
+mv.addObject("plist",plist).setViewName("product/productListView");
+
+return mv;
+}
+
+
+//================================================정렬================================================
+@RequestMapping("filterList.pr")
+public ModelAndView filterList(
+		int cPage,
+		String searchType,
+		String searchKeyword,
+		String sort,
+		ModelAndView mv) {
+
+
+
+int listCount = productService.searchProListCount(searchType,searchKeyword); //처리필
+//int listCount = productService.selectProListCount(); //처리필
+
+int pageLimit =10;
+int boardLimit = 10;
+
+PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
+
+if(searchType != null && searchKeyword != null) {
+List<Product> plist = productService.filterList(searchType, searchKeyword, sort,pi);
+
+mv.addObject("searchType",searchType);
+mv.addObject("searchKeyword",searchKeyword);
+mv.addObject("pi",pi);
+mv.addObject("plist",plist).setViewName("product/productListView");
+
+}else {
+
+List<Product> plist = productService.filterListNoS(sort,pi);
+
+mv.addObject("searchType","");
+mv.addObject("searchKeyword","");
+mv.addObject("pi",pi);
+mv.addObject("plist",plist).setViewName("product/productListView");
+
+}
+return mv;
+}
+
+
+//================================================찜하기================================================
+//찜 추가
+@ResponseBody	
+@RequestMapping(value="addWishlist.my", produces="application/json; charset=UTF-8")
+public String addWishlist(String userId, int proNo, HttpSession session, Model model) {
+
+System.out.println(proNo);
+
+ProLike l = new ProLike();
+l.setProNo(proNo);
+l.setUserId(userId);
+
+int result = productService.addWishlist(l);
+return new Gson().toJson(result);
+
+//if(result > 0) {
+//
+//model.addAttribute("userId", userId);
+//model.addAttribute("l", l);
+//session.setAttribute("alertMsg","관심 목록에 추가되었습니다."); //test
+//return "redirect:productDetail.pr?pNo=" + proNo;
+//}
+//else {
+//model.addAttribute("errorMsg", "관심 목록 추가 실패");
+//return "common/errorPage";
+//}
+}
+
+
+//찜 삭제
+@ResponseBody
+@RequestMapping(value="removeWishlist.my", produces="application/json; charset=UTF-8")
+public String removeWishlist(String userId, int proNo, HttpSession session, Model model) {
+
+ProLike l = new ProLike();
+l.setProNo(proNo);
+l.setUserId(userId);
+
+int result = productService.removeWishlist(l);
+
+return new Gson().toJson(result);
+}
+
+
+
+
+@RequestMapping("productDetail.pro")
+public String productDetail() {
+return "product/productDetail";
+}
+
+//	============================= 마이페이지 행 삭제 =================================
+	//판매현황 삭제
+	@RequestMapping(value="deleteSale.my",  method = RequestMethod.POST)
+	@ResponseBody
+	public void deleteSale(Product p,HttpSession session,
+					String[] chArr) {
 		
-		PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
 		
-		//리스트 불러오기
-		List<Product> plist = productService.getSearchList(searchType, searchKeyword);
+//		System.out.println(Arrays.toString(chArr));
 		
+		int result = productService.deleteSale(chArr);
 		
-		mv.addObject("searchType",searchType);
-		mv.addObject("searchKeyword",searchKeyword);
-		mv.addObject("pi",pi);
-		mv.addObject("plist",plist).setViewName("product/productListView");
-		
-		return mv;
 	}
 	
-
-//	================================================정렬================================================
-	@RequestMapping("filterList.pr")
-	public ModelAndView filterList(
-							int cPage,
-							String searchType,
-							String searchKeyword,
-							String sort,
-							ModelAndView mv) {
-		
-
-		System.out.println(searchType);
-		System.out.println(searchKeyword);
-		System.out.println(sort);
-
-		int listCount = productService.selectProListCount();
-		
-		int pageLimit =10;
-		int boardLimit = 10;
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
-		
-		if(searchType != null && searchKeyword != null) {
-			List<Product> plist = productService.filterList(searchType, searchKeyword, sort);
-		
-			mv.addObject("searchType",searchType);
-			mv.addObject("searchKeyword",searchKeyword);
-			mv.addObject("pi",pi);
-			mv.addObject("plist",plist).setViewName("product/productListView");
+	
+	//운송장조회 삭제
+		@RequestMapping(value="deletePost.my",  method = RequestMethod.POST)
+		@ResponseBody
+		public void deletePost(Product p,HttpSession session,
+						String[] chArr2) {
+			
+			
+//			System.out.println(Arrays.toString(chArr2));
+			
+			int result = productService.deletePost(chArr2);
+			
 		}
 		
-			List<Product> plist = productService.filterListNoS(sort);
-			
-			mv.addObject("searchType","");
-			mv.addObject("searchKeyword","");
-			mv.addObject("pi",pi);
-			mv.addObject("plist",plist).setViewName("product/productListView");
-			
-			return mv;
-	}
-	
-	
-//	================================================찜하기================================================
-	@RequestMapping("pickProduct.pr")
-	public String pickProduct(Product p) {
 		
 		
-		return "main";
-	}
+	//낙찰현황 삭제
+		@RequestMapping(value="deleteBid.my",  method = RequestMethod.POST)
+		@ResponseBody
+		public void deleteAttend(Product p,HttpSession session,
+						String[] chArr3) {
+					
+					
+//			System.out.println(Arrays.toString(chArr3));
+					
+			int result = productService.deleteBid(chArr3);
+					
+		}
+		
+		
+	//운송장 삭제
+		@RequestMapping(value="deleteNpost.my",  method = RequestMethod.POST)
+		@ResponseBody
+		public void nPostDelete(Product p,HttpSession session,
+						String[] chArr4) {
+					
+					
+			System.out.println(Arrays.toString(chArr4));
+					
+			int result = productService.nPostDelete(chArr4);
+					
+		}
 	
-	
+		
 	
 	
 }

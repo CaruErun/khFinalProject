@@ -1,15 +1,24 @@
 package com.kh.samsam.member.model.service;
 
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kh.samsam.member.model.dao.MemberDao;
 import com.kh.samsam.member.model.vo.MemberChart;
 
+import java.io.PrintWriter;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.mail.HtmlEmail;
 import org.json.simple.JSONObject;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +27,10 @@ import org.springframework.stereotype.Service;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.dao.MemberDao;
 import com.kh.samsam.member.model.vo.Member;
+import com.kh.samsam.member.model.vo.MemberChart;
+import com.kh.samsam.member.model.vo.ProLike;
+import com.kh.samsam.product.model.vo.Product;
+
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -27,9 +40,12 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	private MemberDao memberDao;
+	@Inject
+	private MemberDao manager;
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	@Override
 	public int selectNewMember(MemberChart c) {
 		int count = memberDao.selectNewMember(sqlSession, c);
@@ -49,6 +65,8 @@ public class MemberServiceImpl implements MemberService {
 		return loginUser;
 	}
 	
+
+	
 	@Override
 	public int insertMember(Member m) {
 		
@@ -56,7 +74,119 @@ public class MemberServiceImpl implements MemberService {
 		
 		return result;
 	}
+	@Override
+	public void check_id(String id, HttpServletResponse response) throws Exception {
+		PrintWriter out = response.getWriter();
+		out.println(manager.check_id(sqlSession,id));
+		out.close();
+	}
+
+	// 이메일 중복 검사(AJAX)
+	@Override
+	public void check_email(String email, HttpServletResponse response) throws Exception {
+		PrintWriter out = response.getWriter();
+		out.println(manager.check_email(sqlSession, email));
+		out.close();
+	}
+	// 아이디 찾기
+	@Override
+	public String find_id(HttpServletResponse response, String email) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		String id = manager.find_id(sqlSession, email);
+		
+		if (id == null) {
+			out.println("<script>");
+			out.println("alert('가입된 아이디가 없습니다.');");
+			out.println("history.go(-1);");
+			out.println("</script>");
+			out.close();
+			return null;
+		} else {
+			return id;
+		}
+	}
+
 	
+	// 이메일 발송
+		@Override
+		public void send_mail(Member m, String div) throws Exception {
+			// Mail Server 설정
+			String charSet = "utf-8";
+			String hostSMTP = "smtp.naver.com";
+			String hostSMTPid = "dlckswn91@naver.com";
+			String hostSMTPpwd = "8yucd6";
+
+			// 보내는 사람 EMail, 제목, 내용
+			String fromEmail = "dlckswn91@naver.com";
+			String fromName = "Spring Homepage";
+			String subject = "";
+			String msg = "";
+			
+			if(div.equals("find_pw")) {
+				subject = "SAMSAM AUCTION 임시 비밀번호 입니다.";
+				msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
+				msg += "<h3 style='color: blue;'>";
+				msg += m.getUserId() + "님의 임시 비밀번호 입니다. 비밀번호를 변경하여 사용하세요.</h3>";
+				msg += "<p>임시 비밀번호 : ";
+				msg += m.getUserPw() + "</p></div>";
+			}
+			// 받는 사람 E-Mail 주소
+			String mail = m.getEmail();
+			try {
+				HtmlEmail email = new HtmlEmail();
+				email.setDebug(true);
+				email.setCharset(charSet);
+				email.setSSL(true);
+				email.setHostName(hostSMTP);
+				email.setSmtpPort(587);
+
+				email.setAuthentication(hostSMTPid, hostSMTPpwd);
+				email.setTLS(true);
+				email.addTo(mail, charSet);
+				email.setFrom(fromEmail, fromName, charSet);
+				email.setSubject(subject);
+				email.setHtmlMsg(msg);
+				email.send();
+			} catch (Exception e) {
+				System.out.println("메일발송 실패 : " + e);
+			}
+		}
+		
+		// 비밀번호 찾기
+		@Override
+		public void find_pw(HttpServletResponse response, Member m) throws Exception {
+			response.setContentType("text/html;charset=utf-8");
+			PrintWriter out = response.getWriter();
+			// 아이디가 없으면
+			if(memberDao.check_id(sqlSession, m.getUserId()) == 0) {
+				out.print("아이디가 없습니다.");
+				out.close();
+			}
+//			// 가입에 사용한 이메일이 아니면
+//			else if(!m.getEmail().equals(manager.loginMember(m.getUserId()).getEmail())) {
+//				out.print("잘못된 이메일 입니다.");
+//				out.close();
+			else{
+				// 임시 비밀번호 생성
+				
+				String pw = "";
+				for (int i = 0; i < 12; i++) {
+					pw += (char) ((Math.random() * 26) + 97);
+				}
+				
+				m.setUserPw(pw);
+				// 비밀번호 변경
+				// 비밀번호 변경 메일 발송
+				send_mail(m, "find_pw");
+				String encPwd = bcryptPasswordEncoder.encode(m.getUserPw());
+				System.out.println("암호화 후 비밀번호 : "+encPwd);
+				m.setUserPw(encPwd);
+				memberDao.update_pw(sqlSession, m);
+				out.print("이메일로 임시 비밀번호를 발송하였습니다.");
+				out.close();
+			}
+		}
 
 
 	@Override
@@ -105,14 +235,49 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	
+	//======찜리스트======
+		//페이징 처리 게시글 count
+		@Override
+		public int selectPListCount(String userId) {
+			
+			return memberDao.selectPListCount(sqlSession,userId);
+		}
+
+		//찜리스트 출력
+		@Override
+		public ArrayList<Product> pickList(String userId, PageInfo pi) {
+			return memberDao.pickList(sqlSession,userId, pi);
+		}
+		
 
 
+
+		
+
+		// 신고 당한 회원 정지 - banCount 조회
+		@Override
+		public int selectBanCount(String reportedId) {
+			return memberDao.selectBanCount(sqlSession, reportedId);
+		}
+
+
+		// 신고 당한 회원 정지
+		@Override
+		public int banMember(Member m) {
+			return memberDao.banMember(sqlSession, m);
+		}
+		
+		@Override
+		public int deleteReport(int reportNo) {
+			return memberDao.deleteReport(sqlSession, reportNo);
+		}
+
+		@Override
+		public int nobanMember(int reportNo) {
+			return memberDao.nobanMember(sqlSession, reportNo);
+		}
 	
 
-	// 신고 당한 회원 정지 - banCount 조회
-	@Override
-	public int selectBanCount(String userId) {
-		return memberDao.selectBanCount(sqlSession, userId);
-	}
 
 }

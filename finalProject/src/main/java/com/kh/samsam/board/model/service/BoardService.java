@@ -76,6 +76,15 @@ public interface BoardService {
 
 	//카테고리 불러오기
 	public List<Category> selectCategoryList();
+
+	
+	
+////MyPage////
+	//전체 게시글 개수 구하기
+	int selectListMyPageCount();
+
+	//리스트 조회
+	ArrayList<QnA> selectQnaListMyPageView(PageInfo pi, String userId);
 	
 	
 

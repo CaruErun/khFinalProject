@@ -504,7 +504,7 @@
                         <div class="select-category">
                             <select id="se-list1" size="5">
                                 <option value="none" disabled>- 선택하세요 -</option>
-                                <option value="100">가전제품</option>
+                                <option value="100">치킨</option>
                                 <option value="200">스포츠용품</option>
                                 <option value="300">생필품</option>
                                 <option value="900">기타</option>
@@ -512,7 +512,6 @@
                             </select>
                             <select name="proCateNo" id="se-list2" size="5" required>
                                 <option value="none" disabled>- 선택하세요 -</option>
-                              
                             </select>
                         </div>
                     </div>
