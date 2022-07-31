@@ -65,30 +65,9 @@ public class ReportController {
 		return new Gson().toJson(r);
 	}
 	
-	//report
-//	//신고하기 form으로 전달하기
-//	@RequestMapping("reportView.mem")
-//	public String reportView(Model model) {
-//		
-//		return "report/report";
-//	}
-	
-	
-	@RequestMapping("reportForm.mem")
-	public ModelAndView reportForm(Report r, ModelAndView mv,
-							String sellId  ) {
-		
-		mv.addObject("sellId",sellId);
-		mv.addObject("r",r).setViewName("report/report");
-		return mv;
-	}
 
 	
-	//신고하기
-	@RequestMapping("reportForm.mem")
-	public String reportForm() {
-		return "report/report";
-	}
+
 	@RequestMapping("report.mem")
 	public String reportMember(Report r, HttpSession session, Model model) {
 			System.out.println(r);
