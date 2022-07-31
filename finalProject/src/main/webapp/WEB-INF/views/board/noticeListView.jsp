@@ -16,41 +16,50 @@
         	text-decoration: none;
         }
         #pagingArea{
-        	width:fit-content; margin:auto; 
+
+        	width:70%;
  			margin-top:50px; 
-        }
+			display: flex;
+			align-items:center;
+			justify-content: center;
+		}
         #content{
-            padding-top:50px; 
+			margin : 0 auto;
+			/* 상하 0, 좌우 auto */
+            padding-top:50px;
 		    width: 1500px;
-		    height: 840px;
- 		    margin-left: 20%;
-		}		
+		    height: 900px;
+			display:flex;				/* 블럭요소가 플렉스의 디볼트가 수평으로 나열 */
+			flex-direction: column;		/* column flex 방향을 수직으로 */
+			justify-content : center; 	/* 내부 요소의 컨텐트들을 좌우로 어떻게 */
+			align-items: center;		/* 가로로정렬되어있으면 수직 센터를 맞춰줌 */
+		}	
 		table{
+			width:100%;
 		    border-top: 1px solid gray;
 		    border-bottom: 1px solid gray;
 		}
-		#content_2{
-		    width: 70%;
-		    height: 100%;
+		#content_1{
+			width:70%;
 		}
-		
-        .text {width:53%;}
-
+		#content_2{
+ 		    width: 70%;
+		}
         .btn-secondary{
             margin-right: 10px;
         }
-
-        
 	</style>
 
 </head>
 
 <body>
-		<jsp:include page="../customerInfoMenubar.jsp"/>
-			<div id="content">
-            <h2>공지사항</h2>
-            <h4>삼삼옥션 서비스의 오류, 장애, 기타 공지사항을 안내드립니다.</h4>
-        	<div id="content_2">
+	<jsp:include page="../customerInfoMenubar.jsp"/>
+		<div id="content">
+			<div id="content_1">
+            	<h2>공지사항</h2>
+            	<h4>삼삼옥션 서비스의 오류, 장애, 기타 공지사항을 안내드립니다.</h4>
+			</div>
+			<div id="content_2">
             <br>
             <c:if test="${loginUser.userId eq 'admin' }">
             	<a class="btn btn-secondary" style="float:right;" href="enrollForm.no">공지사항 작성</a>
@@ -59,10 +68,11 @@
             <table id="noticeList" class="table table-hover" style="width: 1050px; text-align:center">
                 <thead>
                     <tr>
-                        <th>글번호</th>
-                        <th>제목</th>
-                        <th>조회수</th>
-                        <th>작성일</th>
+                        <th width="10%">글번호</th>
+                        <th width="15%">카테고리</th>
+                        <th width="50%">제목</th>
+                        <th width="10%">조회수</th>
+                        <th width="15%">작성일</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +81,7 @@
 <!-- 	                    onclick 으로 선언한 다음에는 문자열이 필요  그래서 ""가 있어야함-->
 <!-- 						location.href도 주소를 "", ''로 해야함 -->
 	                        <td class="nfNo">${n.rnum }</td>
+	                        <td>${n.nfCateNo}</td>
 	                        <td>${n.nfTitle }</td>
 	                        <td>${n.count }</td>
 	                        <td>${n.createDate }</td>
@@ -100,8 +111,8 @@
             		})
             	})
             </script>
-            
-            <br><br>
+        </div>
+        
             <div id="pagingArea">
                 <ul class="pagination">
                 <c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }" step="1">
@@ -109,7 +120,6 @@
                 </c:forEach>
                 </ul>
             </div>
-        </div>
 
     </div>
 	

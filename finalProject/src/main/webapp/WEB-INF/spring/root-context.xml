@@ -46,6 +46,12 @@
 	   
 	   </bean>
 	   
+	   <!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
+	
+	<bean id="naverLoginBO" class="com.kh.samsam.social.NaverLoginBO" />
+	
+	
+	   
 	<context:component-scan base-package="com.kh.samsam">
 		
 	</context:component-scan>

@@ -186,6 +186,23 @@ public class BoardServiceImpl implements BoardService{
 	public ArrayList<QnA> ajaxInquiry(int proNo, PageInfo pi) {
 		
 		return boardDao.ajaxInquiry(sqlSession,proNo, pi);
+
+	}
+//	============ myPage ============
+	
+	//전체 게시글 개수 구하기
+	@Override
+	public int selectListMyPageCount() {
+		// TODO Auto-generated method stub
+		return dao.selectListMyPageCount(sqlSession);
+	}
+	
+
+	//리스트 조회
+	@Override
+	public ArrayList<QnA> selectQnaListMyPageView(PageInfo pi, String userId) {
+		// TODO Auto-generated method stub
+		return dao.selectQnaListMyPageView(sqlSession,userId,pi);
 	}
 	
 	@Override

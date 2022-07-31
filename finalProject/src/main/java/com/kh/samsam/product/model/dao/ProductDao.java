@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.common.model.vo.PageInfo;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.vo.Bid;
 import com.kh.samsam.product.model.vo.Postbox;
 import com.kh.samsam.product.model.vo.Product;
@@ -19,6 +20,8 @@ import com.kh.samsam.product.model.vo.ProductImages;
 
 @Repository
 public class ProductDao {
+
+	
 
 	public int productEnrollAmount(SqlSessionTemplate sqlSession, ProductChart c) {
 		int count = sqlSession.selectOne("productMapper.productEnrollAmount", c);
@@ -132,28 +135,112 @@ public class ProductDao {
 		return (ArrayList)sqlSession.selectList("productMapper.selectListBid", userId, rowBounds);
 	}
 
-	public int selectListCount(SqlSessionTemplate sqlSession) {
+	public int selectListCount(SqlSessionTemplate sqlSession,String userId) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("productMapper.selectListCount");
+		return sqlSession.selectOne("productMapper.selectListCount",userId);
 	}
 
-	public int selectListCountt(SqlSessionTemplate sqlSession) {
+	public int selectListCountt(SqlSessionTemplate sqlSession,String userId) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("productMapper.selectListCountt");
+		return sqlSession.selectOne("productMapper.selectListCountt",userId);
+	}
+	
+	public int selectListCounttt(SqlSessionTemplate sqlSession,String userId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("productMapper.selectListCounttt",userId);
+	}
+	
+	public int selectListCountttt(SqlSessionTemplate sqlSession,String userId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("productMapper.selectListCountttt",userId);
 	}
 
 
+	public int selectListCounttttt(SqlSessionTemplate sqlSession, String userId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("productMapper.selectListCountttt",userId);
+	}
+
+	public ArrayList<Postbox> selectListnPost(SqlSessionTemplate sqlSession, PageInfo pi, String userId) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		return (ArrayList)sqlSession.selectList("productMapper.selectListnPost", userId, rowBounds);
+	}
 
 	
 	//검색 전체 목록 => 옵션, 키워드
-	public List<Product> getSearchList(SqlSessionTemplate sqlSession, String searchType, String searchKeyword) {
+	public List<Product> getSearchList(SqlSessionTemplate sqlSession, String searchType, String searchKeyword, PageInfo pi) {
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("searchType", searchType);
 		map.put("searchKeyword", searchKeyword);
 		
-		return sqlSession.selectList("productMapper.getSearchList",map);
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		return (ArrayList)sqlSession.selectList("productMapper.getSearchList",map, rowBounds);
 	}
+	
+	
+	
+	//판매현황 삭제
+	public int deleteSale(SqlSessionTemplate sqlSession, String[] chArr) {
+		// TODO Auto-generated method stub
+		int result =0;
+		
+		for(int i=0; i<chArr.length; i++) {
+			String ch = chArr[i];
+			result+=sqlSession.update("productMapper.deleteSale", ch);
+			
+		}
+		return result;
+	}
+
+	//운송장 조회 삭제
+	public int deletePost(SqlSessionTemplate sqlSession, String[] chArr2) {
+		// TODO Auto-generated method stub
+		int result2 =0;
+		
+		for(int i=0; i<chArr2.length; i++) {
+			String ch2 = chArr2[i];
+			result2+=sqlSession.update("productMapper.deletePost", ch2);
+			
+		}
+		return result2;
+	}
+
+	//낙찰현황 삭제
+	public int deleteBid(SqlSessionTemplate sqlSession, String[] chArr3) {
+		// TODO Auto-generated method stub
+		int result3 =0;
+		
+		for(int i=0; i<chArr3.length; i++) {
+			String ch3 = chArr3[i];
+			result3+=sqlSession.update("productMapper.deleteBid", ch3);
+			
+		}
+		return result3;
+	}
+	
+	
+	//판매 운송장 조회 삭제
+	public int nPostDelete(SqlSessionTemplate sqlSession, String[] chArr4) {
+		// TODO Auto-generated method stub
+		int result4 =0;
+		
+		for(int i=0; i<chArr4.length; i++) {
+			String ch4 = chArr4[i];
+			result4+=sqlSession.update("productMapper.nPostDelete", ch4);
+			
+		}
+		return result4;
+	}
+
 
 	
 	//검색 레코드 갯수
@@ -169,23 +256,90 @@ public class ProductDao {
 	
 	
 	//정렬 (with 검색)
-	public List<Product> filterList(SqlSessionTemplate sqlSession, String searchType, String searchKeyword, String sort) {
+	public List<Product> filterList(SqlSessionTemplate sqlSession, String searchType, String searchKeyword, String sort, PageInfo pi) {
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("searchType", searchType);
 		map.put("searchKeyword", searchKeyword);
 		map.put("sort", sort);
 		
-		return sqlSession.selectList("productMapper.filterList", map);
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		return sqlSession.selectList("productMapper.filterList", map, rowBounds);
 	}
 
 	//정렬 (without 검색)
-	public List<Product> filterListNoS(SqlSessionTemplate sqlSession, String sort) {
+	public List<Product> filterListNoS(SqlSessionTemplate sqlSession, String sort, PageInfo pi) {
 		
-		return sqlSession.selectList("productMapper.filterListNoS", sort);
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		return sqlSession.selectList("productMapper.filterListNoS", sort, rowBounds);
+	}
+
+	public int insertBid(SqlSessionTemplate sqlSession, Bid b) {
+		return sqlSession.insert("productMapper.insertBid",b);
+	}
+
+	public int selectBidPrice(SqlSessionTemplate sqlSession, int proNo) {
+		return sqlSession.selectOne("productMapper.selectBidPrice",proNo);
+	}
+
+	public int buyImmediately(SqlSessionTemplate sqlSession, int proNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("productMapper.buyImmediately",proNo);
+	}
+
+	public int deleteProduct(SqlSessionTemplate sqlSession, int proNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("productMapper.deleteProduct",proNo);
+	}
+
+	public int deleteProImg(SqlSessionTemplate sqlSession, int proNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("productMapper.deleteProImg",proNo);
+	}
+
+	public int selectProNo(SqlSessionTemplate sqlSession, String sellId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("productMapper.selectProNo",sellId);
+	}
+
+	public int endSell(SqlSessionTemplate sqlSession, int proNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("productMapper.endSell",proNo);
 	}
 
 	
+	
+	
+	//찜 추가
+	public int addWishlist(SqlSessionTemplate sqlSession, ProLike l) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("productMapper.addWishlist", l);
+	}
+
+	//찜 삭제
+	public int removeWishlist(SqlSessionTemplate sqlSession, ProLike l) {
+		// TODO Auto-generated method stub
+		return sqlSession.delete("productMapper.removeWishlist", l);
+	}
+	
+	
+	//찜 목록 보내기
+	public int prolike(SqlSessionTemplate sqlSession, int pNo, String userId) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("pNo", pNo);
+		map.put("userId", userId);
+		
+		return sqlSession.selectOne("productMapper.prolike",map);
+		
+	}
 	
 	
 }

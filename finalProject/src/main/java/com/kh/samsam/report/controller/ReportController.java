@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.samsam.common.model.vo.PageInfo;
@@ -39,7 +40,8 @@ public class ReportController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		ArrayList<Report> list = reportService.selectReportList(pi);
-		
+		System.out.println(pi);
+		System.out.println(listCount);
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
 		
@@ -63,19 +65,12 @@ public class ReportController {
 		return new Gson().toJson(r);
 	}
 	
-	//report
-//	//신고하기 form으로 전달하기
-//	@RequestMapping("reportView.mem")
-//	public String reportView(Model model) {
-//		
-//		return "report/report";
-//	}
+
 	
-	
-	//신고하기
+
 	@RequestMapping("report.mem")
 	public String reportMember(Report r, HttpSession session, Model model) {
-			System.out.println("hh");
+			System.out.println(r);
 			int result = service.reportMember(r);
 			
 			if(result>0) { //성공

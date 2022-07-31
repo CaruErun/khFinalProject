@@ -1,6 +1,6 @@
 =\=\=\=\=\=\=
 <<<<<<<=HEAD
->>>>>>>=refs/remotes/origin/main
+>>>>>>>=branch 'main' of https\://github.com/CaruErun/khFinalProject.git
 eclipse.preferences.version=1
 encoding//src/main/webapp/WEB-INF/views/chat/chatbot.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/chatbot.jsp=UTF-8

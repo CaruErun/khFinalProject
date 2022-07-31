@@ -60,7 +60,7 @@ body {
 }
 
 .login-modal-box {
-  font-family: "Spoqa Han Sans Neo";
+  
   position: absolute;
   box-sizing: border-box;
   padding: 19px 23px 25px;
@@ -86,9 +86,10 @@ body {
   width: 16px;
   height: 16px;
   margin-top: 2px;
-  background-image: url("../img/xmark.png");
+  background-image: url("../images/close.png");
   background-size: cover;
   background-position: center;
+   color:white;
 }
 
 .login-modal .sub-text {

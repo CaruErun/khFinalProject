@@ -1,36 +1,39 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta charset="UTF-8">
     <title>Document</title>
     <c:set var="path" value="${pageContext.request.contextPath}"/>
     
+    
     <!-- jQuery 라이브러리 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
 
- <!-- 부트스트랩에서 제공하고 있는 스타일 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- alert창 예쁘게 꾸미는 구문 Started -->
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
     
-    
-    <!-- alert창 예쁘게 꾸미는 구문 Started -->
-    <!-- JavaScript -->
-	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-	
-	<!-- CSS -->
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-	<!-- Default theme -->
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
-	<!-- Semantic UI theme -->
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 
-  	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> 
+   	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
+	
+</head>
     <style>
       *{
         margin: 0;
@@ -148,21 +151,28 @@
 	<%-- 2022.07.27 alarm css 끝 --%>
 	
 	#titleBOx{width:100px;}
+
     </style>
-       	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/> 
-	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
-</head>
+
 <body>
+<c:if test="${ not empty alertMsg }">
+<script>
+	alert("${alertMsg}");
+</script>
+<c:remove var="alertMsg" scope="session"/>
+</c:if>
+	
 	<div class="menubar">
+
     <!-- Navigation-->
     <div class="navbar">
         <div id="clock" style="color:black"></div>
         <div>
             <ul class="nav-list">
-             	<c:choose>
+            	<c:choose>
 				    <c:when test="${ empty loginUser }">
 		                <li><a href="#!">samsam은 처음이신가요?</a></li>
-		                <li><a data-toggle="modal" data-target="#login_modal2">로그인</a></li>
+		                <li><a data-toggle="modal" data-target="#login_modal2" id="lolo">로그인</a></li>
 		                <li><a href="enrollForm.me">회원가입</a></li>
 		                <li><a href="noticeList.no">고객센터</a></li>
                   	</c:when>      
@@ -182,7 +192,6 @@
     	                    	<b id="alarmB" onclick="clickk(document.getElementById('alarmNo'));" >알림</b>
 	                   			<span id="alarmNo"></span> 
 	                    		<%-- 2022.07.24 알림 끝 --%>
-	                    		
 	                    		<a href="myPageSale.me">마이페이지</a>
 	                   	 		<a href="logout.me">로그아웃</a>
 	                    		<a href="noticeList.no">고객센터</a>
@@ -190,12 +199,11 @@
 	                    </c:choose>
             		</c:otherwise>	                
                 </c:choose>
+  
             </ul>
         </div>
     </div>
-    
-    
-    <!-- chat -->
+   <!-- chat -->
 <div id="chatAl"></div>
 <div id="sellAl"></div>
 
@@ -280,10 +288,9 @@ function alarm(userId){
 }
 </script>
 <%-- 채팅, 알람 끝 --%>
-
-
-
+    
     <script>
+
         var clockTarget = document.getElementById("clock");
         function clock() {
             var today = new Date();
@@ -295,13 +302,24 @@ function alarm(userId){
         }
         init();
     </script>
+
+<!-- 
+    <script type="text/javascript">
+	$(document).ready(function() {
+		var name = ${result}.response.name;
+		
+		$("#name").html("환영합니다. "+name+"님");
+		
+	  });
+</script>
+     -->
     <!-- Header-->
     <div class="header">
         <div class="head-inner">
             <div class="h1">
                 <img src="#" alt="">
-                <a href=${path }>samsam<br>Auction</a>
-            </div>
+                  <a href=${path }>samsam<br>Auction</a>
+                       </div>
             <div class="h2">
                 <ul class="header-nav">
                 
@@ -312,9 +330,8 @@ function alarm(userId){
                 
                 </ul>
             </div>
-
-
-		<!-- 검색폼 -->
+            
+         	<!-- 검색폼 -->
 		<form name="searchForm" action="searchList.pr">
 			<div class="search-wrap">
 				<select class="form-control search-select" name="searchType" id="titleBOx">
@@ -325,12 +342,10 @@ function alarm(userId){
 				<input type="hidden" value="1" name="cPage">
 				<input type="text" class="form-control search-input" name="searchKeyword" value="${searchKeyword}">
 				<button type="submit" class="btn btn-info search-btn">검색</button>
-			</div>
-		</form>
-		
 
-		
-		
+			</div>
+
+		</form>
 		
         </div>
     </div>
@@ -338,12 +353,13 @@ function alarm(userId){
 
 
 
+
     <div class="modal fade ch" id="login_modal2" >
       <h2 class="blind">로그인 팝업</h2>
       <div class="login-modal-box">
         <div class="login-modal-head">
-          <button type="button" class="close-btn" style="color:white;" data-dismiss="modal">X</button>
-          <h3 class="login-modal-title">로그인</h3>
+          <button style="color:white; float : right;"type="button" class="close2" data-dismiss="#login_modal2">&times;</button>
+          <h3 class="login-modal-title" style="color:white;">로그인</h3>
         </div>
         <div class="topline"></div>
         <div style="text-align:center;">
@@ -383,16 +399,21 @@ function alarm(userId){
         </form>
         <ul class="user-function-wrap">
           <li class="user-function-list">
-            <a href="" class="user-function-link">회원가입</a>
+            <a href="enrollForm.me" class="user-function-link">회원가입</a>
           </li>
           <li class="user-function-list">
-            <a href="" class="user-function-link">아이디/비밀번호 찾기</a>
+          
+           <a href="find_id_form.do" class="user-function-link" id="find_id_btn">아이디 찾기 |</a>
+          </li>
+           <li class="user-function-list">
+            <a href="find_pw_form.do" class="user-function-link">비밀번호 찾기</a>
           </li>
         </ul>
         <div class="line">또는</div>
         <ul class="easy-login-wrap">
+          <!-- 
           <li>
-            <a class="easy-login-link google" href="https://www.google.com/"
+            <a class="easy-login-link google" href="" 
               >구글 계정으로 로그인</a
             >
           </li>
@@ -401,11 +422,12 @@ function alarm(userId){
               >페이스북 계정으로 로그인</a
             >
           </li>
+           -->
           <li>
-            <a class="easy-login-link naver" href="https://www.naver.com/"
-              >네이버 계정으로 로그인</a
-            >
+            <div id="naver_id_login" style="text-align:center"><a href="" class="easy-login-link naver">네이버 계정으로 로그인</a></div>
+          
           </li>
+          <!-- 
           <li>
             <a
               class="easy-login-link kakao"
@@ -413,16 +435,82 @@ function alarm(userId){
               >카카오톡 계정으로 로그인</a
             >
           </li>
+           -->
         </ul>
       </div>
     </div>
-
+   
+    <!-- 
+    <script>
+    $(function(){
+		$("#find_id_btn").click(function(){
+		location.href='../member/find_id_form.do';
+	})
+	})
+	</script>
+	 -->
+	 <script>
+	 	$(function(){
+	 		
+	 		$("#lolo").click(function(){
+	 			$.ajax({
+					url : "login",
+					success : function(result){
+						console.log("성공");
+						$("#naver_id_login>a").attr("href",result);
+					},error : function(){
+						console.log("실패");
+					}
+					
+				})	
+	 		})
+	 	});
+	 
+	 </script>
+	 <script>
+	 $("#userId").val(Cookies.get('key'));      
+    if($("#userId").val() != ""){
+        $("#login-status-btn").attr("checked", true);
+    }
+    
+$("#login-status-btn").change(function(){
+    if($("#login-status-btn").is(":checked")){
+        Cookies.set('key', $("#userId").val(), { expires: 7 });
+    }else{
+          Cookies.remove('key');
+    }
+});
+     
+$("#userId").keyup(function(){
+    if($("#login-status-btn").is(":checked")){
+        Cookies.set('key', $("#userId").val(), { expires: 7 });
+    }
+});
+</script>
+<!-- 	
+	 <script>
+ 	const onClickGoogleLogin = (e) {
+    	//구글 인증 서버로 인증코드 발급 요청
+ 		window.location.replace("https://accounts.google.com/o/oauth2/v2/auth?
+        client_id=257552570565-pr3dslj59tcc5j0ufo2dvobr8d7clh0e.apps.googleusercontent.com
+        &redirect_uri=http://localhost:8080/login/google/auth
+        &response_type=code
+        &scope=email%20profile%20openid
+        &access_type=offline")
+ 	}
+	
+	const googleLoginBtn = document.getElementById("googleLoginBtn");
+	googleLoginBtn.addEventListener("click", onClickGoogleLogin);
+    
+</script>
+ -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
     ></script>
     <script>
+
       let modalCheck = false;
       $(".login-btn").click(function () {
 	       if (!modalCheck) {
@@ -432,9 +520,8 @@ function alarm(userId){
         }
       });
       $(".close-btn").click(function () {
-         if (modalCheck) {
-          $("#login_modal2").css("display","none");
-          $(".modal-backdrop").css("display","none");
+        if (modalCheck) {
+          $("#login_modal2").hide();
           modalCheck = false;
         }
       });
@@ -442,18 +529,25 @@ function alarm(userId){
         let userID = $("#user-id").val();
         if (userID =="") {
         	$(".info-error").show();
+        
+        	<!--
+        	$(".id-error").show();
+          $(".error-line").show(); -->
+          
           $("#user-id").css("border", "2px solid #F4492E");
         } else {
           
         }
       });
-      
-//       $("#user-id").focus(function () {
-//         $("#user-id").css("border", "");
-//         $(".id-error").hide();
-//         $(".error-line").hide();
-//         $(".info-error").hide();
-//       });
+
+     
+      <!--
+      $("#user-id").focus(function () {	
+        $("#user-id").css("border", "");
+        $(".id-error").hide();
+        $(".error-line").hide();
+        $(".info-error").hide();
+      });-->
     </script>
 
 </body>

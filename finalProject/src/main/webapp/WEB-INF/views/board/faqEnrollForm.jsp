@@ -27,9 +27,21 @@
 
             <form id=enrollForm method="post" action="insert.fq">
                 <table align="center" width="800px">
+					<tr> 
+					<th></th>
+					<td>           
+	            		<select class="form-select form-select-sm" aria-label=".form-select-sm example" style="float:right;" name="nfCateNo">
+	 						<c:forEach var="c" items="${category }">
+	 							<c:if test="${c.cateNo<=1104}">
+			                    	<option value="${c.cateNo}">${c.cateName}</option>
+			                    </c:if>
+			                </c:forEach>
+			 			</select> <br><br>
+                    </td>
+                    </tr>
                     <tr>
                         <th><label for="title">제목</label></th>
-                        <td><input type="text" id="title" class="form-control" name="nfTitle" required></td>
+                        <td><input type="text" id="title" class="form-control" name="nfTitle" maxlength="30" required></td>
                     </tr>
                     <tr>
                         <th><label for="content">내용</label></th>
