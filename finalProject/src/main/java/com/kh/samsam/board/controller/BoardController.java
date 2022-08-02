@@ -33,6 +33,7 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
+
 	// 공지사항 목록 조회
 	@RequestMapping("noticeList.no")
 	public String selectNoticeList(
@@ -425,7 +426,7 @@ public class BoardController {
 			
 			ArrayList<QnA> proInquiry = boardService.ajaxInquiry(proNo, pi);
 			
-			Map<String, Object> inquiryMap = new HashMap<>();
+			Map<String, Object> inquiryMap = new HashMap<String,Object>();
 			
 			inquiryMap.put("proIn", proInquiry);
 			inquiryMap.put("pi", pi);
@@ -436,6 +437,12 @@ public class BoardController {
 		@ResponseBody
 		public void InsertConQna(QnA q) {
 			boardService.insertConQna(q);
+			
+		}
+		@RequestMapping(value = "insertConAnw.pr", produces = "application/json; charset=UTF-8")
+		@ResponseBody
+		public void insertConAnw(QnA q) {
+			boardService.insertConAnw(q);
 			
 		}
 		
@@ -476,10 +483,14 @@ public class BoardController {
 					model.addAttribute("list", list);
 					model.addAttribute("pi",pi);
 					
-					return "board/mumuList";
+					return "board/qnaListView";
 					
 				}
 				
+				@RequestMapping("samsam.bo")
+				public String samsamBoard() {
+					return "common/samsam";
+				}
 	
 }
 

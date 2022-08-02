@@ -42,7 +42,7 @@
         <div id="footer">
             <div id="footer_1">
                 <input type="submit" id="" class="btn3" value="확인">
-                <button class="btn4" onclick="backback()">취소</button>
+                <button type="button" class="btn4" onclick="backback()">취소</button>
             </div>
         </div>
                 </form>

@@ -312,7 +312,18 @@
        	.btn-qna{
        		width:20%;
        	}
-       	
+       	.pgarea{
+       	width:100%;
+       	display:flex;
+			justify-content:center;
+       	}
+       	#qnaPaging{
+       		
+				
+       	}
+       	#qnaPaging *{
+       		display:inline-block;
+       	}
        	<%-- 2022.07.27 물품문의 css 끝 --%>
         #qna-table > thead {
             height: 40px;
@@ -658,7 +669,13 @@
                             배송방법
                         </div>
                         <div class="st-2 text-area">
-                            택배
+                        <c:if test="${p.postPrice eq 0 }">
+                             직거래
+                        </c:if>
+                        <c:if test="${p.postPrice ne 0 }">
+                             택배
+                        </c:if>
+
                         </div>
                     </div>
                     <div class="shipping-price list-area">
@@ -666,7 +683,7 @@
                             배송비용
                         </div>
                         <div class="shp-2 text-area">
-                            3500원
+                            ${p.postPrice }원
                         </div>
                     </div>
                     <div class="list-area seller-id">
@@ -755,7 +772,7 @@
                  
                     <div class="btn-area">
                         <c:choose>
-                            <c:when test="${loginUser==null}">
+                            <c:when test="${empty loginUser}">
                                 <button class="btn-1 logBid" data-toggle="modal"  onclick="loginCheck();">입찰하기</button>
                             </c:when>
                             <c:otherwise>
@@ -766,9 +783,7 @@
                             function loginCheck(){
                             var check = confirm("로그인 후 이용 가능합니다. 로그인 하시겠습니까?")
                                 if(check){
-                                    $('.logBid').attr('data-target','#login_modal2');
-                                }else{
-                                    $('.logBid').removeAttr('data-target');
+                                    openModal();
                                 }
                                 }
                         </script>
@@ -791,7 +806,7 @@
 		    	
 		    	var proL = 0;
 		    	if("${proL}"!=""){
-		    		proL=${proL};
+		    		proL="${proL}";
 		    	}
 		    	
 		        $('#h_mark').on('click',function(event) { 
@@ -800,9 +815,8 @@
 		            if ("${loginUser.userId}" == "") {
 		                var check1 = confirm("로그인 한 회원만 이용가능합니다.")
                         if(check1){
-                            $('#h_mark').attr('data-target','#login_modal2');
+                            	openModal();
                         }else{
-                            $('#h_mark').removeAttr('data-target');
 		                    // 거부하면 해당 페이지 새로고침
 		                    location.reload();
                         }
@@ -871,12 +885,8 @@
                     	 $('#h_mark').css("color","lightgray");
                     	 
                         console.log("찜 해제 성공!")
-                        
-                        if (confirm("찜이 해제되었습니다.")) {
+                        alert("찜이 해제되었습니다.")
                             location.reload();
-                        } else {
-                            location.reload();
-                        }
                     }
                     proL=0;
                 },
@@ -1257,7 +1267,7 @@
                     <table id="qna-table" border="1">
                         <thead>
                             <tr>
-                                <th width="15%">질문구분</th>
+                                <th width="15%">질문번호</th>
                                 <th width="45%">제목</th>
                                 <th width="20%">등록자</th>
                                 <th width="20%">등록일</th>
@@ -1267,6 +1277,7 @@
                         <tbody id="qna-tbody">        
                         </tbody>
                     </table>
+                    <div class="pgarea"><div id="qnaPaging"></div></div>
                     <div id="content-qna-input">
                     <input type="text" id="input-qna">
                     <input type="checkbox" name="secret" id="secret" value="1">
@@ -1288,7 +1299,13 @@
                     </div>
                     <div class="cs-2">
                         <div class="cs-black">배송방법</div>
-                        <div class="cs-text">택배(파손물품주의), 비용[ 3,500원 ]</div>
+                        <c:if test="${p.postPrice eq 0 }">
+                             <div class="cs-text">직거래</div>
+                        </c:if>
+                        <c:if test="${p.postPrice ne 0 }">
+                             <div class="cs-text">택배(파손물품주의), 비용[${p.postPrice }]</div>
+                        </c:if>
+
                     </div>
     
                 </div>
@@ -1336,22 +1353,50 @@
     				else{
         				console.log(inquiry.proIn);
         				for(var i in inquiry.proIn){
-        					str+="<tr onclick='openInquiry($(this))'>"+"<td>"+inquiry.proIn[i].qnaNo+"</td>"+
-        					"<td>"+inquiry.proIn[i].qnaTitle+"</td>"+
-        					"<td>"+inquiry.proIn[i].qnaId+"</td>"+
-        					"<td>"+inquiry.proIn[i].createDate+"</td>"+"</tr>"+
-        					"<tr style='display:none;'>"+"<td>ㄴ</td>"+"<td colspan='3'>"+inquiry.proIn[i].qnaContent+"</td>"+"</tr>";
-        					
+        					if( inquiry.proIn[i].qnaCateNo == 0 || ( inquiry.proIn[i].qnaCateNo == 1 && inquiry.proIn[i].qnaId == "${loginUser.userId}")
+        							|| ("${p.sellId}" == "${loginUser.userId}")) {
+	        					str+="<tr onclick='openInquiry($(this))' style='background-color:lightgray;'>"+"<td>"+inquiry.proIn[i].qnaNo+"</td>"+
+	        					"<td>"+inquiry.proIn[i].qnaTitle+"</td>"+
+	        					"<td>"+inquiry.proIn[i].qnaId+"</td>"+
+	        					"<td>"+inquiry.proIn[i].createDate+"</td>"+"</tr>";
+	        					if("${p.sellId}" == "${loginUser.userId}" && inquiry.proIn[i].answerContent == null){
+	        						str+="<tr style='display:none;'>"+"<td>ㄴ</td>"+"<td colspan='2'>"+inquiry.proIn[i].qnaContent+"</td>"+
+	        						"<td onclick='openInquiry($(this))'>답변</td>"+"</tr>"+
+	        						"<tr style='display:none;'>"+"<td colspan='2'><input type='text' id='input-anw-"+inquiry.proIn[i].qnaNo+"' style='width:100%;height:100%;'></td>"+
+	        						"<td><input type='checkbox' name='secret' id='secret' value='1'><label for='secret'>비밀글</label></td>"+
+	        						"<td><button type='button' class='btn-qna' onclick='answerInquiry("+inquiry.proIn[i].qnaNo+")' style='width:100%;'>답변하기</button></td></tr>";
+	        	                    
+	        	                    
+	        	                    
+	        					}else{
+	        						str+="<tr style='display:none; background-color:white;'>"+"<td>ㄴ</td>"+"<td colspan='3'>"+inquiry.proIn[i].qnaContent+"</td>"+"</tr>";
+	        					}
+
+        					}else{
+        						str+="<tr style='background-color:lightgray;'><td colspan='4'>비밀글입니다</td></tr>"
+        					}
         				if(inquiry.proIn[i].answerContent != null){
-        					str+="<tr onclick='openInquiry($(this))'>"+"<td>답변</td>"+"<td>답변입니다.</td>"+
+        					if( inquiry.proIn[i].qnaCateNo == 0 || ( inquiry.proIn[i].qnaCateNo == 1 && inquiry.proIn[i].qnaId == "${loginUser.userId}")
+        							|| ("${p.sellId}" == "${loginUser.userId}")) {
+        					str+="<tr onclick='openInquiry($(this))' style='background-color:lightgray;'>"+"<td>답변</td>"+"<td>답변입니다.</td>"+
         					"<td>판매자</td>"+"<td>"+inquiry.proIn[i].answerDate+"</td>"+"</tr>"+
-        					"<tr style='display:none;'>"+"<td>ㄴ</td>"+"<td colspan='3'>"+inquiry.proIn[i].answerContent+"</td>"+"</tr>";;
+        					"<tr style='display:none; background-color:white;'>"+"<td>ㄴ</td>"+"<td colspan='3'>"+inquiry.proIn[i].answerContent+"</td>"+"</tr>";
+        					}else{
+        						str+="<tr style='background-color:lightgray;'><td colspan='4'>비밀답변입니다.</td></tr>"
+        					}
         					
         				}
         					
         				}
     				}
 					$("#qna-tbody").html(str);
+					var str2 = "";
+					
+					for(var i=inquiry.pi.startPage;i<=inquiry.pi.endPage;i++){
+                		str2+="<button class='page-link' onclick='ProductInquiry("+i+")'>"+i+"</button>";
+					}
+					$("#qnaPaging").html(str2);
+
 					
     			},
     			error: function(){
@@ -1371,25 +1416,28 @@
 		function insertConQna(){
 			if('${loginUser.userId}'==""){
 				window.alert("로그인 후 이용해주세요.");
-				
+				openModal();
 			}else{
 				var inputQna = document.getElementById("input-qna").value;
 				if(inputQna==""){
 					window.alert("문의 내용이 없습니다. 문의 내용을 작성해주세요");
 				}else{
-					var secret = document.getElementById("secret");
+					var secret = document.getElementById("secret").checked;
 					var secretChecked = 0;
-					if(secret.checked==true){
-						secretChekced = 1;
+					if(secret == true){
+						secretChecked = 1;
 					}
+					console.log(secretChecked)
 					$.ajax({
 						url:"insertConQna.pr",
 						data:{
 							proNo : '${p.proNo}',
+							qnaId : '${loginUser.userId}',
 							qnaContent : inputQna,
 							qnaCateNo : secretChecked
 						},
 						success : function(){
+							alert("문의가 등록되었습니다.");
 							ProductInquiry(1);
 							
 						},
@@ -1405,6 +1453,32 @@
 			
 			
 		}
+		
+		function answerInquiry(qnaNo){
+				var inputQna = document.getElementById("input-anw-"+qnaNo).value;
+				if(inputQna==""){
+					window.alert("답변 내용이 없습니다. 답변 내용을 작성해주세요");
+				}else{
+					$.ajax({
+						url:"insertConAnw.pr",
+						data:{
+							qnaNo : qnaNo,
+							answerContent : inputQna
+						},
+						success : function(){
+							alert("답변이 등록되었습니다.");
+							ProductInquiry(1);
+							
+						},
+						error : function(){
+							
+							
+						}
+						
+					})
+		}
+		}
+			
     	
     	</script>
     	<%--물품문의 끝  --%>

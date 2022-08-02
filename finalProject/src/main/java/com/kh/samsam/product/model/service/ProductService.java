@@ -127,8 +127,10 @@ public interface ProductService {
 
 	int endSell(int proNo);
 
-
-
+	//리스트 찜
+	
+	ArrayList<ProLike> selectProlikeList(String userId, PageInfo pi);
+	ArrayList<ProLike> selectProlikeSearchList(String userId,String searchType, String searchKeyword, String sort, PageInfo pi);
 	
 	
 }

@@ -271,6 +271,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    ORDER BY CREATE_DATE DESC
 	</select>
 	
+	<insert id="insertConQna">
+		INSERT INTO QNA(QNA_NO, QNA_TITLE, QNA_CATE_NO, QNA_CONTENT, QNA_ID, CREATE_DATE, QNA_TYPE, PRO_NO, QNA_STATUS)
+		VALUES(SEQ_QANO.NEXTVAL,'질문드립니다',#{qnaCateNo},#{qnaContent},#{qnaId},SYSDATE,1,#{proNo},'Y')
+	
+	</insert>
+	
+	<update id="insertConAnw">
+	
+		UPDATE QNA
+		SET ANSWER_CONTENT = #{answerContent}, ANSWER_DATE = SYSDATE
+		WHERE QNA_NO = #{qnaNo}
+	
+	</update>
 </mapper>
 
 

@@ -215,6 +215,11 @@ public class BoardServiceImpl implements BoardService{
 	}
 	//2022.07.25 상품문의 끝 
 
+	@Override
+	public void insertConAnw(QnA q) {
+		boardDao.insertConAnw(sqlSession, q);
+	}
+
 
 
 

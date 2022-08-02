@@ -4,21 +4,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SAMSAM AUCTION</title>
 </head>
 <body>
-
+	<jsp:include page="../common/header.jsp"/>
+	<style>
+		.container div{
+			margin:auto;
+		}
+		#msgArea{
+			height:700px;
+			max-height:700px;
+			overflow:scroll;
+			overflow-x: hidden
+		}
+	</style>
+	<div style="height:100px"></div>
 <div class="container">
             <div class="col-6">
-                <h1>"채팅방"</h1>
+                <h1>경매 : ${chat.roomId } 채팅방</h1>
             </div>
             <div>
                 <div id="msgArea" class="col"></div>
                 <div class="col-6">
                     <div class="input-group mb-3">
-                        <input type="text" id="msg" class="form-control">
+                        <input type="text" id="msgChat" class="form-control">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
                         </div>
@@ -53,14 +64,9 @@
                 console.log(roomName + ", " + roomId + ", " + username);
 
                 var sockJs = new SockJS("${pageContext.request.contextPath}/stomp/chat");
-                //1. SockJS를 내부에 들고있는 stomp를 내어줌
                 var stomp = Stomp.over(sockJs);
-
-                //2. connection이 맺어지면 실행
                 stomp.connect({}, function (){
                    console.log("STOMP Connection")
-
-                   //4. subscribe(path, callback)으로 메세지를 받을 수 있음
                    stomp.subscribe("/topic/chat/room/" + roomId, function (chat) {
                 	   
                        var content = JSON.parse(chat.body);
@@ -82,24 +88,19 @@
                            str += "</div></div>";
                            $("#msgArea").append(str);
                        }
-<<<<<<< HEAD
-=======
-// == 채팅방 형식 지정
->>>>>>> refs/remotes/origin/main
                    });
 
-                   //3. send(path, header, message)로 메세지를 보낼 수 있음
                    stomp.send('/app/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}))
                 });
 
                 $("#button-send").on("click", function(){
 					send();
                 });
-        		$("#msg").keyup(function(event){
+        		$("#msgChat").keyup(function(event){
         			if(event.keyCode==13) send();
-        			});
+        		});
  				function send(){
-                    var msg = document.getElementById("msg");
+                    var msg = document.getElementById("msgChat");
 
                     console.log(username + ":" + msg.value);
                     stomp.send('/app/chat/message', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: username}));
@@ -109,5 +110,6 @@
  				
             });
         </script>
+        	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

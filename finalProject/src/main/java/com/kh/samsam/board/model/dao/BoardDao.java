@@ -191,6 +191,9 @@ public class BoardDao {
 	public void insertConQna(SqlSessionTemplate sqlSession, QnA q) {
 		sqlSession.insert("boardMapper.insertConQna", q);
 	}
+	public void insertConAnw(SqlSessionTemplate sqlSession, QnA q) {
+		sqlSession.update("boardMapper.insertConAnw", q);
+	}
 	//2022.07.25 상품문의 끝 
 
 
@@ -211,6 +214,8 @@ public class BoardDao {
 				
 		return (ArrayList)sqlSession.selectList("boardMapper.selectQnaListMyPageView",userId,rowBounds);
 	}
+
+
 }
 
 

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SAMSAM AUCTION</title>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.0.0/sockjs.min.js"></script>
@@ -104,7 +104,7 @@ cursor:pointer;
 </head>
 <body>    
 <div id="main-content">
-<div id="message">
+<div id="message" style="display:none">
 <div id="meHeder"><img src="resources/image/mini.png" width=20px height=20px style="float:right;margin-right:20px;margin-top:3px;" id="miniImg"></div>
 <div id="chat-table">
 

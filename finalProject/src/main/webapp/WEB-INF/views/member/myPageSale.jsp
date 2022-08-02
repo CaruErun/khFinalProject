@@ -80,7 +80,7 @@ div{
     height: 40px;
     padding-top: 9px;
 }
-.btn{
+.btn1{
     border-radius: 4px;
     border: 0px;
     height: 25px;
@@ -154,7 +154,7 @@ table {
 
 <body>
 <jsp:include page="../common/header.jsp"/>
-    <link rel="stylesheet" href="resources/css/myPageSale.css">
+<!--     <link rel="stylesheet" href="resources/css/myPageSale.css"> -->
     
 <br><br><br><br><br>
 
@@ -212,7 +212,7 @@ table {
                             </table>
                     </div>
                     <div id="content_5">
-                        <button type="button" id="delBtn2" data-proNo="+result.list[i].proNo+" onclick="delRow()" class="btn">삭제</button>
+                        <button type="button" id="delBtn2" data-proNo="+result.list[i].proNo+" onclick="delRow()" class="btn1">삭제</button>
                     </div>
                     <div id="content_6">
                     </div>
@@ -236,7 +236,7 @@ table {
                             </table>
                     </div>
                     <div id="content_9">
-                        <button type="button"  id="delBtn" onclick="postDelete();" class="btn">삭제</button>
+                        <button type="button"  id="delBtn" onclick="postDelete();" class="btn1">삭제</button>
                     </div>
                     <div id="content_10">
                     </div>

@@ -27,4 +27,18 @@
 	</beans:bean>
 
 
+<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<exclude-mapping path="/main.bo"/>
+			<exclude-mapping path="/logout.me"/>
+			<exclude-mapping path="/callback"/>
+			<exclude-mapping path="/"/>
+
+			<beans:bean id="intercepter" class="com.kh.samsam.common.interceptor.LoginIntercepter"/>
+			
+		</interceptor>
+</interceptors>
 </beans:beans>
+
+

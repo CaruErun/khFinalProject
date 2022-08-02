@@ -18,7 +18,6 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
 
-    	// 앞에 app을 붙이면 브로커를 해주겠다
         config.setApplicationDestinationPrefixes("/app"); 
         config.enableSimpleBroker("/topic"); 
     }

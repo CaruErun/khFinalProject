@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SAMSAM AUCTION</title>
 
 	<style> 		
 		#boardList {text-align:center;}
@@ -82,7 +82,7 @@
                         <c:choose>
                         <c:when test="${empty list}">
                         	<tr>
-                        		<td colspan="4">등록된 Q&A가 없습니다.</td>
+                        		<td colspan="4" onclick="event.cancelBubble='true'">등록된 Q&A가 없습니다.</td>
                         	</tr>
                         </c:when>
                         <c:otherwise>

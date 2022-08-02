@@ -49,6 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="BID_STATUS" property="bidStatus"/>
 		<result column="PRO_CATE_NO" property="proCateNo"/>
 		<result column="PRO_TITLE" property="proTitle"/>
+		<result column="END_DATE" property="endDate"/>
 	</resultMap>
 		<resultMap type="productImages" id="proImgResultSet">
 		<result column="IMAGE_NO" property="imageNo"/>
@@ -58,7 +59,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="PATH" property="path"/>
 		<result column="IMG_STATUS" property="imgStatus"/>
 	
-	</resultMap>
+		</resultMap>
+	    	<resultMap type="proLike" id="prolikeResultSet">
+    		 <result column="LIKE_NO" property="likeNo"/>
+    		 <result column="USER_ID" property="userId"/>
+    		 <result column="PRO_NO" property="proNo"/>
+    	</resultMap>
 		<select id="selectProductList" resultMap="productResultSet">
 		
 		SELECT P.PRO_NO
@@ -80,12 +86,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	FROM PRODUCT P
     , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
     , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
-    , (SELECT D.RNUMS,PRO_NO,PATH FROM (SELECT ROW_NUMBER() OVER(PARTITION BY PI.PRO_NO ORDER BY IMAGE_NO DESC ) AS RNUMS, PI.*
-        FROM PRODUCT_IMAGES PI) D 
-        WHERE D.RNUMS=1)E
+    , (SELECT PRO_NO, PATH FROM PRODUCT_IMAGES WHERE IMAGE_NO IN (SELECT MIN(IMAGE_NO) FROM PRODUCT_IMAGES GROUP BY PRO_NO ) ) IM
     WHERE P.PRO_NO = B.PRO_NO(+) 
     AND P.PRO_NO = C.PRO_NO(+)
-    AND P.PRO_NO = E.PRO_NO(+)
+    AND P.PRO_NO = IM.PRO_NO(+)
     AND P.PRO_STATUS ='Y'
     ORDER BY PRO_NO DESC
 	</select>
@@ -352,16 +356,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM BID
 		JOIN PRODUCT USING (PRO_NO)
 		WHERE PRO_STATUS='N'
-		AND BUYER_ID = #{userId}
+		AND BUYER_ID = #{userId} AND BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)
 	</select>
 	
 	<select id="selectListBid" resultMap="BidResultSet"> 
-		SELECT PRO_TITLE,BID_PRICE,BID_NO,END_DATE
+		SELECT PRO_TITLE,BID_PRICE,BID_NO,TO_CHAR(END_DATE, 'YYYY-MM-DD') AS END_DATE
 		FROM BID B
 		JOIN PRODUCT USING (PRO_NO)
 		WHERE PRO_STATUS = 'N'
         AND BUYER_ID = #{userId}
-        AND BID_STATUS IN ('N')
+        AND BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)
 	</select>
 	
 	<select id="selectListCounttttt" resultType="_int">
@@ -434,6 +438,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 검색 조건 (option&keyword) -->
 	<sql id="search">
 		<choose>
+			<when test="searchType == null">
+			</when>
 			<when test="searchType !=null and searchType.equals('proTitle')">
 				and PRO_TITLE LIKE '%'|| #{searchKeyword} ||'%'
 			</when>
@@ -445,7 +451,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</when>
 		</choose>
 	</sql>
-	
 	
 	<!-- product 검색 -->
 	<select id="getSearchList" resultMap="productResultSet">
@@ -464,11 +469,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				  ,TRADE_LOCATION
 				  ,COUNT
 	              ,BIDCOUNT
+	              ,PATH
 		FROM PRODUCT P
 	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
 	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    , (SELECT PRO_NO, PATH FROM PRODUCT_IMAGES WHERE IMAGE_NO IN (SELECT MIN(IMAGE_NO) FROM PRODUCT_IMAGES GROUP BY PRO_NO ) ) IM
 	    WHERE P.PRO_NO = B.PRO_NO(+) 
 	    AND P.PRO_NO = C.PRO_NO(+)
+	   	AND P.PRO_NO = IM.PRO_NO(+)
 	    AND P.PRO_STATUS ='Y'
 		<include refid="search"/>
 		ORDER BY PRO_NO DESC
@@ -489,7 +497,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			ORDER BY PRO_NO DESC
 		</if>
 		<if test="sort == 'proNo'"> <!-- 마감임박순 -->
-			ORDER BY PRO_NO ASC
+			ORDER BY END_DATE ASC
 		</if>
 		
 		<if test="sort == 'hPrice'"> <!-- 높은가격순 -->
@@ -522,12 +530,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				  ,TRADE_LOCATION
 				  ,COUNT
 	              ,BIDCOUNT
+	              ,IM.PATH
 		FROM PRODUCT P
 	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
 	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
+	    , (SELECT PRO_NO, PATH FROM PRODUCT_IMAGES WHERE IMAGE_NO IN (SELECT MIN(IMAGE_NO) FROM PRODUCT_IMAGES GROUP BY PRO_NO ) ) IM
 	    WHERE P.PRO_NO = B.PRO_NO(+) 
 	    AND P.PRO_NO = C.PRO_NO(+)
 	    AND P.PRO_STATUS ='Y'
+	    AND P.PRO_NO = IM.PRO_NO(+)
 	    <include refid="search"/>
 		<include refid="sort" />
 	</select>
@@ -552,7 +563,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM PRODUCT P
 	    , (SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
 	    , (SELECT PRO_NO,COUNT(*) AS BIDCOUNT FROM BID GROUP BY PRO_NO) C
-	    WHERE P.PRO_NO = B.PRO_NO(+) 
+	    WHERE P.PRO_NO = B.PRO_NO(+) c
 	    AND P.PRO_NO = C.PRO_NO(+)
 	    AND P.PRO_STATUS ='Y'
 		<include refid="sort" />
@@ -631,8 +642,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE PBOX_NO = #{ch4}
 	</update>
 	
-	
-	
+	<select id="prolikeList" resultMap="prolikeResultSet">
+	SELECT P.PRO_NO, LIKE_NO 
+	FROM PRODUCT P, (SELECT COUNT(*) AS LIKE_NO, PRO_NO FROM PRO_LIKE WHERE USER_ID = #{userId} GROUP BY PRO_NO) PL
+	WHERE P.PRO_NO = PL.PRO_NO(+) AND P.PRO_STATUS='Y'
+	ORDER BY PRO_NO DESC
+	</select>
+		<select id="prolikeSearchList" resultMap="prolikeResultSet">
+	SELECT P.PRO_NO, LIKE_NO 
+	FROM PRODUCT P, (SELECT COUNT(*) AS LIKE_NO, PRO_NO FROM PRO_LIKE WHERE USER_ID = #{userId} GROUP BY PRO_NO) PL,
+	(SELECT PRO_NO, BID_PRICE FROM BID WHERE BID_NO IN (SELECT MAX(BID_NO) FROM BID GROUP BY PRO_NO)) B
+	WHERE P.PRO_NO = PL.PRO_NO(+) AND P.PRO_NO = B.PRO_NO(+) AND P.PRO_STATUS='Y'
+	<include refid="search"/>
+	<include refid="sort" />
+	</select>
 	
 
 </mapper>

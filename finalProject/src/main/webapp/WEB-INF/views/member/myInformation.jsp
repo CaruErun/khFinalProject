@@ -167,7 +167,7 @@ div{
     height: 26px;
      border-radius: 4px;
 }
-.btn{
+.btn1{
     border-radius: 5px;
     background-color: black;
     color: white;
@@ -312,7 +312,7 @@ border-radius: 4px;
 	            oncomplete: function(data) { //선택시 입력값 세팅
 	                document.getElementById("address_kakao").value = data.zonecode; // 주소 넣기
 	                document.getElementById("address_detail").value = data.address; // 주소 넣기
-	                document.querySelector("input[name=address_focus]").focus(); //상세입력 포커싱
+	                document.querySelector("input[name=addressDetail]").focus(); //상세입력 포커싱
 	            }
 	        }).open();
 	    });

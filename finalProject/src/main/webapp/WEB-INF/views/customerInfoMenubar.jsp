@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SAMSAM AUCTION</title>
 <!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- 부트스트랩에서 제공하고 있는 스타일 -->
@@ -79,6 +79,9 @@
             padding:5% 10%;
             background-color:white;
         }
+        .menuInfo{
+        	margin-top:200px;
+        }
 </style>    
 </head>
 
@@ -93,7 +96,7 @@
 		<c:remove var="alertMsg" scope="session"/>
 	</c:if>
 
-    <div style="margin-top:50px;">
+    <div class="menuInfo">
         <div class="menu">
             <div class="menu1">
                 <a class="mtit1" href="noticeList.no">고객센터</a>

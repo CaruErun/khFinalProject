@@ -34,7 +34,7 @@ public int insertMember(SqlSessionTemplate sqlSession, Member m) {
 	return sqlSession.insert("memberMapper.insertMember",m);
 }
 	//아이디 중복 검사
-	public int check_id(SqlSessionTemplate sqlSession, String id) throws Exception{
+	public int check_id(SqlSessionTemplate sqlSession, String id){
 		return sqlSession.selectOne("memberMapper.check_id", id);
 	}
 	

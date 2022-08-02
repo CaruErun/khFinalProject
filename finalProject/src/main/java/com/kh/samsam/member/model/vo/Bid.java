@@ -20,4 +20,5 @@ public class Bid {
 	
 	private int proCateNo;	//	PRO_CATE_NO	NUMBER
 	private String proTitle;
+	private String endDate;
 }

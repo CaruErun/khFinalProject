@@ -23,7 +23,7 @@
 
 </style>
 
-<title>Insert title here</title>
+<title>SAMSAM AUCTION</title>
 </head>
 <body>
 	<div>

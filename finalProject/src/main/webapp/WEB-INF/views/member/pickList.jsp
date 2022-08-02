@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관심물품</title>
-    <link rel="stylesheet" href="resources/css/pick.css">
+    <!-- <link rel="stylesheet" href="resources/css/pick.css"> -->
     <script src="https://kit.fontawesome.com/ee429cabba.js" crossorigin="anonymous"></script>
 
 
@@ -82,7 +82,7 @@ div{
     height: 40px;
     padding-top: 9px;
 }
-.btn{
+.btn1{
     border-radius: 4px;
     border: 0px;
     height: 25px;

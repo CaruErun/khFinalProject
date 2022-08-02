@@ -29,7 +29,7 @@
 </head>
 <body>
 <jsp:include page="../common/header.jsp"/>
-<div style="height:50px;"></div>
+<div style="height:350px;"></div>
 	<div class="w3-content w3-container w3-margin-top">
 		<div class="w3-container w3-card-4">
 			<div class="w3-center w3-large w3-margin-top">
@@ -37,7 +37,7 @@
 			</div>
 			<div>
 				<p>
-					<label>ID</label>
+					<label>ID</label><br><br>
 					<input class="w3-input" type="text" id="id" name="userId" required placeholder="아이디를 입력해주세요. ">
 				</p>
 				<p>

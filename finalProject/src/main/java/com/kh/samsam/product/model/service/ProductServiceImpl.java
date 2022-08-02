@@ -291,6 +291,17 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.nPostDelete(sqlSession,chArr4);
 	}
 
+	@Override
+	public ArrayList<ProLike> selectProlikeList(String userId, PageInfo pi) {
+		return productDao.selectProlikeList(sqlSession,userId,pi);
+	}
+
+	@Override
+	public ArrayList<ProLike> selectProlikeSearchList(String userId, String searchType, String searchKeyword,
+			String sort, PageInfo pi) {
+		return productDao.selectProlikeSearchList(sqlSession,userId,searchType,searchKeyword,sort,pi);
+	}
+
 
 
 
