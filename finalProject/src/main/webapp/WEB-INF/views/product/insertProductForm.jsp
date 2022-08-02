@@ -15,7 +15,7 @@
                 referrerpolicy="no-referrer"
             />
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
-            <title>Insert title here</title>
+            <title>SAMSAM AUCTION</title>
         </head>
         <style>
             * {
@@ -459,7 +459,7 @@
                 cursor: pointer;
             }
 
-            button[type=submit] {
+            .lastok {
                 background-color: black;
                 color: white;
             }
@@ -598,7 +598,7 @@
                                     
 		                        </div>
                                 <div class="upload-files">
-                                    <input type="file" name="upfile" id="upfile0" onchange="loadImg(this);" style="display: none;" required>
+                                    <input type="file" name="upfile" id="upfile0" onchange="loadImg(this);" style="display: none;">
                                     <input type="file" name="upfile" id="upfile1" onchange="loadImg(this);" style="display: none;">
                                     <input type="file" name="upfile" id="upfile2" onchange="loadImg(this);" style="display: none;">
                                     <input type="file" name="upfile" id="upfile3" onchange="loadImg(this);" style="display: none;">
@@ -624,43 +624,72 @@
                         
 		                let file;
 		                let num = 0;
-		             
-		                // //when file is inside the drag area
-		                // dragArea.addEventListener('dragover',(event) => {
-		                //     event.preventDefault();
-		                //     dragText.textContent = 'Upload 하시겠습니까?';
-		                //     dragArea.classList.add('active');
+                        let num2= 0;
+                   
+		                //when file is inside the drag area
+		                dragArea.addEventListener('dragover',(event) => {
+		                    event.preventDefault();
+		                    dragText.textContent = 'Upload 하시겠습니까?';
+		                    dragArea.classList.add('active');
 		                    
-		                // });
-		                // //when file leaces the drag area
-		                // dragArea.addEventListener('dragleave', () => {
-		                //     dragText.textContent ='Drag & Drop';
-		                //     dragArea.classList.remove('active');
-		                // });
-		                // //when the file is dropped in the drag area
-		                // dragArea.addEventListener('drop',(event) => {
-		                //     event.preventDefault();
+		                });
+		                //when file leaces the drag area
+		                dragArea.addEventListener('dragleave', () => {
+		                    dragText.textContent ='Drag & Drop';
+		                    dragArea.classList.remove('active');
+		                });
+                        $(document).on("dragover drop", function(e) {
+                            e.preventDefault();  // allow dropping and don't navigate to file on drop
+                        }).on("drop", function(e) {
+                            for(var i=0; i<4; i++){
+                                if($('#upfile'+i).val()==""){
+                                    num2=i;
+
+                                    break;
+                                }
+                            }
+                                $("input[id='upfile"+num2+"']")
+                                .prop("files", e.originalEvent.dataTransfer.files)  // put files into element
+                                .closest("form")
+                         
+                          
+                            console.log("이 드랍의 넘버는"+num);
+                                
+                        });
+		                //when the file is dropped in the drag area
+		                dragArea.addEventListener('drop',(event) => {
+		                    event.preventDefault();
                             
-		                //     file = event.dataTransfer;
+		                    file = event.dataTransfer;
                             
-                        //     console.log(num);
-                        //     if(num<4){
-                        //         loadImg(file);
+                           
+                            if(num<4){
+                                loadImg(file);
                       
-                        //     }else{
-                        //         alert('파일은 4개까지 등록 가능합니다.');
-                        //         dragArea.classList.remove('active');
-                        //     }
-		                // });
+                            }else{
+                                alert('파일은 4개까지 등록 가능합니다.');
+                                dragArea.classList.remove('active');
+                            }
+		                });
+                     
                         function loadImg(inputfile){
 
-                            
+                            console.log(num)
                             if(num<4){
                                 file = inputfile.files[0];
                                 displayFile();
                             }
+
                         }      
                         function check4(){
+                            for(var i=0; i<4; i++){
+                                        if($('#upfile'+i).val()==""){
+
+                                            num2= i
+                                            break;
+                                        }
+                                    }
+
                             if(num>3){
                                 alert('파일은 4개까지 등록 가능합니다.');
                             }
@@ -668,11 +697,9 @@
                      
 		                
 		                function displayFile(){
-                            console.log(file);
 		                    let fileType = file.type;
                             let fileSize = file.size;
                             let fileName = file.name;
-                            console.log(fileType);
                      
                             
 
@@ -683,6 +710,7 @@
 
                                     let fileReader = new FileReader();
                                     let fileKB = Math.floor(fileSize /1000); 
+                                 
                                     let str = '<li class="drop-img">';
                                     
                                         fileReader.onload = () => {
@@ -691,11 +719,17 @@
                                             str += '<div>';
                                             str += '<span class="progress-name">'+fileName+' '+fileKB+'KB'+'</span>'
                                             str += '</div>';
-                                            str += '<span class="delete-img" onclick="delImg(this);">x</span>';
+                                            str += '<span class="delete-img" onclick="delImg(this,'+num2+');">x</span>';
                                             str += '</li>';
                                             $(str).appendTo(dropArea);
                                             num++
-                                            $('.upload-label').attr("for","upfile"+num);  
+                                            for(var i=0; i<4; i++){
+                                                if($('#upfile'+i).val()==""){
+
+                                                    $('.upload-label').attr("for","upfile"+i); 
+                                                    break; 
+                                                }
+                                            }
                                 
                                         }
                                         fileReader.readAsDataURL(file);
@@ -715,14 +749,22 @@
 		                    }
 
 		                }
-                 
-                        function delImg(inputfile){
-                            let index=$(inputfile).parent('li').index();
+                        
+                        function delImg(inputfile,index){
+                           
                             $(inputfile).parent('li').remove();
-
+                          
+                        
+                            $('#upfile'+index).empty();
                             $('#upfile'+index).val("");
-                            console.log($('#upfile'+index));
-                            $('.upload-label').attr("for","upfile"+index);
+                            console.log($('#upfile'+index)  );
+                            for(var i=0; i<4; i++){
+                                if($('#upfile'+i).val()==""){
+
+                                    $('.upload-label').attr("for","upfile"+i); 
+                                    break; 
+                                }
+                            }    
                             num--;
                         }
 
@@ -766,7 +808,7 @@
                             $('.price1').on("focusin",function(){
                                 
                                
-                                    if($('#upfile0').val()==""&&ak==0){
+                                    if($('#upfile0').val()==""&&$('#upfile1').val()==""&&$('#upfile2').val()==""&&$('#upfile3').val()==""&&ak==0){
                                         alert('이미지는 1개이상 등록해주세요!');
                                         ak=1;
                                         setTimeout(function(){
@@ -886,7 +928,7 @@
                       
                     </div>
                     <span class="btn-area">
-                        <button type="submit">확인</button>
+                        <button type="submit" class="lastok">확인</button>
                         <button type="button" onclick="location.href='${pageContext.request.contextPath }'">취소</button>
                     </span>
                     <script>

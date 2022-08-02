@@ -12,6 +12,7 @@
 </head>
 <body>
 <jsp:include page="../common/header.jsp"/>
+<div style="height:350px;"></div>
 <div style="height:50px;"></div>
 	<div class="w3-content w3-container w3-margin-top">
 		<div class="w3-container w3-card-4">

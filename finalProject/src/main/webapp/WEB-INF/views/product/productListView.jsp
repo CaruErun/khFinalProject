@@ -20,7 +20,7 @@
     <script src="https://kit.fontawesome.com/e849be2e05.js" crossorigin="anonymous"></script>
     
     
-<title>Insert title here</title>
+<title>SAMSAM AUCTION</title>
 </head>
 <style>
  
@@ -34,6 +34,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-top:100px;
     
    
 
@@ -161,7 +162,11 @@
         
     }
 
-    
+    .selectedd{
+    	background-color:#212529;
+    	color:white;
+    	
+    }
 </style>
 <body>
        
@@ -175,11 +180,50 @@
             </div>
 
             <div class="btn-group"> <!-- get방식 -->
-                <button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=null&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right " >최신순</button>
-				<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=count&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right">마감임박순</button>
-				<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=hPrice&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right ">높은가격순</button>
-                <button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=rPrice&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right ">낮은가격순</button>
-                <button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=count&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right ">조회많은순</button>
+            	<c:choose>
+            		<c:when test="${empty sort or sort eq 'null' }">
+            			<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=null&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right selectedd" >최신순</button>
+            		</c:when>
+            		<c:otherwise>
+            			<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=null&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right " >최신순</button>
+            		</c:otherwise>
+            	</c:choose>
+            	<c:choose>
+            		<c:when test="${sort eq 'proNo' }">
+            			<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=proNo&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right selectedd">마감임박순</button>
+            		</c:when>
+            		<c:otherwise>
+            			<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=proNo&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right">마감임박순</button>
+            		</c:otherwise>
+            	</c:choose>
+            	<c:choose>
+            		<c:when test="${sort eq 'hPrice' }">
+            			<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=hPrice&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right selectedd ">높은가격순</button>
+            		</c:when>
+            		<c:otherwise>
+            			<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=hPrice&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right ">높은가격순</button>
+            		</c:otherwise>
+            	</c:choose>
+            	<c:choose>            		
+            		<c:when test="${sort eq 'rPrice' }">
+            			<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=rPrice&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right selectedd ">낮은가격순</button>
+            		</c:when>
+            		<c:otherwise>
+            		    <button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=rPrice&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right ">낮은가격순</button>
+            		</c:otherwise>
+            	</c:choose>
+            	<c:choose>
+            		<c:when test="${sort eq 'count' }">
+                		<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=count&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right selectedd ">조회많은순</button>            		
+            		</c:when>
+            		<c:otherwise>
+                		<button type="button" onclick="location.href='filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=count&cPage=${pi.currentPage}'" class="btn btn-outline-dark float-right ">조회많은순</button>            		
+            		</c:otherwise>            		            		
+            	</c:choose>
+	
+				
+
+
             </div>
 	    </div>
     
@@ -195,10 +239,10 @@
                     <div class="padding-line">
 
                         <div class="img-box">
-                            <c:if test="${i.path eq null}">
+                            <c:if test="${empty i.path}">
                                 <img class="item-img" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..."/>
                             </c:if>
-                            <c:if test="${i.path ne null}">
+                            <c:if test="${not empty i.path}">
                                 <img class="item-img" src="${i.path}" alt="..." />
                             </c:if>
 
@@ -207,8 +251,9 @@
                         <div class="text-box">
                             <div class="content-box ">
                                 <p>${i.proTitle }</p>
-
-                                <button class="h_mark" id="h_mark-${status.index}" ><i class="fa-solid fa-heart"></i></button>
+								<c:if test="${ plikeList.get(status.index).likeNo ne 1 }"><button class="h_mark" id="h_mark-${status.index}" onclick="event.cancelBubble='true';addList(${i.proNo},this)"><i class="fa-solid fa-heart"></i></button></c:if>
+								<c:if test="${plikeList.get(status.index).likeNo eq 1 }"><button class="h_mark" id="h_mark-${status.index}" onclick="event.cancelBubble='true';rmList(${i.proNo},this)" ><i class="fa-solid fa-heart" style="color:hotpink;"></i></button></c:if>
+                                
                             </div>
                         </div>
 
@@ -314,9 +359,6 @@
 
 				
 			}
-
-
-
 			document.getElementById(id).textContent = days + '일 ';
 			document.getElementById(id).textContent += hours + '시간 ';
 			document.getElementById(id).textContent += minutes + '분 ';
@@ -341,135 +383,78 @@
             }
 
             
-            $("#h_mark-"+i).off().on('click',function(e){
-                e.stopPropagation();
-                var proNo = $(this).parent().parent().parent().parent().children("span").eq(0).text();
-                console.log(proNo);
-                if ("${loginUser.userId}" == "") {
-	                var check1 = confirm("로그인 한 회원만 이용가능합니다.")
-                    if(check1){
-                        $('#h_mark').attr('data-target','#login_modal2');
-                    }else{
-                        $('#h_mark').removeAttr('data-target');
-	                    // 거부하면 해당 페이지 새로고침
-	                    location.reload();
-                    }
-	                }
-          });
+   
         }
    
         
         </script>
         
 		<script>
-		    $(function() {
-		    	
-		    	var proL = 0;
-		    	if("${proL}"!=""){
-		    		proL=${proL};
+		    function addList(proNo, ti){
+		    	console.log(ti.children[0]);
+		    	if("${loginUser.userId}" == ""){
+		    		alert("로그인 후 이용해주세요");
+		    		openModal();
+		    	}else{
+		    		$.ajax({
+	                    url : "addWishlist.my",
+	                    data : {
+	                    	userId : "${loginUser.userId}",
+	                		proNo : proNo
+	                    	
+	                    },
+	                    
+	                    success : function(result) {
+	                        console.log(result);
+	                        if (result >0) {
+	                        	 ti.children[0].style.color="hotpink";
+	                        	 
+	                            console.log("찜 성공!")
+	                            
+	                            if (confirm("해당 상품을 찜하셨습니다. 목록 페이지로 이동하시겠습니까?")) {
+	                                location.href = 'pick.me';
+	                            } else {
+		                                location.reload();
+	                            }
+	                        }
+	                    },
+	                    error : function() {
+	                        alert('찜할 수 없습니다.');
+	                        location.reload(); // 실패시 새로고침하기
+	                    }
+	                })
 		    	}
 		    	
-		        $('.h_mark').on('click',function(event) { 
-		            event.preventDefault();
-		            var proNo = $(this).parent().parent().parent().parent().children("span").eq(0).text();
-		            console.log(proNo);
-		            // 비로그인 상태시 찜하기 버튼을 누르면
-		            if ("${loginUser.userId}" == "") {
-		                var check1 = confirm("로그인 한 회원만 이용가능합니다.")
-                        if(check1){
-                            $('#h_mark').attr('data-target','#login_modal2');
-                        }else{
-                            $('#h_mark').removeAttr('data-target');
-		                    // 거부하면 해당 페이지 새로고침
-		                    location.reload();
-                        }
-		                }
-		            // 로그인 상태시 찜하기 버튼을 누르면    
-		             else {
-		                // 해당 멤버ID와 상품ID의 정보를 가져옴
-		                var userId = "${loginUser.userId}";
-		                
-		
-		                console.log("userId: " + userId);
-		                console.log("proNo: " + proNo);
-
-		                
-		                
-		                if(proL==0){
-		                $.ajax({
-		                    url : "addWishlist.my",
-		                    data : {
-		                    	userId : userId,
-		                		proNo : proNo
-		                    	
-		                    }, //userId, proNo 담은 거!
-		                    
-		                    success : function(result) {
-		                        console.log(result);
-		                        if (result >0) {
-		                        	 $('#h_mark>i').css("color","hotpink");
-		                        	 
-		                            console.log("찜 성공!")
-		                            
-		                            if (confirm("해당 상품을 찜하셨습니다. 목록 페이지로 이동하시겠습니까?")) {
-		                                // 승낙하면 마이페이지의 찜하기 리스트로 이동
-		                                location.href = 'pick.me';
-		                            } else {
-		                                // 거부하면 해당 페이지 새로고침하여 찜한거 반영되게하기(HTTP의 속성 때문...)
-// 		                                location.reload();
-		                            }
-		                        }
-		                        proL=1;
-		                    },
-		                    error : function() {
-		                        alert('찜할 수 없습니다.');
-		                        location.reload(); // 실패시 새로고침하기
-		                    }
-		                })
-		       
-		      
-		        }else{
-		        	
-		    
-		    //찜 해제
-		    $.ajax({
-                url : "removeWishlist.my",
-                contentType : 'application/json; charset=utf-8',
-                data : {
-                	userId : userId,
-                	proNo : proNo
-                	 
-                },
-                
-                success : function(result) {
-                    console.log(result);
-                    if (result >0) {
-                    	 $('#h_mark').css("color","lightgray");
-                    	 
-                        console.log("찜 해제 성공!")
-                        
-                        if (confirm("찜이 해제되었습니다.")) {
-                            location.reload();
-                        } else {
-                            location.reload();
-                        }
-                    }
-                    proL=0;
-                },
-                error : function(e) {
-                    console.log(e);
-                    alert('찜 해제 할 수 없습니다.');
-                    location.reload(); 
-                }
-    });
-		    
-		    
+		    	
 		    }
-		        }
-		            
-		    });
-		      
-		    });
+		    function rmList(proNo, ti){
+		    	$.ajax({
+	                url : "removeWishlist.my",
+	                contentType : 'application/json; charset=utf-8',
+	                data : {
+	                	userId : "${loginUser.userId}",
+	                	proNo : proNo
+	                	 
+	                },
+	                
+	                success : function(result) {
+	                    console.log(result);
+	                    if (result >0) {
+                        	 ti.children[0].style.color="lightgray";
+	                    	 
+	                        console.log("찜 해제 성공!")
+	                        
+	                        alert("찜이 해제되었습니다.")
+	                            location.reload();
+	                    }
+	                },
+	                error : function(e) {
+	                    console.log(e);
+	                    alert('찜 해제 할 수 없습니다.');
+	                    location.reload(); 
+	                }
+	    });
+		    }
 		</script>
               
 	    

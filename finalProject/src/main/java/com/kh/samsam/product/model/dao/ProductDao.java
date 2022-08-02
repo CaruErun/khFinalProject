@@ -216,7 +216,6 @@ public class ProductDao {
 
 	//낙찰현황 삭제
 	public int deleteBid(SqlSessionTemplate sqlSession, String[] chArr3) {
-		// TODO Auto-generated method stub
 		int result3 =0;
 		
 		for(int i=0; i<chArr3.length; i++) {
@@ -230,7 +229,6 @@ public class ProductDao {
 	
 	//판매 운송장 조회 삭제
 	public int nPostDelete(SqlSessionTemplate sqlSession, String[] chArr4) {
-		// TODO Auto-generated method stub
 		int result4 =0;
 		
 		for(int i=0; i<chArr4.length; i++) {
@@ -306,7 +304,6 @@ public class ProductDao {
 	}
 
 	public int selectProNo(SqlSessionTemplate sqlSession, String sellId) {
-		// TODO Auto-generated method stub
 		return sqlSession.selectOne("productMapper.selectProNo",sellId);
 	}
 
@@ -339,6 +336,30 @@ public class ProductDao {
 		
 		return sqlSession.selectOne("productMapper.prolike",map);
 		
+	}
+
+	public ArrayList<ProLike> selectProlikeList(SqlSessionTemplate sqlSession, String userId, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		return (ArrayList)sqlSession.selectList("productMapper.prolikeList",userId,rowBounds);
+	}
+
+	public ArrayList<ProLike> selectProlikeSearchList(SqlSessionTemplate sqlSession, String userId, String searchType,
+			String searchKeyword, String sort, PageInfo pi) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("userId", userId);
+		map.put("searchType", searchType);
+		map.put("searchKeyword", searchKeyword);
+		map.put("sort", sort);
+		
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		return (ArrayList)sqlSession.selectList("productMapper.prolikeSearchList",map,rowBounds);
 	}
 	
 	

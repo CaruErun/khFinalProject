@@ -17,6 +17,8 @@ public class PageInfo {
 	
 
 	
+	public PageInfo() {
+	}
 	
 	public PageInfo(int listCount, int currentPage, int pageLimit, int boardLimit, int maxPage, int startPage,
 			int endPage) {
@@ -35,7 +37,14 @@ public class PageInfo {
 	
 	
 	
-	
+
+
+
+
+
+
+
+
 	//======필터 및 검색용 객체 생성======
 	//정렬용 객체
 	private String sort; 

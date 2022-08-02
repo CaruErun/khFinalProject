@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SAMSAM AUCTION</title>
 </head>
 <style>
 	*{
@@ -33,6 +33,17 @@
         align-items: center;
         text-align: center;
     }
+    .footer-sns img{
+        width: 50px;
+        height: 50px;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+    .footer-sns h1 {
+        margin-left: 30px;
+        margin-right: 30px;
+        font-weight: bold;
+    }
     .footer-text{
         width: 70%;
         height: 130px;
@@ -56,9 +67,15 @@
 <body>
 	<div class="footer">
         <div class="footer-content">
-            <div class="footer-sns">
+ <div class="footer-sns">
+                <!-- 수정사항 -->
+                <img src="resources/images/icon_facebook.png" alt="">
+                <img src="resources/images/icon_insta.png" alt="">
                 <h1>Follow Us</h1>
+                <img src="resources/images/icon_twitter.png" alt="">
+                <img src="resources/images/icon_youtube.png" alt="">
             </div>
+
             <div class="footer-text">
                 상호명 : (주)삼삼옥션 / 조장: 노민규 / 조원 : 심현진, 이찬주, 이수형, 이지민, 이예구 
                 <br>당산지원 : 서울특별시 영등포구 선유동2로 57 이레빌딩 (구관) 19F, 20F

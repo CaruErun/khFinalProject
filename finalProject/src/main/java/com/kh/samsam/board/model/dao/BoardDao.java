@@ -174,6 +174,29 @@ public class BoardDao {
 		return sqlSession.selectList("commonMapper.selectCategoryList");
 	}
 
+	//2022.07.25 상품문의 시작
+	public ArrayList<QnA> ajaxInquiry(SqlSessionTemplate sqlSession, int proNo, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.ajaxInquiry",proNo,rowBounds);
+		
+	}
+	public int selectInquiry(SqlSessionTemplate sqlSession, int proNo) {
+		return sqlSession.selectOne("boardMapper.selectInquiry",proNo);
+	}
+	public void insertConQna(SqlSessionTemplate sqlSession, QnA q) {
+		sqlSession.insert("boardMapper.insertConQna", q);
+	}
+	public void insertConAnw(SqlSessionTemplate sqlSession, QnA q) {
+		sqlSession.update("boardMapper.insertConAnw", q);
+	}
+	//2022.07.25 상품문의 끝 
+
+
 //MyPage
 	//게시글 전체 개수
 	public int selectListMyPageCount(SqlSessionTemplate sqlSession) {
@@ -191,6 +214,8 @@ public class BoardDao {
 				
 		return (ArrayList)sqlSession.selectList("boardMapper.selectQnaListMyPageView",userId,rowBounds);
 	}
+
+
 }
 
 

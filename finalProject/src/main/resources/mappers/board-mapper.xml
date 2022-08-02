@@ -144,6 +144,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ANSWER_DATE = SYSDATE
         WHERE QNA_NO = #{qnaNo}
 	</update>
+<!-- 2022.07.25 상품문의 시작 -->
+
+	<select id="ajaxInquiry" resultMap = "qnaResultSet">
+				SELECT  QNA_NO, 
+				  	QNA_TITLE,
+				  	QNA_ID, 
+				  	QNA_CONTENT,
+				  	QNA_CATE_NO,
+				  	CREATE_DATE,
+				  	ANSWER_CONTENT,
+				  	ANSWER_DATE
+		  	FROM QNA Q
+			WHERE QNA_TYPE = 1 AND PRO_NO = #{proNo}
+		  	ORDER BY QNA_NO DESC
+	</select>
+	
+	
+	<select id="selectInquiry" resultType="int">
+		SELECT COUNT(*)
+		FROM QNA
+		WHERE QNA_TYPE = 1 AND PRO_NO = #{proNo}
+	</select>
+
+
+
+
+<!--  2022.07.25 상품문의 끝 -->
 
 	<!-- 전체 QnA 개수 구하기 -->
 	<select id="selectListCount" resultType="int">
@@ -244,8 +271,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    ORDER BY CREATE_DATE DESC
 	</select>
 	
-
-
+	<insert id="insertConQna">
+		INSERT INTO QNA(QNA_NO, QNA_TITLE, QNA_CATE_NO, QNA_CONTENT, QNA_ID, CREATE_DATE, QNA_TYPE, PRO_NO, QNA_STATUS)
+		VALUES(SEQ_QANO.NEXTVAL,'질문드립니다',#{qnaCateNo},#{qnaContent},#{qnaId},SYSDATE,1,#{proNo},'Y')
+	
+	</insert>
+	
+	<update id="insertConAnw">
+	
+		UPDATE QNA
+		SET ANSWER_CONTENT = #{answerContent}, ANSWER_DATE = SYSDATE
+		WHERE QNA_NO = #{qnaNo}
+	
+	</update>
 </mapper>
 
 

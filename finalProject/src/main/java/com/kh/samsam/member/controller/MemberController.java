@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -116,7 +117,7 @@ public class MemberController {
 		return mv;
 	}
 	@RequestMapping("login.me")
-	   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv, String email, String address, String phone) {
+	   public String loginMember(Member m, HttpSession session, ModelAndView mv, String email, String address, String phone, HttpServletRequest request) {
 		Member loginUser = memberService.loginMember(m);
 		
 		System.out.println(bcryptPasswordEncoder.encode(m.getUserPw()));
@@ -125,24 +126,24 @@ public class MemberController {
 			
 			
 			session.setAttribute("loginUser", loginUser);
-			mv.setViewName("redirect:/");
+	
+				return "redirect:"+request.getHeader("Referer");
+
 		}else {
 
 
-			mv.addObject("errorMsg","로그인 실패");
-			mv.setViewName("common/errorPage");
+			session.setAttribute("alertMsg", "로그인 정보를 확인해주세요 " );
+			return "redirect:/";
 		}
 		
-		return mv;
 		
 	   }
 	
 	@RequestMapping("logout.me")
-	public String logoutMember(HttpSession session) {
+	public String logoutMember(HttpSession session, HttpServletRequest request) {
 		
 		session.removeAttribute("loginUser");
-		
-		return "redirect:/";
+		return "redirect:"+request.getHeader("Referer");
 	}
 	
 	@RequestMapping("enrollForm.me")
@@ -309,6 +310,10 @@ public class MemberController {
 	
 	@RequestMapping("delete.me")
 	public String myDelete() {
+		return "member/myDelete";
+	}
+	@RequestMapping("deleteFo.me")
+	public String myDeleteForm() {
 		return "member/myDeleteRePassword";
 	}
 	
@@ -431,6 +436,26 @@ public class MemberController {
 	}
 
 	
+	// 2022.07.24 알람 시작
+	@RequestMapping(value = "ajaxAlarm.ax", produces = "application/json; charset=UTF-8" )
+	@ResponseBody
+	public String alarm(String userId) {
+		ArrayList<Product> successBid = memberService.successBid(userId); // 낙찰
+		ArrayList<Product> successProduct = memberService.successProduct(userId); // 판매 
+		
+		ArrayList<Product> failProduct = memberService.failProduct(userId); // 유찰
+		ArrayList<Product> topBid = memberService.topBid(userId); // 상위 입찰자 있을 때 
+		Map<String,Object> alarmList = new HashMap<String,Object>();
+		alarmList.put("suBid", successBid);
+		alarmList.put("suProduct", successProduct);
+		alarmList.put("faProduct", failProduct);
+		alarmList.put("topBid", topBid);
+		
+		
+		return new Gson().toJson(alarmList);
+	}
+	
+	// 2022.07.24 알람 끝
 	
 	//===============찜 리스트 불러오기 _ 마이페이지===============
 		@ResponseBody
@@ -460,7 +485,10 @@ public class MemberController {
 			return new Gson().toJson(ob);
 		}
 		
-		
-		
-
+		@ResponseBody
+		@RequestMapping(value="idcheck.do", produces="application/json; charset=UTF-8")
+		public String idCheck(String userId) {
+			int result = memberService.check_id(userId);
+			return new Gson().toJson(result);
+		}
 }

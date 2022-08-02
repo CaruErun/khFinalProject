@@ -1,43 +1,36 @@
 package com.kh.samsam.member.model.service;
 
 
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import com.kh.samsam.member.model.dao.MemberDao;
-import com.kh.samsam.member.model.vo.MemberChart;
 
 import java.io.PrintWriter;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.inject.Inject;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.mail.HtmlEmail;
 import org.json.simple.JSONObject;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.dao.MemberDao;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
-import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.vo.Product;
-
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Service
 public class MemberServiceImpl implements MemberService {
-	
+	@Autowired
+	private JavaMailSender mailSender;
 	@Autowired
 	private MemberDao memberDao;
 	@Inject
@@ -75,10 +68,8 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 	@Override
-	public void check_id(String id, HttpServletResponse response) throws Exception {
-		PrintWriter out = response.getWriter();
-		out.println(manager.check_id(sqlSession,id));
-		out.close();
+	public int check_id(String id) {
+		return memberDao.check_id(sqlSession,id);
 	}
 
 	// 이메일 중복 검사(AJAX)
@@ -112,14 +103,6 @@ public class MemberServiceImpl implements MemberService {
 		@Override
 		public void send_mail(Member m, String div) throws Exception {
 			// Mail Server 설정
-			String charSet = "utf-8";
-			String hostSMTP = "smtp.naver.com";
-			String hostSMTPid = "dlckswn91@naver.com";
-			String hostSMTPpwd = "8yucd6";
-
-			// 보내는 사람 EMail, 제목, 내용
-			String fromEmail = "dlckswn91@naver.com";
-			String fromName = "Spring Homepage";
 			String subject = "";
 			String msg = "";
 			
@@ -133,26 +116,26 @@ public class MemberServiceImpl implements MemberService {
 			}
 			// 받는 사람 E-Mail 주소
 			String mail = m.getEmail();
+			String setFrom = "alsrbwlw@naver.com"; // email-config에 설정한 자신의 이메일 주소를 입력 
+			String toMail = mail;
+			String title = subject; // 이메일 제목 
+			String content =msg; //이메일 내용 삽입
+			mailSend(setFrom, toMail, title, content);
+		}
+		public void mailSend(String setFrom, String toMail, String title, String content) {
+			System.out.println("456");
 			try {
-				HtmlEmail email = new HtmlEmail();
-				email.setDebug(true);
-				email.setCharset(charSet);
-				email.setSSL(true);
-				email.setHostName(hostSMTP);
-				email.setSmtpPort(587);
-
-				email.setAuthentication(hostSMTPid, hostSMTPpwd);
-				email.setTLS(true);
-				email.addTo(mail, charSet);
-				email.setFrom(fromEmail, fromName, charSet);
-				email.setSubject(subject);
-				email.setHtmlMsg(msg);
-				email.send();
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
+				helper.setFrom(setFrom);
+				helper.setTo(toMail);
+				helper.setSubject(title);
+				helper.setText(content,true);
+				mailSender.send(message);
 			} catch (Exception e) {
-				System.out.println("메일발송 실패 : " + e);
+				e.printStackTrace();
 			}
 		}
-		
 		// 비밀번호 찾기
 		@Override
 		public void find_pw(HttpServletResponse response, Member m) throws Exception {
@@ -278,6 +261,31 @@ public class MemberServiceImpl implements MemberService {
 			return memberDao.nobanMember(sqlSession, reportNo);
 		}
 	
+
+
+	//2022.07.24 알람 시작
+	@Override
+	public ArrayList<Product> successBid(String userId) {
+		return memberDao.successBid(sqlSession, userId);
+	}
+	@Override
+	public ArrayList<Product> successProduct(String userId) {
+		return memberDao.successProduct(sqlSession, userId);
+	}
+	@Override
+	public ArrayList<Product> failProduct(String userId) {
+		return memberDao.failProduct(sqlSession, userId);
+	}
+	@Override
+	public ArrayList<Product> topBid(String userId) {
+		return memberDao.topBid(sqlSession, userId);
+	}
+	//2022.07.24 알람 끝
+
+
+
+
+
 
 
 }

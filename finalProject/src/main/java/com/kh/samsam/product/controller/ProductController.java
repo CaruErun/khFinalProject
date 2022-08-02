@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,8 +27,8 @@ import com.google.gson.Gson;
 import com.kh.samsam.common.model.vo.Category;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.common.template.Pagination;
-import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.member.model.vo.Member;
+import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.service.ProductService;
 import com.kh.samsam.product.model.vo.Bid;
 import com.kh.samsam.product.model.vo.Postbox;
@@ -41,6 +41,34 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@RequestMapping("main.bo")
+	public String mainBoard(Model model, HttpSession session ) {
+		PageInfo pi = new PageInfo();
+		pi.setCurrentPage(1);
+		pi.setBoardLimit(10);
+		String sort = "proNo";
+		List<Product> sList = productService.filterList("", "", sort, pi);
+		sort = "count";
+		List<Product> cList = productService.filterList("", "", sort, pi);
+		
+		if(((Member)session.getAttribute("loginUser"))!=null) {
+			String userId = ((Member)session.getAttribute("loginUser")).getUserId();
+			sort = "proNo";
+			ArrayList<ProLike> pslikeList = productService.selectProlikeSearchList(userId,null, null, sort, pi);
+			sort = "count";
+			ArrayList<ProLike> pclikeList = productService.selectProlikeSearchList(userId,null, null, sort, pi);
+			System.out.println(pslikeList);
+			System.out.println(pclikeList);
+			model.addAttribute("pslikeList",pslikeList);
+			model.addAttribute("pclikeList",pclikeList);
+		}
+
+		model.addAttribute("sList",sList);
+		model.addAttribute("cList",cList);
+
+		return "main";
+	}
 	
 	// 차트 신규 등록, 거래 개수
 	@RequestMapping("product.ct")
@@ -180,8 +208,14 @@ public class ProductController {
 		return mv;
 	}
 	@RequestMapping("insertProductForm.pr")
-	public String insertProductForm() {
+	public String insertProductForm(HttpSession session, HttpServletRequest request) {
+		if(((Member)session.getAttribute("loginUser"))==null) {
+			session.setAttribute("alertMsg", "로그인 후 이용해주세요");
+				    return "redirect:" + request.getHeader("Referer");
+		}else {
+			
 		return "product/insertProductForm";
+		}
 	}
 	
 	@ResponseBody
@@ -199,7 +233,7 @@ public class ProductController {
 		
 		System.out.println(p);
 	
-		ArrayList<ProductImages> list = new ArrayList<>();
+		ArrayList<ProductImages> list = new ArrayList<ProductImages>();
 		
 			
 			for(int i=0; i<upfile.length; i++) {
@@ -237,7 +271,7 @@ public class ProductController {
 	@RequestMapping("productList.pr")
 	public String selectList(
 						@RequestParam(value="cPage", defaultValue="1") int currentPage,
-						Model model
+						Model model, HttpSession session
 					) {
 		
 		int listCount = productService.selectProListCount();
@@ -248,6 +282,13 @@ public class ProductController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		ArrayList<Product> plist = productService.selectProductList(pi);
+		
+		if(((Member)session.getAttribute("loginUser"))!=null) {
+			String userId = ((Member)session.getAttribute("loginUser")).getUserId();
+			ArrayList<ProLike> plikeList = productService.selectProlikeList(userId, pi);
+			System.out.println(plikeList);
+			model.addAttribute("plikeList",plikeList);
+		}
 		model.addAttribute("plist",plist);
 		model.addAttribute("pi",pi);
 		return "product/productListView";
@@ -256,7 +297,6 @@ public class ProductController {
 	
 	@RequestMapping("productDetail.pr")
 	public String selectProduct(int pNo
-
 								,Model model, HttpSession session) {
 	
 
@@ -563,7 +603,8 @@ public class ProductController {
 			int cPage,
 			String searchType,
 			String searchKeyword,
-			ModelAndView mv) {
+			ModelAndView mv,
+			HttpSession session) {
 
 //페이징
 int listCount = productService.searchProListCount(searchType, searchKeyword);
@@ -574,6 +615,14 @@ PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
 
 //리스트 불러오기
 List<Product> plist = productService.getSearchList(searchType, searchKeyword,pi);
+
+if(((Member)session.getAttribute("loginUser"))!=null) {
+	String userId = ((Member)session.getAttribute("loginUser")).getUserId();
+	ArrayList<ProLike> plikeList = productService.selectProlikeSearchList(userId,searchType, searchKeyword, null, pi);
+	System.out.println(plikeList);
+	mv.addObject("plikeList",plikeList);
+}
+
 
 
 mv.addObject("searchType",searchType);
@@ -592,7 +641,8 @@ public ModelAndView filterList(
 		String searchType,
 		String searchKeyword,
 		String sort,
-		ModelAndView mv) {
+		ModelAndView mv,
+		HttpSession session) {
 
 
 
@@ -607,17 +657,33 @@ PageInfo pi = Pagination.getPageInfo(listCount, cPage, pageLimit, boardLimit);
 if(searchType != null && searchKeyword != null) {
 List<Product> plist = productService.filterList(searchType, searchKeyword, sort,pi);
 
+if(((Member)session.getAttribute("loginUser"))!=null) {
+	String userId = ((Member)session.getAttribute("loginUser")).getUserId();
+	ArrayList<ProLike> plikeList = productService.selectProlikeSearchList(userId,searchType, searchKeyword, sort, pi);
+	System.out.println(plikeList);
+	mv.addObject("plikeList",plikeList);
+}
 mv.addObject("searchType",searchType);
 mv.addObject("searchKeyword",searchKeyword);
+mv.addObject("sort",sort);
 mv.addObject("pi",pi);
 mv.addObject("plist",plist).setViewName("product/productListView");
+
 
 }else {
 
 List<Product> plist = productService.filterListNoS(sort,pi);
 
+if(((Member)session.getAttribute("loginUser"))!=null) {
+	String userId = ((Member)session.getAttribute("loginUser")).getUserId();
+	ArrayList<ProLike> plikeList = productService.selectProlikeSearchList(userId,null, null, sort, pi);
+	System.out.println(plikeList);
+	mv.addObject("plikeList",plikeList);
+}
+
 mv.addObject("searchType","");
 mv.addObject("searchKeyword","");
+mv.addObject("sort",sort);
 mv.addObject("pi",pi);
 mv.addObject("plist",plist).setViewName("product/productListView");
 
@@ -704,9 +770,7 @@ return "product/productDetail";
 			int result = productService.deletePost(chArr2);
 			
 		}
-		
-		
-		
+	
 	//낙찰현황 삭제
 		@RequestMapping(value="deleteBid.my",  method = RequestMethod.POST)
 		@ResponseBody
@@ -733,8 +797,4 @@ return "product/productDetail";
 			int result = productService.nPostDelete(chArr4);
 					
 		}
-	
-		
-	
-	
 }

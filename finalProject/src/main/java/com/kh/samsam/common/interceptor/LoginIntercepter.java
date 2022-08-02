@@ -17,21 +17,16 @@ public class LoginIntercepter implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		// 내가 원하는 조건이 있으면 controller요청에 가기전에 이 조건을 확인하고
-		// 조건에 부합하면 true 아니면 false를 return 시켜서
-		// true일땐 controller요청 실행
-		// false일땐 controller요청 실행 XX
-		
 		HttpSession session = request.getSession();
 		
-		if(session.getAttribute("loginUser") != null) {
+		if(request.getHeader("Referer")==null) {
 			
-			return true;
-		}else {	// 로그인 유저가 없을때 (로그인 상태가 아닐때)
-			
-			session.setAttribute("alertMsg", "로그인 후 이용 가능한 서비스입니다.");
+			session.setAttribute("alertMsg", "주소 직접 입력이 금지되어있습니다. 올바른 경로로 접속해주세요.");
 			response.sendRedirect(request.getContextPath());
 			return false;
+
+		}else {	// 로그인 유저가 없을때 (로그인 상태가 아닐때)
+			return true;
 		}
 	}
 

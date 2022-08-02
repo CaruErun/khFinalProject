@@ -29,6 +29,7 @@
 <!-- Semantic UI theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
     
+
    	 <link href="${path}/resources/css/reset.css" rel="stylesheet"/>
 	<link href="${path}/resources/css/style.css" rel="stylesheet"/>
 	
@@ -43,7 +44,6 @@
         width: 100%;
         height: 140px;
         position:fixed;
-        border: solid 1px black;
         z-index: 1000;
     }
     .navbar {
@@ -55,12 +55,13 @@
         border: solid 1px black;
         background-color: white;
     }
-.navbar div:not(.alarmList, #alarmListDiv){
+    .navbar div:not(.alarmList, #alarmListDiv){
         width: 35%;
         height: 100%;
         font-size: 14px;
         display: flex;
         align-items: center;
+      
     }
     #clock{
         margin-left: 100px;
@@ -93,6 +94,10 @@
     .h1{
         width: 10%;
     }
+    .h1 img{
+    	width:50px;
+    	height:50px;
+    }
     .h2{
         width: 50%;
     }
@@ -112,13 +117,20 @@
     .header a{
         text-decoration: none;
         color: white;
-        margin: 45px;
     }
     .search-bar{
         height: 30px;
         font-size: 15px;
     }
-<%--2022.07.25 alarm css--%>
+
+    .search-wrap>div{
+    	float:left;
+    }
+    .search-wrap{
+    	margin-top : 30px;
+    }
+    
+    <%--2022.07.25 alarm css--%>
 	#alarmB, .alarmList{
 		cursor:pointer;
 	}
@@ -130,7 +142,8 @@
 	background-color:white;
 	flex-direction:column;
 	position:fixed;
-	right:13%;
+	top:2%;
+	right:18%;
 	z-index:1;
 	border: 1px solid black;
 	}
@@ -139,18 +152,19 @@
 	flex-direction:column;
 	text-align:center;
 	}
-	
+	.alarmList{
+
+	}
 	.suBid, .suProduct, .faProduct, .topBid{
 		border:1px solid black;
 	}
+	<%-- 2022.07.27 alarm css 끝 --%>
 	
 	#titleBOx{width:100px;}
+	.hhoovv:hover{
+		cursor:pointer;
+	}
     </style>
-    
-    
-    
-
-
 
 <body>
 <c:if test="${ not empty alertMsg }">
@@ -169,8 +183,8 @@
             <ul class="nav-list">
             	<c:choose>
 				    <c:when test="${ empty loginUser }">
-		                <li><a href="#!">samsam은 처음이신가요?</a></li>
-		                <li><a data-toggle="modal" data-target="#login_modal2" id="lolo">로그인</a></li>
+		                <li><a href="samsam.bo">samsam은 처음이신가요?</a></li>
+		                <li><a data-toggle="modal" data-target="#login_modal2" id="lolo" class="hhoovv">로그인</a></li>
 		                <li><a href="enrollForm.me">회원가입</a></li>
 		                <li><a href="noticeList.no">고객센터</a></li>
                   	</c:when>      
@@ -190,7 +204,6 @@
     	                    	<b id="alarmB" onclick="clickk(document.getElementById('alarmNo'));" >알림</b>
 	                   			<span id="alarmNo"></span> 
 	                    		<%-- 2022.07.24 알림 끝 --%>
-	                    		
 	                    		<a href="myPageSale.me">마이페이지</a>
 	                   	 		<a href="logout.me">로그아웃</a>
 	                    		<a href="noticeList.no">고객센터</a>
@@ -202,7 +215,7 @@
             </ul>
         </div>
     </div>
-    <!-- chat -->
+   <!-- chat -->
 <div id="chatAl"></div>
 <div id="sellAl"></div>
 
@@ -217,8 +230,7 @@ $(document).ready(function(){
 	}
 })
 function clickk(a){
-	console.log("123");
-	console.log(a.children[0].style.display)
+	console.log(a);
 	console.log(a.children);
 	if(a.children[0].style.display=='none') {
 		for(var i = 0 ; i<a.children.length;i++){
@@ -239,44 +251,43 @@ function alarm(userId){
 			userId : userId
 		},
 		success : function(alarmList){
-			if(alarmList.suBid == "") console.log("123");
+			console.log("555" + alarmList.suBid);
 			var str ="<div id='alarmListDiv' style='display:none'>";
-			if(alarmList.suBid == "" &&
-					alarmList.suProduct == "" &&
-					alarmList.faProduct == "" &&
-					alarmList.topBid == ""){
-				str="<div class='noAlarm alarmList'>알람이 없습니다.</div>"
+			if((alarmList.suBid == "") && (alarmList.suProduct == "") && (alarmList.faProduct == "") && (alarmList.topBid == "")){
+				str+="<div class='noAlarm alarmList'>알람이 없습니다.</div>";
 			}else{
 				if(alarmList.suBid != ""){
 					str+="<div class='suBid alarmList' onclick='clickk(this);'>낙찰 상품이 있습니다.";
 					for(var i in alarmList.suBid) {
-						str+="<div class='alarmList' style='display:none;'><a href='chatenter.ch?chatRoomNo="+alarmList.suBid[i].proNo+"&name=${loginUser.userId}' class='suBidChil'> 경매 "+alarmList.suBid[i].proTitle+"이(가) 낙찰 되었습니다.</a></div>";
+						str+="<div class='alarmList' style='display:none;'><a href='chatenter.ch?chatRoomNo="+alarmList.suBid[i].proNo+"&name=${loginUser.userId}&roomId="+alarmList.suBid[i].proTitle+"' class='suBidChil'> 경매 "+alarmList.suBid[i].proTitle+"이(가) 낙찰 되었습니다.</a></div>";
 					}
 					str+="</div>";
 				}
 				if(alarmList.suProduct != ""){
 					str+="<div class='suProduct alarmList' onclick='clickk(this);'>판매 상품이 있습니다.";
 					for(var i in alarmList.suProduct) {
-						str+="<div class='alarmList' style='display:none;'><a href='chatenter.ch?chatRoomNo="+alarmList.suProduct[i].proNo+"&name=${loginUser.userId}' class='suProChil'> 경매 "+alarmList.suProduct[i].proTitle+"이(가) 판매 되었습니다.</a></div>";
+						str+="<div class='alarmList' style='display:none;'><a href='chatenter.ch?chatRoomNo="+alarmList.suProduct[i].proNo+"&name=${loginUser.userId}&roomId="+alarmList.suProduct[i].proTitle+"' class='suProChil'> 경매 "+alarmList.suProduct[i].proTitle+"이(가) 판매 되었습니다.</a></div>";
 					}
 					str+="</div>";
 				}
 				if(alarmList.faProduct != ""){
 					str+="<div class='faProduct alarmList'>유찰 상품이 있습니다.";
 					for(var i in alarmList.faProduct) {
-						str+="<div class='alarmList' style='display:none;'><a href='#' class='faProChil'> 경매 "+alarmList.faProduct[i].proTitle+"이(가) 유찰 되었습니다.</a></div>";
+						str+="<div class='alarmList' style='display:none;'><a href='myPageSale.me' class='faProChil'> 경매 "+alarmList.faProduct[i].proTitle+"이(가) 유찰 되었습니다.</a></div>";
 					}
 					str+="</div>";
 				}
 				if(alarmList.topBid != ""){
 					str+="<div class='topBid alarmList'>입찰하신 상품에 상위 입찰자가 있습니다.";
 					for(var i in alarmList.topBid) {
-						str+="<div class='alarmList' style='display:none;'><a href='#' class='topBidChil'> 경매 "+alarmList.topBid[i].proTitle+"에 상위 입찰자가 있습니다.</a></div>";
+						str+="<div class='alarmList' style='display:none;'><a href='productDetail.pr?pNo="+alarmList.topBid[i].proNo+"' class='topBidChil'> 경매 "+alarmList.topBid[i].proTitle+"에 상위 입찰자가 있습니다.</a></div>";
 					}
-					str+="</div></div>";
+					str+="</div>";
 				}
-				$("#alarmNo").html(str);
+
 			}
+			str+="</div>";
+			$("#alarmNo").html(str);
 		},
 		error : function(){
 			
@@ -316,32 +327,46 @@ function alarm(userId){
     <div class="header">
         <div class="head-inner">
             <div class="h1">
-                <img src="#" alt="">
-                  <a href=${path }>samsam<br>Auction</a>
+            	<img src="resources/images/중고경매.png" alt="">
+                  <a href=${path }>SAMSAM<br>AUCTION</a>
                        </div>
             <div class="h2">
                 <ul class="header-nav">
                 
-                    <li><a href="#">신규경매</a></li>
-                    <li><a href="#">마감임박경매</a></li>
-                    <li><a href="#">카테고리</a></li>
-                    <li><a href="insertProductForm.pr">물품등록</a></li>
+                    <li><a href="filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=null&cPage=1">신규경매</a></li>
+                    <li><a href="filterList.pr?searchType=${searchType}&searchKeyword=${searchKeyword}&sort=proNo&cPage=1">마감임박경매</a></li>
+<!--                     <li><a href="#">카테고리</a></li> -->
+                    <li><a onclick="insertPP();" style="color:white;" class="hhoovv">물품등록</a></li>
                 
                 </ul>
             </div>
-            
+            <script>
+            function insertPP(){
+            	if("${loginUser.userId}"==""){
+            		alert("물품등록은 로그인 후 이용가능합니다.");
+            		openModal();
+            	}else{
+            		location.href="insertProductForm.pr";
+            	}
+            }
+            </script>
          	<!-- 검색폼 -->
-		<form name="searchForm" action="searchList.pr">
+		<form id="searchForm" name="searchForm" action="searchList.pr">
 			<div class="search-wrap">
+				<div>
 				<select class="form-control search-select" name="searchType" id="titleBOx">
 					<option value="proTitle">제목</option>
 					<option value="proContent">내용</option>
 					<option value="sellId">판매자</option>
-				</select>
+				</select>				
+				</div>
+				<div>
 				<input type="hidden" value="1" name="cPage">
 				<input type="text" class="form-control search-input" name="searchKeyword" value="${searchKeyword}">
+				</div>
+				<div>
 				<button type="submit" class="btn btn-info search-btn">검색</button>
-
+				</div>
 			</div>
 
 		</form>
@@ -353,11 +378,11 @@ function alarm(userId){
 
 
 
-    <div class="modal fade ch" id="login_modal2" >
+    <div class="modal fade" id="login_modal2"  >
       <h2 class="blind">로그인 팝업</h2>
-      <div class="login-modal-box">
+      <div class="login-modal-box" onclick="event.cancelBubble='true'">
         <div class="login-modal-head">
-          <button style="color:white; float : right;"type="button" class="close2" data-dismiss="#login_modal2">&times;</button>
+          <button type="button" class="close" style="color:white; float : right;" onclick="closeModal();">&times;</button>
           <h3 class="login-modal-title" style="color:white;">로그인</h3>
         </div>
         <div class="topline"></div>
@@ -452,6 +477,7 @@ function alarm(userId){
 	 	$(function(){
 	 		
 	 		$("#lolo").click(function(){
+				openModal();
 	 			$.ajax({
 					url : "login",
 					success : function(result){
@@ -463,8 +489,31 @@ function alarm(userId){
 					
 				})	
 	 		})
+
+	 		
 	 	});
+	 	function openModal(){
+ 			$("body").addClass("modal-open");
+ 			$("#login_modal2").addClass("show ch");
+ 			$("#login_modal2").show();
+ 			$("#login_modal2").attr("aria-modal",true);
+		 		$(".modal-backdrop").addClass("fade show ch");
+	 			$(".modal-backdrop").show();
+	 	}
+ 		function closeModal(){
+ 			$("body").removeClass("modal-open");
+ 			$("#login_modal2").removeClass("show ch");
+ 			$("#login_modal2").hide();
+ 			$("#login_modal2").attr("aria-modal",false);
+ 			$(".modal-backdrop").removeClass("fade show ch");
+ 			$(".modal-backdrop").hide();
+ 			
+ 		}
+ 		$("#login_modal2").click(function(){
+ 			closeModal();
+ 		})
 	 
+
 	 </script>
 	 <script>
 	 $("#userId").val(Cookies.get('key'));      
@@ -510,33 +559,6 @@ $("#userId").keyup(function(){
     ></script>
     <script>
 
-      let modalCheck = false;
-      $(".login-btn").click(function () {
-        if (!modalCheck) {
-          $(".login-modal").show();
-          modalCheck = true;
-        }
-      });
-      $(".close-btn").click(function () {
-        if (modalCheck) {
-          $("#login_modal2").hide();
-          modalCheck = false;
-        }
-      });
-      $("#modal-login-btn").click(function () {
-        let userID = $("#user-id").val();
-        if (userID =="") {
-        	$(".info-error").show();
-        
-        	<!--
-        	$(".id-error").show();
-          $(".error-line").show(); -->
-          
-          $("#user-id").css("border", "2px solid #F4492E");
-        } else {
-          
-        }
-      });
 
      
       <!--
@@ -547,8 +569,8 @@ $("#userId").keyup(function(){
         $(".info-error").hide();
       });-->
     </script>
-
-
+       	<jsp:include page="/WEB-INF/views/chat/chatbot.jsp"/>   
 </body>
+
 
 </html>

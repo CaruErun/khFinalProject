@@ -10,7 +10,7 @@
 </head>
 <body>
 <jsp:include page="../common/header.jsp"/>
-<div style="height:50px;"></div>
+<div style="height:350px;"></div>
 	<div class="w3-content w3-container w3-margin-top">
 		<div class="w3-container w3-card-4">
 			<form action="find_id.do" method="post">
@@ -19,7 +19,7 @@
 				</div>
 				<div>
 					<p>
-						<label>Email</label>
+						<label>Email</label><br><br>
 						<input class="w3-input" type="text" id="email" name="email" required placeholder="이메일을 입력해주세요.">
 					</p>
 					<p class="w3-center">

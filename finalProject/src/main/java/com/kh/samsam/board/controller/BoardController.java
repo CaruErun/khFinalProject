@@ -1,7 +1,9 @@
 package com.kh.samsam.board.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,9 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.samsam.board.model.service.BoardService;
 import com.kh.samsam.board.model.vo.NoticeFaq;
 import com.kh.samsam.board.model.vo.QnA;
@@ -29,6 +33,7 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
+
 	// 공지사항 목록 조회
 	@RequestMapping("noticeList.no")
 	public String selectNoticeList(
@@ -404,6 +409,45 @@ public class BoardController {
 			
 			return mv;
 		}
+	
+		//2022.07.25 상품문의 시작
+		@RequestMapping(value = "ajaxInquiry.pr", produces="application/json; charset=UTF-8")
+		@ResponseBody
+		public String ajaxInquiry(int cPage, int proNo) {
+			
+			int currentPage = cPage ;
+			
+			int listCount = boardService.selectInquiry(proNo);
+			
+			int pageLimit = 5;
+			int boardLimit = 5;
+			
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+			
+			ArrayList<QnA> proInquiry = boardService.ajaxInquiry(proNo, pi);
+			
+			Map<String, Object> inquiryMap = new HashMap<String,Object>();
+			
+			inquiryMap.put("proIn", proInquiry);
+			inquiryMap.put("pi", pi);
+			
+			return new Gson().toJson(inquiryMap);
+		}
+		@RequestMapping(value = "insertConQna.pr", produces = "application/json; charset=UTF-8")
+		@ResponseBody
+		public void InsertConQna(QnA q) {
+			boardService.insertConQna(q);
+			
+		}
+		@RequestMapping(value = "insertConAnw.pr", produces = "application/json; charset=UTF-8")
+		@ResponseBody
+		public void insertConAnw(QnA q) {
+			boardService.insertConAnw(q);
+			
+		}
+		
+
+		//2022.07.25 상품문의 끝 
 		
 		
 		@RequestMapping(value = "mumu.me")
@@ -439,13 +483,14 @@ public class BoardController {
 					model.addAttribute("list", list);
 					model.addAttribute("pi",pi);
 					
-					return "board/mumuList";
+					return "board/qnaListView";
 					
 				}
 				
-		
-		
-		
+				@RequestMapping("samsam.bo")
+				public String samsamBoard() {
+					return "common/samsam";
+				}
 	
 }
 

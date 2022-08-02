@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원탈퇴</title>
-    <link rel="stylesheet" href="resources/css/myDelete.css">
+    <link rel="stylesheet" href="resources/css/회원탈퇴.css">
 </head>
 <body>
     <div class="wrap">
@@ -16,7 +16,6 @@
             <div id="out">&nbsp&nbsp회원탈퇴</div>
         </div>
         <div id="content">
-                <form action="delete.me"  method="post">
                     <div id="content1">
                         <br><br><span class="span" style="color: midnightblue; font-weight: 550; font-size: 25px;">SAMSAM AUCTION 회원 탈퇴</span><span style="font-size: 25px;">를 하시겠습니까?</span>
                         <br><pre id="pre" style="font-size: 12px;">아래 약관 내용을 참조하신 후 신중하게 버튼을 클릭하여 주시기 바랍니다.</pre>
@@ -32,21 +31,13 @@
                             &nbsp&nbsp&nbsp <span style="color: midnightblue; font-weight: bold;">진행중인 물품</span>(판매/구매)이 있는 경우 탈퇴신청이 불가능합니다.
                         </d>
                     </div>
-                </form>
         </div>
         <div id="footer">
             <div id="footer_1">
-            	<button type="button" class="btn3">탈퇴</button>
-                <button class="btn4">취소</button>
+                <input type="button" id="" class="btn3" value="탈퇴" onclick="location.href='deleteFo.me'">
+                <button class="btn4" onclick="history.go(-1)">취소</button>
             </div>
         </div>
     </div>
-    
-<!--     <script> -->
-//     	function deleteOk(){
-//     		location.href="deleteRe.me";
-//     	}
-    </script>
-</body>
 </body>
 </html>

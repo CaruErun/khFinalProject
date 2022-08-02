@@ -1,8 +1,6 @@
 package com.kh.samsam.member.model.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -12,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.member.model.vo.MemberChart;
-import com.kh.samsam.member.model.vo.ProLike;
 import com.kh.samsam.product.model.vo.Product;
 
 @Repository
@@ -37,7 +34,7 @@ public int insertMember(SqlSessionTemplate sqlSession, Member m) {
 	return sqlSession.insert("memberMapper.insertMember",m);
 }
 	//아이디 중복 검사
-	public int check_id(SqlSessionTemplate sqlSession, String id) throws Exception{
+	public int check_id(SqlSessionTemplate sqlSession, String id){
 		return sqlSession.selectOne("memberMapper.check_id", id);
 	}
 	
@@ -74,6 +71,26 @@ public int deleteMember(SqlSessionTemplate sqlSession, String userId) {
 public int selectBanCount(SqlSessionTemplate sqlSession, String reportedId) {
 	return sqlSession.selectOne("memberMapper.selectBanCount", reportedId);
 }
+
+
+//2022.07.24 알람 시작
+public ArrayList<Product> successBid(SqlSessionTemplate sqlSession, String userId) {
+	return (ArrayList)sqlSession.selectList("productMapper.successBid",userId);
+}
+public ArrayList<Product> successProduct(SqlSessionTemplate sqlSession, String userId) {
+	return (ArrayList)sqlSession.selectList("productMapper.successProduct",userId);
+}
+
+public ArrayList<Product> failProduct(SqlSessionTemplate sqlSession, String userId) {
+	return (ArrayList)sqlSession.selectList("productMapper.failProduct",userId);
+}
+
+public ArrayList<Product> topBid(SqlSessionTemplate sqlSession, String userId) {
+	return (ArrayList)sqlSession.selectList("productMapper.topBid",userId);
+}
+
+//2022.07.24 알람 끝
+
 
 public int banMember(SqlSessionTemplate sqlSession, Member m) {
 	return sqlSession.update("memberMapper.banMember", m);

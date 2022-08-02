@@ -180,8 +180,14 @@ public class BoardServiceImpl implements BoardService{
 		return dao.selectCategoryList(sqlSession);
 	}
 
-	
 
+	//2022.07.25 상품문의 시작
+	@Override
+	public ArrayList<QnA> ajaxInquiry(int proNo, PageInfo pi) {
+		
+		return boardDao.ajaxInquiry(sqlSession,proNo, pi);
+
+	}
 //	============ myPage ============
 	
 	//전체 게시글 개수 구하기
@@ -199,6 +205,24 @@ public class BoardServiceImpl implements BoardService{
 		return dao.selectQnaListMyPageView(sqlSession,userId,pi);
 	}
 	
+	@Override
+	public int selectInquiry(int proNo) {
+		return boardDao.selectInquiry(sqlSession, proNo);
+	}
+	@Override
+	public void insertConQna(QnA q) {
+		boardDao.insertConQna(sqlSession, q);
+	}
+	//2022.07.25 상품문의 끝 
+
+	@Override
+	public void insertConAnw(QnA q) {
+		boardDao.insertConAnw(sqlSession, q);
+	}
+
+
+
+
 	
 	
 

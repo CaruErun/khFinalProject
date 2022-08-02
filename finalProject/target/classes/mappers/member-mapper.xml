@@ -134,7 +134,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM MEMBER
         WHERE USER_ID = #{reportedId}
 	</select>
-	
+
 	<update id="banMember" parameterType="member">
 	    UPDATE MEMBER
         SET USER_STATUS = 'N',

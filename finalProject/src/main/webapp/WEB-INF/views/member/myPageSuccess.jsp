@@ -97,7 +97,7 @@ div {
 	padding-top: 9px;
 }
 
-.btn {
+.btn1 {
 	border-radius: 4px;
 	border: 0px;
 	height: 25px;
@@ -187,7 +187,7 @@ thead {
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
-	<link rel="stylesheet" href="resources/css/myPageSuccess.css">
+<!-- 	<link rel="stylesheet" href="resources/css/myPageSuccess.css"> -->
 
 	<br>
 	<br>
@@ -279,7 +279,7 @@ thead {
 					</table>
 				</div>
 				<div id="content_9">
-					<button type="button" class="btn" onclick="bidDelete()">삭제</button>
+					<button type="button" class="btn1" onclick="bidDelete()">삭제</button>
 				</div>
 				<div id="content_10"></div>
 				<div id="content_11">&nbsp· 운송장 조회</div>
@@ -300,7 +300,7 @@ thead {
 					</table>
 				</div>
 				<div id="content_13" style=" height: 70px; padding-top: 30px;" >
-					<button type="button" class="btn" onclick="nPostDelete()">삭제</button>
+					<button type="button" class="btn1" onclick="nPostDelete()">삭제</button>
 				</div>
 				<div id="content_14"></div>
 		</form>
@@ -397,13 +397,16 @@ thead {
     	function bid(bPage){
     		console.log(bPage);
     		$.ajax({
-    			url : "bid.me",<%--<form action> href:sale.me--%>
-    			data : { <%--sale.me?userId--%>
+    			url : "bid.me",
+    			data : {
     			userId : "${loginUser.userId}"
     			,bPage : bPage
     			},
     			success : function(result){
+    				console.log("result");
+    				console.log(result);
     					var resultStr = "";
+    					
     					
     					
 //     					console.log(result.list[0].proTitle);
@@ -434,6 +437,7 @@ thead {
     			error : function(){
     				console.log("ajax 통신 실패")
     			}
+    			
     		})
     	}
 //     })

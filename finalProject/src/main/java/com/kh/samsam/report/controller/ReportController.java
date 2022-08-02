@@ -2,20 +2,20 @@ package com.kh.samsam.report.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.samsam.common.model.vo.PageInfo;
 import com.kh.samsam.common.template.Pagination;
+import com.kh.samsam.member.model.vo.Member;
 import com.kh.samsam.report.model.service.ReportService;
 import com.kh.samsam.report.model.vo.Report;
 
@@ -42,6 +42,7 @@ public class ReportController {
 		ArrayList<Report> list = reportService.selectReportList(pi);
 		System.out.println(pi);
 		System.out.println(listCount);
+		System.out.println(list);
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
 		
@@ -69,19 +70,33 @@ public class ReportController {
 	
 
 	@RequestMapping("report.mem")
-	public String reportMember(Report r, HttpSession session, Model model) {
+	public String reportMember(Report r, HttpSession session, Model model, HttpServletRequest request) {
 			System.out.println(r);
-			int result = service.reportMember(r);
+			if(((Member)session.getAttribute("loginUser"))==null) {
+				session.setAttribute("alertMsg", "로그인 후 이용해주세요");
+					    return "redirect:" + request.getHeader("Referer");
+			}else {
+				
 			
-			if(result>0) { //성공
+				if(r.getReportCateNo().equals("")) {
+					session.setAttribute("alertMsg", "사유를 선택해주세요.");
+					return "redirect:" + request.getHeader("Referer");
+				}else {
 				
-				model.addAttribute("r",r);
-				session.setAttribute("alertMsg", "회원 신고가 완료되었습니다.");
-				return "report/report_done";
+			
+					int result = service.reportMember(r);
+					
+					if(result>0) { //성공
 				
-			}else { //실패
-				model.addAttribute("errorMsg","신고에 실패하였습니다.");
-				return "common/errorPage";
+					model.addAttribute("r",r);
+					session.setAttribute("alertMsg", "회원 신고가 완료되었습니다.");
+					return "report/report_done";
+				
+					}else { //실패
+						model.addAttribute("errorMsg","신고에 실패하였습니다.");
+						return "common/errorPage";
+					}
+				}
 			}
 		}
 	

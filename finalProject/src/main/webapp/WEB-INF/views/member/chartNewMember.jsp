@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Insert title here</title>
+<title>SAMSAM AUCTION</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
     <style>
@@ -19,8 +19,8 @@
 </head>
 
 <body>
+
 		<jsp:include page="../chartMenubar.jsp"/>
-		
 		<div id="outer">
 			<div id="chart" style="width: 900px; height: 900px;">
 				<!--차트가 그려질 부분-->

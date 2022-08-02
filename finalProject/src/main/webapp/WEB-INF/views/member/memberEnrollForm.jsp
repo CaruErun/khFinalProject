@@ -58,15 +58,11 @@ $(document).ready(function() {
                 
                var mem_id=$('#mem_id').val();
                  $.ajax({
-                     async : true,
-                        type : 'POST',
-                      data : mem_id,//mem_id라는 이름으로 mem_id라는 데이터를 @WebServlet("/idsearch.do")에 보내겠다
                       url : 'idcheck.do',
-                        dateType: 'json',
-                        contentType: "application/json; charset=UTF-8",
+                      data : {userId : mem_id},//mem_id라는 이름으로 mem_id라는 데이터를 @WebServlet("/idsearch.do")에 보내겠다
                         success : function(data) {
-
-             if(data.cnt > 0){
+			console.log(data)
+             if(data > 0){
                 $('#id_check').text('중복된 아이디 입니다.');
                       $('#id_check').css('color', 'red');
                       $("#usercheck").attr("disabled", true);
@@ -300,38 +296,40 @@ $(document).ready(function() {
               
               
               $('#mail-Check-Btn').on("click",function() {
-            	  const eamil = $('#userEmail').val(); // 이메일 주소값 얻어오기!
-            		const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
-              	  console.log('완성된 이메일 : ' + eamil); // 이메일 오는지 확인
+                 const eamil = $('#userEmail').val(); // 이메일 주소값 얻어오기!
+                  const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
+                   console.log('완성된 이메일 : ' + eamil); // 이메일 오는지 확인
 
-            		$.ajax({
-            			type : 'get',
-            			url : 'mailCheck',
-            			data : {email : eamil },
-            			success : function (data) {
-            				checkInput.attr('disabled',false);
-            				code =data;
-            				alert('인증번호가 전송되었습니다.')
-            			}			
-            		}); // end ajax
-            	}); // end send eamil
-            	
+                  $.ajax({
+                     url : 'mailCheck',
+                     data : {email : eamil },
+                     success : function (data) {
+                        checkInput.attr('disabled',false);
+                        code =data;
+                        alert('인증번호가 전송되었습니다.')
+                     },
+                     error : function(){
+                    	 console.log("통신실패");
+                     }
+                  }); // end ajax
+               }); // end send eamil
+               
             //인증번호 비교 
            // blur -> focus가 벗어나는 경우 발생
            $('.mail-check-input').blur(function () {
-           	const inputCode = $(this).val();
-           	const $resultMsg = $('#mail-check-warn');
-           	
-           	if(inputCode === code){
-           		$resultMsg.html('인증번호가 일치합니다.');
-           		$resultMsg.css('color','green');
-           		$('#mail-Check-Btn').attr('disabled',true);
-           		$('#userEamil').attr('readonly',true);
-           		
-           	}else{
-           		$resultMsg.html('인증번호가 불일치 합니다. 다시 확인해주세요!.');
-           		$resultMsg.css('color','red');
-           	}
+              const inputCode = $(this).val();
+              const $resultMsg = $('#mail-check-warn');
+              
+              if(inputCode === code){
+                 $resultMsg.html('인증번호가 일치합니다.');
+                 $resultMsg.css('color','green');
+                 $('#mail-Check-Btn').attr('disabled',true);
+                 $('#userEamil').attr('readonly',true);
+                 
+              }else{
+                 $resultMsg.html('인증번호가 불일치 합니다. 다시 확인해주세요!.');
+                 $resultMsg.css('color','red');
+              }
            });
               
 });
@@ -394,10 +392,10 @@ function execPostCode() {
 </script> 
 </head>
 <body>
-	
+   
 
- 	<jsp:include page="../common/header.jsp"/>
- 	<div style="height: 60px;"></div>
+    <jsp:include page="../common/header.jsp"/>
+    <div style="height: 60px;"></div>
  
    <div class="container">
             <div class="page-header">
@@ -411,13 +409,13 @@ function execPostCode() {
                 
                     <div class="form-group">
                         <label for="id">아이디</label>
-                        <input type="text" class="form-control" id="mem_id" name="userId" placeholder="ID">
+                        <input type="text" class="form-control" id="mem_id" name="userId" placeholder="ID" required>
                         <div class="eheck_font" id="id_check"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="pw">비밀번호</label>
-                        <input type="password" class="form-control" id="mem_pw" name="userPw" placeholder="PASSWORD">
+                        <input type="password" class="form-control" id="mem_pw" name="userPw" placeholder="PASSWORD" required>
                         <div class="eheck_font" id="pw_check"></div>
                     </div>
                     <div class="form-group">
@@ -428,24 +426,24 @@ function execPostCode() {
                     
                        <div class="form-group">
                         <label for="mem_name">이름</label>
-                        <input type="text" class="form-control" id="mem_name" name="userName" placeholder="Name">
+                        <input type="text" class="form-control" id="mem_name" name="userName" placeholder="Name" required>
                          <div class="eheck_font" id="name_check"></div>
                     </div>
                     
                         <div class="form-group">
                         <label for="mem_birth">생년월일</label>
-                        <input type="tel" class="form-control" id="mem_birth" name="userBirth" placeholder="ex) 19990101">
+                        <input type="tel" class="form-control" id="mem_birth" name="userBirth" placeholder="ex) 19990101" required>
                        <div class="eheck_font" id="birth_check"></div>
                     </div>
                     
                     <div class="mail_check_wrap">
                         <label for="userEmail">이메일 주소</label>
-                        <input type="email" class="form-control" id="userEmail" name="email" placeholder="E-mail">
+                        <input type="email" class="form-control" id="userEmail" name="email" placeholder="E-mail" required>
                     
 
                        <div class="eheck_font" id="email_check"></div>
                       <div class="mail-check-box">
-<input class="form-control mail-check-input" style="width: 40%; display: inline;" placeholder="인증번호를 입력해주세요!" disabled="disabled" maxlength="6">
+<input class="form-control mail-check-input" style="width: 40%; display: inline;" placeholder="인증번호를 입력해주세요!" disabled="disabled" maxlength="6" required>
 </div>          
                      <button type="button" class="btn btn-primary" id="mail-Check-Btn"> 이메일 인증</button>  
                      </div>
@@ -454,14 +452,14 @@ function execPostCode() {
              
                     <div class="form-group">
                         <label for="mem_phone">휴대폰 번호('-'없이 번호만 입력해주세요)</label>
-                        <input type="tel" class="form-control" id="mem_phone" name="phone" placeholder="Phone Number">
+                        <input type="tel" class="form-control" id="mem_phone" name="phone" placeholder="Phone Number" required>
                          <div class="eheck_font" id="phone_check"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="mem_gender">성별 </label>
-                        <input type="checkbox" id="mem_gender" name="gender" value="M">M
-                        <input type="checkbox" id="mem_gender" name="gender" value="F">F
+                        <input type="radio" id="mem_gender" name="gender" value="M" required>M
+                        <input type="radio" id="mem_gender2" name="gender" value="F">F
                     </div>
 
                     

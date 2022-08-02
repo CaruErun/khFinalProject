@@ -2,6 +2,7 @@ package com.kh.samsam.member.model.service;
 
 import java.util.ArrayList;
 
+
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.samsam.common.model.vo.PageInfo;
@@ -24,7 +25,7 @@ public interface MemberService {
 		
 
 		//아이디 중복
-		public void check_id(String id, HttpServletResponse response) throws Exception;
+		public int check_id(String id);
 		//이메일중복
 		public void check_email(String email, HttpServletResponse response) throws Exception;
 		//아이디 찾기
@@ -39,10 +40,6 @@ public interface MemberService {
 	//비밀번호 변경
 	int pwdChange(Member m);
 
-	static void certifiedPhoneNumber(String userPhoneNumber, int randomNumber) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	//마이페이지 정보 수정 
 	int updateMember(Member m);
@@ -51,6 +48,14 @@ public interface MemberService {
 	int deleteMember(String userId);
 
 	// 신고 당한 회원 정지 - banCount 조회
+	
+	//2022.07.24 알람시작
+	ArrayList<Product> successBid(String userId);
+	ArrayList<Product> successProduct(String userId);
+	ArrayList<Product> failProduct(String userId);
+	ArrayList<Product> topBid(String userId);
+	//2022.07.24 알람끝
+	
 			int selectBanCount(String reportedId);
 			
 			// 신고 당한 회원 정지

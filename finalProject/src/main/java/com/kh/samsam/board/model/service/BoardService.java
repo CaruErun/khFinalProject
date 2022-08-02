@@ -87,7 +87,13 @@ public interface BoardService {
 	ArrayList<QnA> selectQnaListMyPageView(PageInfo pi, String userId);
 	
 	
-
+	//2022.07.25 상품문의 시작
+	
+	ArrayList<QnA> ajaxInquiry(int proNo, PageInfo pi);
+	int selectInquiry(int proNo);
+	void insertConQna(QnA q);
+	void insertConAnw(QnA q);
+	//2022.07.25 상품문의 끝 
 }
 
 
